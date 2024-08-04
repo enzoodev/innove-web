@@ -2,7 +2,13 @@ import { HttpServices } from '@/services/HttpServices'
 import { TokenRepository } from '@/repositories/TokenRepository'
 
 export class AuthRepository {
-  public static async getUser(): Promise<TAuth> {
+  public static async getUser(): Promise<TAuth | null> {
+    const isLogged = TokenRepository.get()
+
+    if (!isLogged) {
+      return null
+    }
+
     return HttpServices.get({
       url: 'user',
     })
