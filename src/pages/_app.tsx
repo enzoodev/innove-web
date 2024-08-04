@@ -24,12 +24,10 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 
     if (!guestRoutes.includes(router.pathname)) {
       const token = TokenRepository.get()
-
-      const isValidToken = !token || token === ''
       const isLogged = !router.pathname.includes('auth')
 
-      if (isValidToken && isLogged) {
-        router.push('/auth/signin')
+      if (!token && isLogged) {
+        router.push(Routes.LOGIN)
         auth.current = false
       }
     }
@@ -52,8 +50,8 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
         className={'d-print-none'}
       />
       <PageLoading />
-      <AuthContextProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
           <Head>
             <meta
               name="viewport"
@@ -61,8 +59,8 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
             />
           </Head>
           <Component {...pageProps} />
-        </QueryClientProvider>
-      </AuthContextProvider>
+        </AuthContextProvider>
+      </QueryClientProvider>
     </Fragment>
   )
 }
