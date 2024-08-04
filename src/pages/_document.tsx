@@ -3,7 +3,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 const Document: NextPage = () => {
   return (
-    <Html lang="en">
+    <Html lang="pt-br">
       <Head />
       <body>
         <Main />
