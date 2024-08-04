@@ -8,7 +8,7 @@ import { useRefresh } from '@/hooks/useRefresh'
 import { Routes } from '@/enums/Routes'
 
 export type TAuthContextDataProps = {
-  auth: TAuth | undefined
+  auth: TAuth | null
   userId: number
   clientId: number
   isAuthenticated: boolean
@@ -128,7 +128,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
 
   const value: TAuthContextDataProps = useMemo(
     () => ({
-      auth,
+      auth: auth ?? null,
       clientId: auth?.idclient ?? 0,
       userId: auth?.iduser ?? 0,
       refreshUser: refresh,
