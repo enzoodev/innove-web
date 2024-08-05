@@ -12,7 +12,6 @@ export class HttpServices {
 
   private static request = async <T>({
     url,
-    key,
     method = HttpMethod.GET,
     data,
     formData,
@@ -27,9 +26,6 @@ export class HttpServices {
         method,
         body: requestBody,
         credentials: 'include',
-        next: {
-          tags: [key],
-        },
         headers: {
           Authorization: `Bearer ${token ?? 'no-token'}`,
           'Content-Type':
