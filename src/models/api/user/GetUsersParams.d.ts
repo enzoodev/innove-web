@@ -1,0 +1,3 @@
+type TGetUsersParams = {
+  idclient: number
+}
