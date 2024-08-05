@@ -38,7 +38,7 @@ const Login: NextPage = () => {
       await handleLogin({
         login: data.login,
         pass: data.password,
-        devicetype: '2',
+        devicetype: '1',
       })
     },
     [handleLogin],
