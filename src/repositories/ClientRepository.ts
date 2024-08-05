@@ -5,28 +5,28 @@ export class ClientRepository extends BaseRepository {
     params: TGetClientsParams,
   ): Promise<Array<TClient>> {
     return super.getAll({
-      url: 'Clients',
+      url: 'clients',
       params,
     })
   }
 
   public static async createClient(params: TCreateClientParams): Promise<void> {
     await super.create({
-      url: 'addClient',
+      url: 'addclient',
       data: params,
     })
   }
 
   public static async updateClient(params: TUpdateClientParams): Promise<void> {
     await super.create({
-      url: 'addClient',
+      url: 'addclient',
       data: params,
     })
   }
 
   public static async deleteClient(params: TDeleteClientParams): Promise<void> {
     await super.delete({
-      url: 'delClient',
+      url: 'delclient',
       params,
     })
   }
