@@ -8,6 +8,13 @@ export class UserRepository extends BaseRepository {
     })
   }
 
+  public static async getUser(params: TGetUserParams): Promise<TUser> {
+    return super.get({
+      url: 'users',
+      params,
+    })
+  }
+
   public static async createUser(params: TCreateUserParams): Promise<void> {
     await super.create({
       url: 'adduser',
