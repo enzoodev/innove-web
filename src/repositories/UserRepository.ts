@@ -9,7 +9,7 @@ export class UserRepository extends BaseRepository {
   }
 
   public static async createUser(params: TCreateUserParams): Promise<void> {
-    return super.create({
+    await super.create({
       url: 'adduser',
       data: params,
     })
