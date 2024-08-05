@@ -11,7 +11,7 @@ export class ClientRepository extends BaseRepository {
   }
 
   public static async createClient(params: TCreateClientParams): Promise<void> {
-    return super.create({
+    await super.create({
       url: 'addClient',
       data: params,
     })
