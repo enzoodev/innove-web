@@ -1,0 +1,3 @@
+type TGetClientParams = {
+  idclient: number
+}
