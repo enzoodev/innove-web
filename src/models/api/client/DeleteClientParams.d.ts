@@ -1,0 +1,3 @@
+type TDeleteClientParams = {
+  idclient: number
+}
