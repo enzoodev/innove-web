@@ -10,10 +10,13 @@ import { AuthContextProvider } from '@/contexts/AuthContext'
 import { Routes } from '@/enums/Routes'
 import { TokenRepository } from '@/repositories/TokenRepository'
 import { queryClient } from '@/services/queryClient'
+import { Inter } from 'next/font/google'
 
 import { PageLoading } from '@/components/elements/PageLoading'
 
 import '@/styles/globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -58,7 +61,9 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
               content="width=device-width, initial-scale=1, shrink-to-fit=no"
             />
           </Head>
-          <Component {...pageProps} />
+          <div id="app" className={`${inter.className}`}>
+            <Component {...pageProps} />
+          </div>
         </AuthContextProvider>
       </QueryClientProvider>
     </Fragment>
