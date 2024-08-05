@@ -1,13 +1,19 @@
 import { BaseRepository } from './shared/BaseRepository'
 
 export class ClientRepository extends BaseRepository {
-  public static async getClients(
-    params: TGetClientsParams,
-  ): Promise<Array<TClient>> {
+  public static async getClients(): Promise<Array<TClient>> {
     return super.getAll({
+      url: 'clients',
+    })
+  }
+
+  public static async getClient(params: TGetClientParams): Promise<TClient> {
+    const [client] = await super.get<Array<TClient>>({
       url: 'clients',
       params,
     })
+
+    return client
   }
 
   public static async createClient(params: TCreateClientParams): Promise<void> {
