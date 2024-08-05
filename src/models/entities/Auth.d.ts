@@ -1,10 +1,3 @@
-type TFile = {
-  filename: string
-  extension: string
-  file: string
-  logo: null
-}
-
 type TAuthPermission = {
   id: string
   idpermission: string
