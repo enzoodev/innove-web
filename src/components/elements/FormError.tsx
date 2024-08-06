@@ -1,5 +1,5 @@
-import { IconAlertOctagon } from '@tabler/icons-react'
 import { memo } from 'react'
+import { IconAlertCircle } from '@tabler/icons-react'
 
 type Props = {
   message?: string
@@ -10,10 +10,10 @@ export const FormError: React.NamedExoticComponent<Props> = memo(
     if (!message) return null
 
     return (
-      <span className="form-control-error">
-        <IconAlertOctagon className="ic ic--increment" />
-        <span>{message}</span>
-      </span>
+      <div className="flex flex-row items-center gap-2">
+        <IconAlertCircle stroke={1.75} className="text-red-700" />
+        <span className="text-red-700 text-sm font-medium">{message}</span>
+      </div>
     )
   },
 )
