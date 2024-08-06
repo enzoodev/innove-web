@@ -9,7 +9,7 @@ export const Footer: React.FC = () => {
 
   return (
     <>
-      <footer className="w-full p-4 flex flex-row items-center justify-between border-t border-gray-300">
+      <footer className="w-full p-4 flex flex-col gap-2 items-center justify-between border-t border-gray-300 sm:flex-row sm:gap-4">
         <p className="text-gray-700 text-sm">
           {year} &copy; Innove. Todos os direitos reservados.
         </p>
