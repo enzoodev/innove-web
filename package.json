@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
 		"dev": "rm -rf .next && next dev",
+    "dev:https": "rm -rf .next && next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
