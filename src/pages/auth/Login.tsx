@@ -3,14 +3,16 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { IconUserCircle } from '@tabler/icons-react'
 
 import { Routes } from '@/enums/Routes'
 import { useAuth } from '@/hooks/useAuth'
 import { loginSchema, TLoginSchema } from '@/schemas/auth/loginSchema'
 
 import { LayoutAuth } from '@/components/layout/LayoutAuth'
-import { IconUserCircle } from '@tabler/icons-react'
-import { FormError } from '@/components/elements/FormError'
+import { Input } from '@/components/elements/Input'
+import { PasswordInput } from '@/components/elements/PasswordInput'
+import { Button } from '@/components/elements/Button'
 
 const Login: NextPage = () => {
   const router = useRouter()
@@ -20,7 +22,6 @@ const Login: NextPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setFocus,
   } = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -46,20 +47,38 @@ const Login: NextPage = () => {
 
   return (
     <LayoutAuth title="Acessar o sistema Innove">
-      <div className="h-96 w-2/6 p-4 flex flex-col gap-6 items-center bg-blue-100">
+      <div className="w-96 p-4 flex flex-col gap-10 items-center">
         <div className="flex flex-col gap-2 items-center">
           <IconUserCircle stroke={0.75} className="text-gray-700 h-24 w-24" />
-          <h1 className="text-gray-700 text-gray-800 text-xl font-semibold">
+          <h1 className="text-gray-700 text-gray-800 text-xl text-center font-semibold">
             Acessar sistema Innove
           </h1>
         </div>
-        <div className="flex flex-col gap-2 items-center">
-          <div className="col-md-6">
-            <input type="text" {...register('login')} placeholder="Login" />
-            <FormError message={errors.login?.message} />
-            <label className="label">Login</label>
-          </div>
-        </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-4 items-center w-full"
+        >
+          <Input
+            placeholder={'Login'}
+            hasLabel={false}
+            formError={errors.login?.message}
+            name="login"
+            register={register}
+          />
+          <PasswordInput
+            placeholder={'Senha'}
+            hasLabel={false}
+            formError={errors.password?.message}
+            name="password"
+            register={register}
+          />
+          <Button
+            title="Entrar"
+            type="submit"
+            additionalClasses="mt-2 bg-cyan-700 hover:bg-cyan-800 active:bg-cyan-900"
+            isLoading={isLoadingLogin}
+          />
+        </form>
       </div>
     </LayoutAuth>
   )
