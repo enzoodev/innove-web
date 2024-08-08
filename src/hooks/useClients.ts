@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
@@ -11,6 +11,7 @@ export const useClients = () => {
   const { key, refresh } = useRefresh()
   const [isOpenCreateClientModal, toggleOpenCreateClientModal] = useToggle()
   const [isOpenUpdateClientModal, toggleOpenUpdateClientModal] = useToggle()
+  const [searchText, setSearchText] = useState('')
 
   const { data: clients, isLoading: isLoadingGetClients } = useQuery({
     queryKey: ['get-clients', key],
@@ -24,6 +25,14 @@ export const useClients = () => {
     },
   })
 
+  const filteredClients = useMemo(() => {
+    if (!clients) return []
+
+    return clients.filter((item) =>
+      searchText.toLowerCase().includes(item.name.toLowerCase()),
+    )
+  }, [clients, searchText])
+
   const { mutateAsync: createClientFn, isPending: isLoadingCreateClient } =
     useMutation({
       mutationFn: ClientRepository.createClient,
@@ -34,7 +43,7 @@ export const useClients = () => {
       mutationFn: ClientRepository.updateClient,
     })
 
-  const handleCreateClient = useCallback(
+  const createClient = useCallback(
     async (data: TCreateClientParams) => {
       try {
         await createClientFn(data)
@@ -48,7 +57,7 @@ export const useClients = () => {
     [createClientFn, refresh, toggleOpenCreateClientModal],
   )
 
-  const handleUpdateClient = useCallback(
+  const updateClient = useCallback(
     async (data: TUpdateClientParams) => {
       try {
         await updateClientFn(data)
@@ -63,15 +72,17 @@ export const useClients = () => {
   )
 
   return {
-    clients: clients ?? [],
+    clients: filteredClients,
     isLoadingGetClients,
     isLoadingCreateClient,
     isLoadingUpdateClient,
-    handleCreateClient,
-    handleUpdateClient,
+    createClient,
+    updateClient,
     isOpenCreateClientModal,
     isOpenUpdateClientModal,
     toggleOpenCreateClientModal,
     toggleOpenUpdateClientModal,
+    searchText,
+    setSearchText,
   }
 }
