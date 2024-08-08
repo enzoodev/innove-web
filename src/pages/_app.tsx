@@ -22,19 +22,19 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter()
   const auth = useRef(true)
 
-  useEffect(() => {
-    const guestRoutes: Array<string> = [Routes.LOGIN, Routes.RECOVER_ACCOUNT]
+  // useEffect(() => {
+  //   const guestRoutes: Array<string> = [Routes.LOGIN, Routes.RECOVER_ACCOUNT]
 
-    if (!guestRoutes.includes(router.pathname)) {
-      const token = TokenRepository.get()
-      const isLogged = !router.pathname.includes('auth')
+  //   if (!guestRoutes.includes(router.pathname)) {
+  //     const token = TokenRepository.get()
+  //     const isLogged = !router.pathname.includes('auth')
 
-      if (!token && isLogged) {
-        router.push(Routes.LOGIN)
-        auth.current = false
-      }
-    }
-  }, [router])
+  //     if (!token && isLogged) {
+  //       router.push(Routes.LOGIN)
+  //       auth.current = false
+  //     }
+  //   }
+  // }, [router])
 
   return (
     <Fragment>
