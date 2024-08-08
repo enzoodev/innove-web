@@ -40,7 +40,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     queryKey: ['get-user', key],
     queryFn: async () => {
       try {
-        return await AuthRepository.getUser()
+        return AuthRepository.getUser()
       } catch (error) {
         toast.error('Não foi possível buscar seus dados.')
         throw error
