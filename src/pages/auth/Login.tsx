@@ -46,7 +46,7 @@ const Login: NextPage = () => {
   )
 
   return (
-    <LayoutAuth title="Acessar o sistema Innove">
+    <LayoutAuth headTitle="Acessar o sistema Innove">
       <div className="w-96 p-4 flex flex-col gap-10 items-center">
         <div className="flex flex-col gap-2 items-center">
           <IconUserCircle stroke={0.75} className="text-gray-700 h-24 w-24" />
