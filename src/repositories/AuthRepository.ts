@@ -3,9 +3,9 @@ import { TokenRepository } from '@/repositories/TokenRepository'
 
 export class AuthRepository {
   public static async getUser(): Promise<TAuth | null> {
-    const isLogged = TokenRepository.get()
+    const hasToken = TokenRepository.has()
 
-    if (!isLogged) {
+    if (!hasToken) {
       return null
     }
 
