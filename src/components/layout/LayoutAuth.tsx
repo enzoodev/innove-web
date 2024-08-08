@@ -3,32 +3,33 @@ import Head from 'next/head'
 import Image from 'next/image'
 
 import { Footer } from './Footer'
+import Link from 'next/link'
 
 type Props = {
-  title: string
+  headTitle: string
   children: React.ReactNode
 }
 
 export const LayoutAuth: React.NamedExoticComponent<Props> = memo(
-  function Component({ title, children }) {
+  function Component({ headTitle, children }) {
     return (
       <Fragment>
         <Head>
-          <title>{title}</title>
+          <title>{headTitle}</title>
         </Head>
         <div
           id="layout"
           className="min-h-screen flex flex-col justify-between items-center"
         >
           <header className="w-full py-4 flex justify-center border-b border-gray-300">
-            <a href="https://innove.com.br/">
+            <Link href="/auth/login">
               <Image
                 src="/img/brand/innove.svg"
-                alt="Rosinha"
-                width="160"
-                height="40"
+                alt="Innove"
+                width="120"
+                height="37"
               />
-            </a>
+            </Link>
           </header>
           <main className="w-full h-full flex items-center justify-center">
             {children}
