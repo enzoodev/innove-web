@@ -16,7 +16,7 @@ export const useClients = () => {
     queryKey: ['get-clients', key],
     queryFn: async () => {
       try {
-        return ClientRepository.getClients()
+        return await ClientRepository.getClients()
       } catch (error) {
         toast.error('Não foi possível buscar os clientes.')
         throw error
