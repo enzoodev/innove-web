@@ -17,7 +17,12 @@ export class TokenRepository {
     )
 
     const decryptedToken = wordsList.toString(CryptoJS.enc.Utf8)
+    console.log(decryptedToken)
     return decryptedToken
+  }
+
+  public static has(): boolean {
+    return !!this.get()
   }
 
   public static set(token: string): void {
