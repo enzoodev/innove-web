@@ -4,7 +4,7 @@ type Props = {
   title: string
 }
 
-export const Heading: React.NamedExoticComponent<Props> = memo(
+export const Header: React.NamedExoticComponent<Props> = memo(
   function Component({ title }) {
     return (
       <header className="">

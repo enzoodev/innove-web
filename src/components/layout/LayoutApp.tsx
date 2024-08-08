@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useToggle } from '@/hooks/useToggle'
 
 import { Footer } from './Footer'
-import { Heading } from './Heading'
+import { Header } from './Header'
 
 type Props = {
   title: string
@@ -14,7 +14,7 @@ type Props = {
   children: React.ReactNode
 }
 
-export const LayoutBase: React.NamedExoticComponent<Props> = memo(
+export const LayoutApp: React.NamedExoticComponent<Props> = memo(
   function Component({ title, headTitle, children }) {
     const [isOpen, toggleOpen] = useToggle()
 
@@ -53,7 +53,7 @@ export const LayoutBase: React.NamedExoticComponent<Props> = memo(
             </div>
           </div>
           <div className="flex flex-row w-full h-full">
-            <Heading title={title} />
+            <Header title={title} />
             <main className="w-full h-full">{children}</main>
           </div>
           <Footer />
