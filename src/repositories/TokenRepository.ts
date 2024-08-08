@@ -17,7 +17,6 @@ export class TokenRepository {
     )
 
     const decryptedToken = wordsList.toString(CryptoJS.enc.Utf8)
-    console.log(decryptedToken)
     return decryptedToken
   }
 
