@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
 
           <li>
             <a
-              href="https://api.whatsapp.com/send?phone=5547992251015&text=Ol%C3%A1%2C%20tenho%20d%C3%BAvidas%20sobre%20o%20Rosinha!%20%F0%9F%98%8A"
+              href="https://api.whatsapp.com/send?phone=5547992251015&text=Ol%C3%A1%2C%20tenho%20d%C3%BAvidas%20sobre%20o%20Innove!%20%F0%9F%98%8A"
               target="_blank"
               rel="noopener noreferrer"
               title="Chame no WhatsApp"
