@@ -20,6 +20,7 @@ type Props = InputProps & {
   type?: HTMLInputTypeAttribute
   name?: Path<any>
   register?: UseFormRegister<any>
+  additionalClasses?: string
 }
 
 export const Input: React.NamedExoticComponent<Props> = memo(
@@ -30,6 +31,7 @@ export const Input: React.NamedExoticComponent<Props> = memo(
     type = 'text',
     name,
     register,
+    additionalClasses,
     ...rest
   }) {
     const registerData = register && name ? register(name) : {}
@@ -40,7 +42,7 @@ export const Input: React.NamedExoticComponent<Props> = memo(
           <input
             type={type}
             placeholder={placeholder}
-            className="border
+            className={`border
               border-gray-300
               bg-gray-200
               py-3
@@ -51,7 +53,7 @@ export const Input: React.NamedExoticComponent<Props> = memo(
               placeholder-gray-400
               selection:bg-gray-400
               focus:border-gray-400
-              hover:border-gray-400"
+              hover:border-gray-400 ${additionalClasses ?? ''}`}
             {...rest}
             {...registerData}
           />
