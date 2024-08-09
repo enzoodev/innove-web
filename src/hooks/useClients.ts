@@ -29,7 +29,7 @@ export const useClients = () => {
     if (!clients) return []
 
     return clients.filter((item) =>
-      searchText.toLowerCase().includes(item.name.toLowerCase()),
+      item.name.toLowerCase().includes(searchText.toLowerCase()),
     )
   }, [clients, searchText])
 
