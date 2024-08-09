@@ -4,17 +4,23 @@ import {
   IconMail,
 } from '@tabler/icons-react'
 
-export const Footer: React.FC = () => {
+type Props = {
+  type?: 'auth' | 'app'
+}
+
+export const Footer: React.FC<Props> = ({ type = 'app' }) => {
   const year = new Date().getFullYear()
 
   return (
     <>
-      <footer className="w-full p-4 flex flex-col gap-2 items-center justify-between border-t border-gray-300 sm:flex-row sm:gap-4">
+      <footer
+        className={`w-full flex flex-col gap-2 items-center justify-between sm:flex-row sm:gap-4${type === 'auth' ? ' p-4 border-t border-gray-300' : ''}`}
+      >
         <p className="text-gray-700 text-sm">
           {year} &copy; Innove. Todos os direitos reservados.
         </p>
 
-        <ul className="flex flex-row items-center gap-4">
+        <ul className="flex flex-row items-center gap-2.5">
           <li className="text-gray-700 text-sm">Precisando de ajuda?</li>
 
           <li>
