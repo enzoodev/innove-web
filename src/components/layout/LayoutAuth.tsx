@@ -34,7 +34,7 @@ export const LayoutAuth: React.NamedExoticComponent<Props> = memo(
           <main className="w-full h-full flex items-center justify-center">
             {children}
           </main>
-          <Footer />
+          <Footer type="auth" />
         </div>
       </Fragment>
     )
