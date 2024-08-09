@@ -41,14 +41,18 @@ export function List({
     )
   }
 
-  if (!isLoading && EmptyIcon) {
-    return EmptyIcon
+  if (!items || items.length === 0) {
+    if (!isLoading && EmptyIcon) {
+      return EmptyIcon
+    }
+
+    return null
   }
 
   return (
     <FixedSizeList
-      height={'100%'}
-      width={'100%'}
+      height={500}
+      width={1000}
       itemSize={itemSize}
       itemCount={items.length}
     >
