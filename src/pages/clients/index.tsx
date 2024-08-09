@@ -1,9 +1,10 @@
+import { useCallback } from 'react'
 import { NextPage } from 'next'
-
 import { useClients } from '@/hooks/useClients'
 
 import { List } from '@/components/elements/List'
 import { LayoutApp } from '@/components/layout/LayoutApp'
+import { ClientItem } from '@/components/modules/ClientItem'
 
 const Clients: NextPage = () => {
   const {
@@ -21,37 +22,41 @@ const Clients: NextPage = () => {
     setSearchText,
   } = useClients()
 
-  const renderItem: ListRenderItem<TClient> = ({ item }) => {
-    return (
-      <div>
-        <h1>{item.name}</h1>
-        <p>{item.cnpj}</p>
-      </div>
-    )
-  }
+  const renderItem: ListRenderItem<TClient> = useCallback(
+    ({ item }) => <ClientItem item={item} />,
+    [],
+  )
 
-  const renderItemLoading: ListRenderItemLoading = ({ index }) => {
-    return (
+  const renderItemLoading: ListRenderItemLoading = useCallback(
+    ({ index }) => (
       <div>
         <h1>Loading...</h1>
       </div>
-    )
-  }
+    ),
+    [],
+  )
 
   return (
-    <LayoutApp title="Clientes" headTitle="Clients - Innove">
-      <List
-        items={clients}
-        itemSize={100}
-        isLoading={isLoadingGetClients}
-        renderItem={renderItem}
-        renderItemLoading={renderItemLoading}
-        EmptyIcon={
-          <div>
-            <h1>Nenhum cliente encontrado</h1>
-          </div>
-        }
-      />
+    <LayoutApp
+      title="Clientes"
+      headTitle="Clientes - Innove"
+      searchText={searchText}
+      setSearchText={setSearchText}
+    >
+      <div className="bg-gray-100 rounded-md border border-gray-300 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
+        <List
+          items={clients}
+          itemSize={72}
+          isLoading={isLoadingGetClients}
+          renderItem={renderItem}
+          renderItemLoading={renderItemLoading}
+          EmptyIcon={
+            <div>
+              <h1>Nenhum cliente encontrado</h1>
+            </div>
+          }
+        />
+      </div>
     </LayoutApp>
   )
 }
