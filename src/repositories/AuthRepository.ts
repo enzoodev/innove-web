@@ -1,5 +1,6 @@
 import { HttpServices } from '@/services/HttpServices'
 import { TokenRepository } from '@/repositories/TokenRepository'
+import { getUserMock } from '@/mocks/get-user-mock'
 
 export class AuthRepository {
   public static async getUser(): Promise<TAuth | null> {
@@ -9,9 +10,11 @@ export class AuthRepository {
       return null
     }
 
-    return HttpServices.get({
-      url: 'user',
-    })
+    // return HttpServices.get({
+    //   url: 'user',
+    // })
+
+    return getUserMock
   }
 
   public static async login(params: TLoginParams): Promise<TAuth> {
