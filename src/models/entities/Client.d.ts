@@ -12,5 +12,5 @@ type TClient = {
   datelasfmodify: string
   status: string
   address: Array<TAddress>
-  anexo: TClientAttachments
+  anexo?: TClientAttachments
 }
