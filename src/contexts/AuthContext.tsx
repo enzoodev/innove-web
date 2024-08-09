@@ -73,7 +73,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       try {
         await loginFn(params)
         toast.success('Login realizado com sucesso!')
-        router.push(Routes.USERS)
+        router.push(Routes.CLIENTS)
       } catch (error) {
         toast.error('Não foi possível entrar na sua conta.')
       }
@@ -108,7 +108,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       try {
         await updatePasswordFn(params)
         toast.success('Senha alterada com sucesso!')
-        router.push(Routes.USERS)
+        router.push(Routes.CLIENTS)
       } catch (error) {
         toast.error('Não foi possível alterar sua senha.')
       }
@@ -122,7 +122,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
 
   useEffect(() => {
     if (auth?.iduser && !pagesAvailable.includes(router.pathname)) {
-      router.push(Routes.USERS)
+      router.push(Routes.CLIENTS)
     }
   }, [auth, pagesAvailable, router])
 
