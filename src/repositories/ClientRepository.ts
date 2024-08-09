@@ -1,10 +1,12 @@
+import { getClientsMock } from '@/mocks/get-clients-mock'
 import { BaseRepository } from './shared/BaseRepository'
 
 export class ClientRepository extends BaseRepository {
   public static async getClients(): Promise<Array<TClient>> {
-    return super.getAll({
-      url: 'clients',
-    })
+    // return super.getAll({
+    //   url: 'clients',
+    // })
+    return getClientsMock
   }
 
   public static async getClient(params: TGetClientParams): Promise<TClient> {
