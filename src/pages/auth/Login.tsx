@@ -75,7 +75,7 @@ const Login: NextPage = () => {
           <Button
             title="Entrar"
             type="submit"
-            additionalClasses="mt-2 bg-cyan-700 hover:bg-cyan-800 active:bg-cyan-900"
+            additionalClasses="mt-2 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
             isLoading={isLoadingLogin}
           />
         </form>
