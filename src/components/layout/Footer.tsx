@@ -14,7 +14,7 @@ export const Footer: React.FC<Props> = ({ type = 'app' }) => {
   return (
     <>
       <footer
-        className={`w-full flex flex-col gap-2 items-center justify-between sm:flex-row sm:gap-4${type === 'auth' ? ' p-4 border-t border-gray-300' : ''}`}
+        className={`w-full flex flex-col gap-2 items-center justify-between sm:flex-row sm:gap-4 ${type === 'auth' ? 'p-4 border-t border-gray-300' : 'mt-6'}`}
       >
         <p className="text-gray-700 text-sm">
           {year} &copy; Innove. Todos os direitos reservados.
