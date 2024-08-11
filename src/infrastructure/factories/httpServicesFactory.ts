@@ -6,7 +6,7 @@ import { CookieService } from '@/infrastructure/services/CookieService'
 import { UrlBuilder } from '@/utils/UrlBuilder'
 import { RequestFormatter } from '@/utils/RequestFormatter'
 
-export function httpServiceFactory(): HttpServices {
+export function httpServicesFactory(): HttpServices {
   return new HttpServices({
     urlBuilder: new UrlBuilder(),
     requestFormatter: new RequestFormatter(),
