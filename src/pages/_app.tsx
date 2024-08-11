@@ -8,12 +8,13 @@ import { Slide, ToastContainer } from 'react-toastify'
 
 import { AuthContextProvider } from '@/contexts/AuthContext'
 import { Routes } from '@/enums/Routes'
-import { TokenRepository } from '@/repositories/TokenRepository'
-import { queryClient } from '@/services/queryClient'
+import { TokenRepository } from '@/infrastructure/repositories/TokenRepository'
+import { queryClient } from '@/infrastructure/services/queryClient'
 import { Inter } from 'next/font/google'
 
 import { PageLoading } from '@/components/elements/PageLoading'
 
+import 'react-toastify/dist/ReactToastify.css'
 import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
