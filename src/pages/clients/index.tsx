@@ -1,10 +1,13 @@
 import { useCallback } from 'react'
 import { NextPage } from 'next'
+
 import { useClients } from '@/hooks/useClients'
 
-import { List } from '@/components/elements/List'
+import { ListSeparators } from '@/utils/ListSeparators'
+
 import { LayoutApp } from '@/components/layout/LayoutApp'
 import { ClientItem } from '@/components/modules/ClientItem'
+import { ClientSkeletonItem } from '@/components/modules/ClientSkeletonItem'
 
 const Clients: NextPage = () => {
   const {
@@ -22,19 +25,37 @@ const Clients: NextPage = () => {
     setSearchText,
   } = useClients()
 
-  const renderItem: ListRenderItem<TClient> = useCallback(
-    ({ item }) => <ClientItem item={item} />,
-    [],
-  )
+  const renderItems = useCallback(() => {
+    if (isLoadingGetClients) {
+      return Array.from({ length: 10 }).map((_, index, array) => {
+        const hasSeparator = ListSeparators.getHasSeparator(index, array)
+        return (
+          <div key={index}>
+            <ClientSkeletonItem />
+            {hasSeparator && <hr className="border-t border-gray-300" />}
+          </div>
+        )
+      })
+    }
 
-  const renderItemLoading: ListRenderItemLoading = useCallback(
-    ({ index }) => (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    ),
-    [],
-  )
+    if (clients.length === 0) {
+      return (
+        <div>
+          <h1>Nenhum cliente encontrado</h1>
+        </div>
+      )
+    }
+
+    return clients.map((item, index, array) => {
+      const hasSeparator = ListSeparators.getHasSeparator(index, array)
+      return (
+        <div key={item.idclient}>
+          <ClientItem item={item} />
+          {hasSeparator && <hr className="border-t border-gray-300" />}
+        </div>
+      )
+    })
+  }, [clients, isLoadingGetClients])
 
   return (
     <LayoutApp
@@ -44,18 +65,7 @@ const Clients: NextPage = () => {
       setSearchText={setSearchText}
     >
       <div className="bg-gray-100 rounded-md border border-gray-300 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
-        <List
-          items={clients}
-          itemSize={72}
-          isLoading={isLoadingGetClients}
-          renderItem={renderItem}
-          renderItemLoading={renderItemLoading}
-          EmptyIcon={
-            <div>
-              <h1>Nenhum cliente encontrado</h1>
-            </div>
-          }
-        />
+        {renderItems()}
       </div>
     </LayoutApp>
   )
