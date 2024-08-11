@@ -2,10 +2,17 @@ import { useCallback, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { ClientRepository } from '@/repositories/ClientRepository'
+import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
+import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
+import { createHttpService } from '@/infrastructure/dependencies/HttpServiceFactory'
+
+import { UrlBuilder } from '@/utils/UrlBuilder'
 
 import { useRefresh } from './useRefresh'
 import { useToggle } from './useToggle'
+
+const baseRepository = new BaseRepository(createHttpService(), new UrlBuilder())
+const clientRepository = new ClientRepository(baseRepository)
 
 export const useClients = () => {
   const { key, refresh } = useRefresh()
@@ -17,7 +24,7 @@ export const useClients = () => {
     queryKey: ['get-clients', key],
     queryFn: async () => {
       try {
-        return await ClientRepository.getClients()
+        return await clientRepository.getAll()
       } catch (error) {
         toast.error('Não foi possível buscar os clientes.')
         throw error
@@ -35,12 +42,12 @@ export const useClients = () => {
 
   const { mutateAsync: createClientFn, isPending: isLoadingCreateClient } =
     useMutation({
-      mutationFn: ClientRepository.createClient,
+      mutationFn: clientRepository.create,
     })
 
   const { mutateAsync: updateClientFn, isPending: isLoadingUpdateClient } =
     useMutation({
-      mutationFn: ClientRepository.updateClient,
+      mutationFn: clientRepository.update,
     })
 
   const createClient = useCallback(
