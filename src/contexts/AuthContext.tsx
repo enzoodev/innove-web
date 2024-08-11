@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 import { AuthRepository } from '@/infrastructure/repositories/AuthRepository'
-import { httpServiceFactory } from '@/infrastructure/dependencies/httpServiceFactory'
+import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
 import { TokenRepository } from '@/infrastructure/repositories/TokenRepository'
 import { EncryptionService } from '@/infrastructure/services/EncryptionService'
 import { CookieService } from '@/infrastructure/services/CookieService'
@@ -37,7 +37,7 @@ export const AuthContext = React.createContext<TAuthContextDataProps>(
   {} as TAuthContextDataProps,
 )
 
-const httpServices = httpServiceFactory()
+const httpServices = httpServicesFactory()
 const tokenRepository = new TokenRepository(
   new EncryptionService(),
   new CookieService(),
