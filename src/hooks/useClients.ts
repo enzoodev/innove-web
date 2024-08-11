@@ -4,14 +4,15 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
 import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { createHttpService } from '@/infrastructure/dependencies/HttpServiceFactory'
+import { httpServiceFactory } from '@/infrastructure/dependencies/httpServiceFactory'
 
 import { UrlBuilder } from '@/utils/UrlBuilder'
 
 import { useRefresh } from './useRefresh'
 import { useToggle } from './useToggle'
 
-const baseRepository = new BaseRepository(createHttpService(), new UrlBuilder())
+const httpServices = httpServiceFactory()
+const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
 const clientRepository = new ClientRepository(baseRepository)
 
 export const useClients = () => {
