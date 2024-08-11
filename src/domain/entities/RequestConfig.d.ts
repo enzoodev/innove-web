@@ -3,5 +3,5 @@ type TRequestConfig = {
   method?: HttpMethod
   data?: Record<string, unknown>
   formData?: FormData
-  params?: unknown
+  params?: Record<string, any>
 }
