@@ -1,10 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-export class UrlBuilder {
-  public static readonly build = (
-    baseURL: string,
-    url: string,
-    params?: unknown,
-  ) => {
+export class UrlBuilder implements IUrlBuilder {
+  public readonly build = (baseURL: string, url: string, params?: unknown) => {
     const fullUrl = new URL(url, baseURL)
 
     if (params) {
@@ -19,7 +14,7 @@ export class UrlBuilder {
     return fullUrl.toString()
   }
 
-  public static group(...list: Array<unknown>) {
+  public group(...list: Array<unknown>) {
     return list.filter((item) => !!item).join('/')
   }
 }
