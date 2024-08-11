@@ -3,7 +3,12 @@ import { useRouter } from 'next/router'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { AuthRepository } from '@/repositories/AuthRepository'
+import { AuthRepository } from '@/infrastructure/repositories/AuthRepository'
+import { createHttpService } from '@/infrastructure/dependencies/HttpServiceFactory'
+import { TokenRepository } from '@/infrastructure/repositories/TokenRepository'
+import { EncryptionService } from '@/infrastructure/services/EncryptionService'
+import { CookieService } from '@/infrastructure/services/CookieService'
+
 import { useRefresh } from '@/hooks/useRefresh'
 import { Routes } from '@/enums/Routes'
 
@@ -32,6 +37,13 @@ export const AuthContext = React.createContext<TAuthContextDataProps>(
   {} as TAuthContextDataProps,
 )
 
+const httpServices = createHttpService()
+const tokenRepository = new TokenRepository(
+  new EncryptionService(),
+  new CookieService(),
+)
+const authRepository = new AuthRepository(httpServices, tokenRepository)
+
 export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const router = useRouter()
   const { key, refresh } = useRefresh()
@@ -40,7 +52,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     queryKey: ['get-user', key],
     queryFn: async () => {
       try {
-        return await AuthRepository.getUser()
+        return await authRepository.getUser()
       } catch (error) {
         toast.error('Não foi possível buscar seus dados.')
         throw error
@@ -51,21 +63,21 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const isAuthenticated = !!auth
 
   const { mutateAsync: loginFn, isPending: isLoadingLogin } = useMutation({
-    mutationFn: AuthRepository.login,
+    mutationFn: authRepository.login,
   })
 
   const { mutateAsync: logoutFn, isPending: isLoadingLogout } = useMutation({
-    mutationFn: AuthRepository.logout,
+    mutationFn: authRepository.logout,
   })
 
   const { mutateAsync: recoverAccountFn, isPending: isLoadingRecoverAccount } =
     useMutation({
-      mutationFn: AuthRepository.recoverAccount,
+      mutationFn: authRepository.recoverAccount,
     })
 
   const { mutateAsync: updatePasswordFn, isPending: isLoadingUpdatePassword } =
     useMutation({
-      mutationFn: AuthRepository.updatePassword,
+      mutationFn: authRepository.updatePassword,
     })
 
   const handleLogin = useCallback(
@@ -116,15 +128,18 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     [updatePasswordFn, router],
   )
 
-  const pagesAvailable: Array<string> = useMemo(() => {
+  const authRoutes: Array<string> = useMemo(() => {
     return [Routes.LOGIN, Routes.RECOVER_ACCOUNT]
   }, [])
 
   useEffect(() => {
-    if (auth?.iduser && !pagesAvailable.includes(router.pathname)) {
+    const isLogged = auth?.iduser ?? false
+    const isInAuthRoutes = authRoutes.includes(router.pathname)
+
+    if (isLogged && isInAuthRoutes) {
       router.push(Routes.CLIENTS)
     }
-  }, [auth, pagesAvailable, router])
+  }, [auth, authRoutes, router])
 
   const value: TAuthContextDataProps = useMemo(
     () => ({
