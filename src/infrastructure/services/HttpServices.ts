@@ -5,10 +5,12 @@ import { HttpMethod } from '@/enums/HttpMethod'
 
 export class HttpServices implements IHttpServices {
   constructor(
-    private readonly urlBuilder: IUrlBuilder,
-    private readonly requestFormatter: IRequestFormatter,
-    private readonly tokenRepository: ITokenRepository,
-    private readonly baseUrl: string,
+    private readonly config: {
+      urlBuilder: IUrlBuilder
+      requestFormatter: IRequestFormatter
+      tokenRepository: ITokenRepository
+      baseUrl: string
+    },
   ) {}
 
   private async request<T>({
@@ -19,9 +21,13 @@ export class HttpServices implements IHttpServices {
     params,
   }: TRequestConfig): Promise<T> {
     try {
-      const constructedUrl = this.urlBuilder.build(this.baseUrl, url, params)
-      const requestBody = this.requestFormatter.format(data, formData)
-      const token = this.tokenRepository.get()
+      const constructedUrl = this.config.urlBuilder.build(
+        this.config.baseUrl,
+        url,
+        params,
+      )
+      const requestBody = this.config.requestFormatter.format(data, formData)
+      const token = this.config.tokenRepository.get()
 
       const response = await fetch(constructedUrl, {
         method,
@@ -53,7 +59,7 @@ export class HttpServices implements IHttpServices {
 
   private async handleHttpError(response: Response): Promise<void> {
     if (response.status === 401) {
-      this.tokenRepository.delete()
+      this.config.tokenRepository.delete()
       throw new AppError('Unauthorized access. Please log in again.')
     }
 
@@ -62,23 +68,33 @@ export class HttpServices implements IHttpServices {
     throw new AppError(message)
   }
 
-  public readonly get = async <T>(params: TRequestConfig): Promise<T> => {
+  public readonly get = async <T = unknown>(
+    params: TRequestConfig,
+  ): Promise<T> => {
     return this.request<T>({ method: HttpMethod.GET, ...params })
   }
 
-  public readonly post = async <T>(params: TRequestConfig): Promise<T> => {
+  public readonly post = async <T = unknown>(
+    params: TRequestConfig,
+  ): Promise<T> => {
     return this.request<T>({ method: HttpMethod.POST, ...params })
   }
 
-  public readonly put = async <T>(params: TRequestConfig): Promise<T> => {
+  public readonly put = async <T = unknown>(
+    params: TRequestConfig,
+  ): Promise<T> => {
     return this.request<T>({ method: HttpMethod.PUT, ...params })
   }
 
-  public readonly delete = async <T>(params: TRequestConfig): Promise<T> => {
+  public readonly delete = async <T = unknown>(
+    params: TRequestConfig,
+  ): Promise<T> => {
     return this.request<T>({ method: HttpMethod.DELETE, ...params })
   }
 
-  public readonly patch = async <T>(params: TRequestConfig): Promise<T> => {
+  public readonly patch = async <T = unknown>(
+    params: TRequestConfig,
+  ): Promise<T> => {
     return this.request<T>({ method: HttpMethod.PATCH, ...params })
   }
 }
