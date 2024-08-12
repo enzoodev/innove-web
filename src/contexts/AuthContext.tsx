@@ -9,7 +9,6 @@ import { TokenRepository } from '@/infrastructure/repositories/TokenRepository'
 import { EncryptionService } from '@/infrastructure/services/EncryptionService'
 import { CookieService } from '@/infrastructure/services/CookieService'
 
-import { useRefresh } from '@/hooks/useRefresh'
 import { Routes } from '@/enums/Routes'
 
 export type TAuthContextDataProps = {
@@ -22,7 +21,6 @@ export type TAuthContextDataProps = {
   isLoadingRecoverAccount: boolean
   isLoadingUpdatePassword: boolean
   isLoadingUser: boolean
-  refreshUser: () => void
   handleLogin: (params: TLoginParams) => Promise<void>
   handleLogout: () => Promise<void>
   handleRecoverAccount: (params: TRecoverAccountParams) => Promise<void>
@@ -46,10 +44,9 @@ const authRepository = new AuthRepository(httpServices, tokenRepository)
 
 export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const router = useRouter()
-  const { key, refresh } = useRefresh()
 
   const { data: auth, isLoading: isLoadingUser } = useQuery({
-    queryKey: ['get-user', key],
+    queryKey: ['get-user'],
     queryFn: async () => {
       try {
         return await authRepository.getUser()
@@ -146,7 +143,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       auth: auth ?? null,
       clientId: auth?.idclient ?? 0,
       userId: auth?.iduser ?? 0,
-      refreshUser: refresh,
       isAuthenticated,
       isLoadingLogin,
       isLoadingLogout,
@@ -160,7 +156,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     }),
     [
       auth,
-      refresh,
       isAuthenticated,
       isLoadingLogin,
       isLoadingLogout,
