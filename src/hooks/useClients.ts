@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
 import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
@@ -8,7 +8,6 @@ import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFact
 
 import { UrlBuilder } from '@/utils/UrlBuilder'
 
-import { useRefresh } from './useRefresh'
 import { useToggle } from './useToggle'
 
 const httpServices = httpServicesFactory()
@@ -16,13 +15,13 @@ const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
 const clientRepository = new ClientRepository(baseRepository)
 
 export const useClients = () => {
-  const { key, refresh } = useRefresh()
   const [isOpenCreateClientModal, toggleOpenCreateClientModal] = useToggle()
   const [isOpenUpdateClientModal, toggleOpenUpdateClientModal] = useToggle()
   const [searchText, setSearchText] = useState('')
+  const queryClient = useQueryClient()
 
   const { data: clients, isLoading: isLoadingGetClients } = useQuery({
-    queryKey: ['get-clients', key],
+    queryKey: ['get-clients'],
     queryFn: async () => {
       try {
         return await clientRepository.getAll()
@@ -57,12 +56,12 @@ export const useClients = () => {
         await createClientFn(data)
         toggleOpenCreateClientModal()
         toast.success('Cliente cadastrado com sucesso!')
-        refresh()
+        queryClient.invalidateQueries({ queryKey: ['get-clients'] })
       } catch (error) {
         toast.error('Não foi possível cadastrar o cliente.')
       }
     },
-    [createClientFn, refresh, toggleOpenCreateClientModal],
+    [createClientFn, queryClient, toggleOpenCreateClientModal],
   )
 
   const updateClient = useCallback(
@@ -71,12 +70,12 @@ export const useClients = () => {
         await updateClientFn(data)
         toggleOpenUpdateClientModal()
         toast.success('Cliente atualizado com sucesso!')
-        refresh()
+        queryClient.invalidateQueries({ queryKey: ['get-clients'] })
       } catch (error) {
         toast.error('Não foi possível atualizar o cliente.')
       }
     },
-    [updateClientFn, toggleOpenUpdateClientModal, refresh],
+    [updateClientFn, toggleOpenUpdateClientModal, queryClient],
   )
 
   return {
