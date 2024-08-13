@@ -2,7 +2,7 @@ import { DetailedHTMLProps, InputHTMLAttributes, memo } from 'react'
 import { type Path, type UseFormRegister } from 'react-hook-form'
 import { IconEye, IconEyeOff } from '@tabler/icons-react'
 
-import { useToggle } from '@/hooks/useToggle'
+import { useToggle } from '@/hooks/shared/useToggle'
 
 import { FormError } from './FormError'
 
