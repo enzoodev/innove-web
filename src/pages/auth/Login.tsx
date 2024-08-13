@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { IconUserCircle } from '@tabler/icons-react'
 
 import { Routes } from '@/enums/Routes'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 import { loginSchema, TLoginSchema } from '@/schemas/auth/loginSchema'
 
 import { LayoutAuth } from '@/components/layout/LayoutAuth'
