@@ -1,11 +1,11 @@
 import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 import { AuthRepository } from '@/infrastructure/repositories/AuthRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
 import { TokenRepository } from '@/infrastructure/repositories/TokenRepository'
+import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
 import { EncryptionService } from '@/infrastructure/services/EncryptionService'
 import { CookieService } from '@/infrastructure/services/CookieService'
 
@@ -45,6 +45,7 @@ const authRepository = new AuthRepository(httpServices, tokenRepository)
 
 export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const { data: auth, isLoading: isLoadingUser } = useQuery({
     queryKey: [QueryKey.GET_USER],
@@ -94,11 +95,12 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const handleLogout = useCallback(async () => {
     try {
       await logoutFn()
+      queryClient.invalidateQueries()
       router.push(Routes.LOGIN)
     } catch (error) {
       toast.error('Não foi possível sair da sua conta.')
     }
-  }, [logoutFn, router])
+  }, [logoutFn, queryClient, router])
 
   const handleRecoverAccount = useCallback(
     async (params: TRecoverAccountParams) => {
