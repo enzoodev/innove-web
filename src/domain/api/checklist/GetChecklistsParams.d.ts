@@ -1,0 +1,3 @@
+type TGetChecklistsParams = {
+  idclient: number
+}
