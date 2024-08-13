@@ -5,6 +5,7 @@ type TChecklistQuestion = {
 }
 
 type TChecklist = {
+  idchecklist: string
   subtitle: string
   questions: TChecklistQuestion[]
 }
