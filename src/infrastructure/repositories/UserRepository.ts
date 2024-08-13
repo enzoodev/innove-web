@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-constructor */
 
 export class UserRepository implements IUserRepository {
-  constructor(private baseRepository: IBaseRepository) {}
+  constructor(private readonly baseRepository: IBaseRepository) {}
 
   public async getAll(params: TGetUsersParams): Promise<Array<TUser>> {
     return this.baseRepository.getAll({
