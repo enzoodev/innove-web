@@ -21,7 +21,7 @@ export class TokenRepository implements ITokenRepository {
   }
 
   public has(): boolean {
-    return this.get() !== null
+    return !!this.get()
   }
 
   public set(token: string): void {
