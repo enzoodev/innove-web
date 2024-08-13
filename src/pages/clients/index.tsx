@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { NextPage } from 'next'
 
-import { useClients } from '@/hooks/useClients'
+import { useGetClients } from '@/hooks/client/useGetClients'
 
 import { ListSeparators } from '@/utils/ListSeparators'
 
@@ -10,20 +10,8 @@ import { ClientItem } from '@/components/modules/ClientItem'
 import { ClientSkeletonItem } from '@/components/modules/ClientSkeletonItem'
 
 const Clients: NextPage = () => {
-  const {
-    clients,
-    isLoadingGetClients,
-    isLoadingCreateClient,
-    isLoadingUpdateClient,
-    createClient,
-    updateClient,
-    isOpenCreateClientModal,
-    isOpenUpdateClientModal,
-    toggleOpenCreateClientModal,
-    toggleOpenUpdateClientModal,
-    searchText,
-    setSearchText,
-  } = useClients()
+  const { clients, isLoadingGetClients, searchText, setSearchText } =
+    useGetClients()
 
   const renderItems = useCallback(() => {
     if (isLoadingGetClients) {
