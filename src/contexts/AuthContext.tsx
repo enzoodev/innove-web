@@ -10,6 +10,7 @@ import { EncryptionService } from '@/infrastructure/services/EncryptionService'
 import { CookieService } from '@/infrastructure/services/CookieService'
 
 import { Routes } from '@/enums/Routes'
+import { QueryKey } from '@/enums/QueryKey'
 
 export type TAuthContextDataProps = {
   auth: TAuth | null
@@ -46,7 +47,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const router = useRouter()
 
   const { data: auth, isLoading: isLoadingUser } = useQuery({
-    queryKey: ['get-user'],
+    queryKey: [QueryKey.GET_USER],
     queryFn: async () => {
       try {
         return await authRepository.getUser()
