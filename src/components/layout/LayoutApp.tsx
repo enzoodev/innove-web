@@ -12,7 +12,7 @@ import { PhotoFormatter } from '@/utils/PhotoFormatter'
 
 import { Header } from './Header'
 import { Footer } from './Footer'
-import { IconMenu2 } from '@tabler/icons-react'
+import { IconMenu2, IconSettings } from '@tabler/icons-react'
 import { useToggle } from '@/hooks/shared/useToggle'
 import { SidebarModal } from './SiderbarModal'
 
@@ -40,7 +40,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
       return null
     }
 
-    const [firstName] = auth.name.split(' ')
+    const [firstName, secondName] = auth.name.split(' ')
     const clientLogo = PhotoFormatter.formatUri(auth.client_logo_icon)
 
     return (
@@ -77,34 +77,54 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
           </div>
         </div>
         <div id="layout" className="hidden md:flex min-h-screen flex-row">
-          <div className="sticky top-0 left-0 flex flex-col items-center justify-between p-4 bg-gray-100 border-r border-gray-300">
-            <div className="flex flex-col gap-4">
-              <Link href="/clients" className="hidden lg:flex">
+          <div className="flex relative p-2 flex-col justify-between w-2/4 h-full bg-cyan-950 shadow-lg">
+            <div className="flex flex-col">
+              <button className="flex self-end p-2" onClick={toggleSidebar}>
+                <IconMenu2 stroke={1.75} className="w-7 h-7 text-white" />
+              </button>
+              <div className="flex flex-col items-center gap-4 my-4">
                 <Image
-                  src="/img/brand/innove.svg"
-                  alt="Innove"
-                  width="140"
-                  height="40"
+                  src={clientLogo}
+                  alt="Client_logo"
+                  width="72"
+                  height="72"
+                  className="rounded-full"
                 />
-              </Link>
-              <nav className="py-4 lg:w-40 border-y border-gray-300">
-                <ul className="flex flex-col gap-2">
+                <div className="flex flex-col items-center">
+                  <span className="text-lg font-semibold text-white break-words">
+                    {firstName} {secondName}
+                  </span>
+                  <span className="text-sm font-medium text-gray-400 break-words">
+                    {auth.email}
+                  </span>
+                </div>
+              </div>
+              <span className="mt-10 mb-3 ml-2 text-md font-semibold text-gray-100">
+                Navegação
+              </span>
+              <nav>
+                <ul className="flex flex-col gap-3">
                   {appRoutes.map((item) => (
                     <Link href={item.name} key={item.name}>
                       <li
-                        className={`h-10 w-full flex flex-row gap-2 px-2 items-center rounded
-                          ${router.pathname === item.name ? ' bg-cyan-700 hover:bg-cyan-800 active:bg-cyan-900 bg-opacity-20 hover:bg-opacity-20 active:bg-opacity-20' : 'hover:bg-cyan-700 hover:bg-opacity-5'}`}
+                        className={`h-12 w-full flex items-center gap-2 pl-4 pr-2 rounded cursor-pointer
+                  ${
+                    router.pathname === item.name
+                      ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
+                      : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
+                  }`}
+                        onClick={toggleSidebar}
                       >
                         {item.renderIcon({
                           className: `w-7 h-7 ${
                             router.pathname === item.name
-                              ? 'text-cyan-700'
-                              : 'text-gray-700'
+                              ? 'text-white'
+                              : 'text-gray-300'
                           }`,
                           stroke: 1.5,
                         })}
                         <span
-                          className={`hidden lg:flex text-md font-medium ${router.pathname === item.name ? 'text-cyan-700' : 'text-gray-700'}`}
+                          className={`text-md font-medium ${router.pathname === item.name ? 'text-white' : 'text-gray-300'}`}
                         >
                           {item.label}
                         </span>
@@ -114,20 +134,26 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                 </ul>
               </nav>
             </div>
-            <Link
-              href={Routes.CLIENTS}
-              className="w-full flex flex-row items-center gap-3"
-            >
-              <Image
-                src={clientLogo}
-                alt="Client_logo"
-                width="48"
-                height="48"
-                className="rounded-full"
-              />
-              <span className="hidden lg:flex max-w-28 text-md font-medium text-gray-700 break-words">
-                {firstName}
-              </span>
+            <Link href={Routes.CONFIG}>
+              <div
+                className={`h-11 w-full flex items-center gap-2 px-2 rounded cursor-pointer
+                  ${
+                    router.pathname === Routes.CONFIG
+                      ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
+                      : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
+                  }`}
+                onClick={toggleSidebar}
+              >
+                <IconSettings
+                  stroke={1.5}
+                  className={`w-7 h-7 ${router.pathname === Routes.CONFIG ? 'text-white' : 'text-gray-300'}`}
+                />
+                <span
+                  className={`text-md font-medium ${router.pathname === Routes.CONFIG ? 'text-white' : 'text-gray-300'}`}
+                >
+                  Configurações
+                </span>
+              </div>
             </Link>
           </div>
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
