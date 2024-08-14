@@ -12,6 +12,9 @@ import { PhotoFormatter } from '@/utils/PhotoFormatter'
 
 import { Header } from './Header'
 import { Footer } from './Footer'
+import { IconMenu2 } from '@tabler/icons-react'
+import { useToggle } from '@/hooks/shared/useToggle'
+import { SidebarModal } from './SiderbarModal'
 
 type Props = {
   title: string
@@ -29,6 +32,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
     setSearchText,
     children,
   }) {
+    const [isSidebarOpen, toggleSidebar] = useToggle()
     const router = useRouter()
     const { auth } = useAuth()
 
@@ -44,8 +48,24 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
         <Head>
           <title>{headTitle}</title>
         </Head>
-        <div id="layout" className="flex md:hidden min-h-screen flex-row">
-          <div></div>
+        <div id="layout" className="flex flex-col md:hidden min-h-screen">
+          <div className="bg-gray-100 border-b border-gray-300 px-4 py-2 flex items-center justify-center relative">
+            <button
+              className="absolute bottom-3.5 left-4"
+              onClick={toggleSidebar}
+            >
+              <IconMenu2 stroke={1.5} className="w-8 h-8 text-gray-700" />
+            </button>
+            <Link href="/clients">
+              <Image
+                src="/img/brand/innove.svg"
+                alt="Innove"
+                width="130"
+                height="37"
+              />
+            </Link>
+          </div>
+          <SidebarModal isOpen={isSidebarOpen} closeModal={toggleSidebar} />
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
             <Header
               title={title}
@@ -59,7 +79,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
         <div id="layout" className="hidden md:flex min-h-screen flex-row">
           <div className="sticky top-0 left-0 flex flex-col items-center justify-between p-4 bg-gray-100 border-r border-gray-300">
             <div className="flex flex-col gap-4">
-              <Link href="/clients">
+              <Link href="/clients" className="hidden lg:flex">
                 <Image
                   src="/img/brand/innove.svg"
                   alt="Innove"
@@ -67,7 +87,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                   height="40"
                 />
               </Link>
-              <nav className="py-4 w-40 border-y border-gray-300">
+              <nav className="py-4 lg:w-40 border-y border-gray-300">
                 <ul className="flex flex-col gap-2">
                   {appRoutes.map((item) => (
                     <Link href={item.name} key={item.name}>
@@ -84,7 +104,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                           stroke: 1.5,
                         })}
                         <span
-                          className={`text-md font-medium ${router.pathname === item.name ? 'text-cyan-700' : 'text-gray-700'}`}
+                          className={`hidden lg:flex text-md font-medium ${router.pathname === item.name ? 'text-cyan-700' : 'text-gray-700'}`}
                         >
                           {item.label}
                         </span>
@@ -105,7 +125,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                 height="48"
                 className="rounded-full"
               />
-              <span className="max-w-28 text-md font-medium text-gray-700 break-words">
+              <span className="hidden lg:flex max-w-28 text-md font-medium text-gray-700 break-words">
                 {firstName}
               </span>
             </Link>
