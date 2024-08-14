@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { Dialog } from '@headlessui/react'
+import { IconMenu2, IconSettings } from '@tabler/icons-react'
 
 import { useAuth } from '@/hooks/auth/useAuth'
 
@@ -10,7 +10,6 @@ import { Routes } from '@/enums/Routes'
 
 import { appRoutes } from '@/utils/appRoutes'
 import { PhotoFormatter } from '@/utils/PhotoFormatter'
-import { IconMenu2, IconSettings, IconX } from '@tabler/icons-react'
 
 type SidebarModalProps = {
   isOpen: boolean
@@ -32,18 +31,24 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
   const clientLogo = PhotoFormatter.formatUri(auth.client_logo_icon)
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={closeModal}
-      className="fixed inset-0 z-50 flex"
-    >
+    <div className="fixed inset-0 z-50 flex">
       <div
-        className="fixed inset-0 bg-black/40"
+        className={`fixed inset-0 bg-black/40 transition-opacity duration-300 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
         aria-hidden="true"
         onClick={closeModal}
       />
-      <div className="flex relative p-2 flex-col justify-between w-2/3 h-full bg-cyan-950 shadow-lg">
-        <div className="flex flex-col">
+      <div
+        className={`flex relative p-2 flex-col justify-between h-full bg-cyan-950 shadow-lg transform transition-all duration-300 ${
+          isOpen ? 'w-2/3 translate-x-0' : 'w-0 translate-x-full'
+        }`}
+      >
+        <div
+          className={`flex flex-col transition-opacity duration-300 ${
+            isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           <button className="flex self-end p-2" onClick={closeModal}>
             <IconMenu2 stroke={1.75} className="w-7 h-7 text-white" />
           </button>
@@ -73,11 +78,11 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
                 <Link href={item.name} key={item.name}>
                   <li
                     className={`h-12 w-full flex items-center gap-2 pl-4 pr-2 rounded cursor-pointer
-                  ${
-                    router.pathname === item.name
-                      ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
-                      : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
-                  }`}
+                      ${
+                        router.pathname === item.name
+                          ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
+                          : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
+                      }`}
                     onClick={closeModal}
                   >
                     {item.renderIcon({
@@ -89,7 +94,11 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
                       stroke: 1.5,
                     })}
                     <span
-                      className={`text-md font-medium ${router.pathname === item.name ? 'text-white' : 'text-gray-300'}`}
+                      className={`text-md font-medium ${
+                        router.pathname === item.name
+                          ? 'text-white'
+                          : 'text-gray-300'
+                      }`}
                     >
                       {item.label}
                     </span>
@@ -101,26 +110,31 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
         </div>
         <Link href={Routes.CONFIG}>
           <div
-            className={`h-11 w-full flex items-center gap-2 px-2 rounded cursor-pointer
-                  ${
-                    router.pathname === Routes.CONFIG
-                      ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
-                      : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
-                  }`}
+            className={`h-11 w-full flex items-center gap-2 px-2 rounded cursor-pointer transition-opacity duration-300 ${
+              isOpen ? 'opacity-100' : 'opacity-0'
+            }`}
             onClick={closeModal}
           >
             <IconSettings
               stroke={1.5}
-              className={`w-7 h-7 ${router.pathname === Routes.CONFIG ? 'text-white' : 'text-gray-300'}`}
+              className={`w-7 h-7 ${
+                router.pathname === Routes.CONFIG
+                  ? 'text-white'
+                  : 'text-gray-300'
+              }`}
             />
             <span
-              className={`text-md font-medium ${router.pathname === Routes.CONFIG ? 'text-white' : 'text-gray-300'}`}
+              className={`text-md font-medium ${
+                router.pathname === Routes.CONFIG
+                  ? 'text-white'
+                  : 'text-gray-300'
+              }`}
             >
               Configurações
             </span>
           </div>
         </Link>
       </div>
-    </Dialog>
+    </div>
   )
 }
