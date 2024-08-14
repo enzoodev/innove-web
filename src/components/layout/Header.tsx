@@ -19,7 +19,7 @@ export const Header: React.NamedExoticComponent<Props> = memo(
 
     return (
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-row items-center justify-between sm:justify-start gap-4">
           <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
           <button
             type="button"
