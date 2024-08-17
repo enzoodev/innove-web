@@ -32,31 +32,31 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex transform transition-all duration-300 ${
+      className={`fixed inset-0 z-50 flex transform transition-all duration-200 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
       <div
-        className={`fixed inset-0 bg-black/40 transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/40 transition-opacity duration-200 ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         aria-hidden="true"
         onClick={closeModal}
       />
       <div
-        className={`flex relative p-2 flex-col justify-between h-full bg-cyan-950 shadow-lg transform transition-all duration-300 ${
+        className={`flex relative p-2 flex-col justify-between h-full bg-cyan-950 shadow-lg transform transition-all duration-200 ${
           isOpen ? 'w-2/3' : 'w-0 overflow-hidden'
         }`}
       >
         <div
-          className={`flex flex-col transition-opacity duration-300 ${
+          className={`flex flex-col transition-opacity duration-200 ${
             isOpen ? 'opacity-100' : 'opacity-0'
           }`}
         >
           <button className="flex self-end p-2" onClick={closeModal}>
             <IconMenu2 stroke={1.75} className="w-7 h-7 text-white" />
           </button>
-          <div className="flex flex-col items-center gap-4 my-4">
+          <div className="flex flex-col items-center gap-4 my-8">
             <Image
               src={clientLogo}
               alt="Client_logo"
@@ -68,7 +68,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
               <span className="text-lg font-semibold text-white break-words">
                 {firstName} {secondName}
               </span>
-              <span className="text-sm font-medium text-gray-400 break-words">
+              <span className="text-sm font-semibold text-gray-400 break-words">
                 {auth.email}
               </span>
             </div>
@@ -98,7 +98,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
                       stroke: 1.5,
                     })}
                     <span
-                      className={`text-md font-medium ${
+                      className={`text-sm font-semibold ${
                         router.pathname === item.name
                           ? 'text-white'
                           : 'text-gray-300'
@@ -114,7 +114,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
         </div>
         <Link href={Routes.CONFIG}>
           <div
-            className={`h-11 w-full flex items-center gap-2 px-2 rounded cursor-pointer transition-opacity duration-300 ${
+            className={`h-11 w-full flex items-center gap-2 px-2 rounded cursor-pointer transition-opacity duration-200 ${
               isOpen ? 'opacity-100' : 'opacity-0'
             }`}
             onClick={closeModal}
@@ -128,7 +128,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
               }`}
             />
             <span
-              className={`text-md font-medium ${
+              className={`text-sm font-semibold ${
                 router.pathname === Routes.CONFIG
                   ? 'text-white'
                   : 'text-gray-300'
