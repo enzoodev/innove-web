@@ -31,7 +31,11 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
   const clientLogo = PhotoFormatter.formatUri(auth.client_logo_icon)
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div
+      className={`fixed inset-0 z-50 flex transform transition-all duration-300 ${
+        isOpen ? 'translate-x-0' : 'translate-x-full'
+      }`}
+    >
       <div
         className={`fixed inset-0 bg-black/40 transition-opacity duration-300 ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -41,7 +45,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
       />
       <div
         className={`flex relative p-2 flex-col justify-between h-full bg-cyan-950 shadow-lg transform transition-all duration-300 ${
-          isOpen ? 'w-2/3 translate-x-0' : 'w-0 translate-x-full'
+          isOpen ? 'w-2/3' : 'w-0 overflow-hidden'
         }`}
       >
         <div
