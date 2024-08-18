@@ -17,10 +17,6 @@ export const ClientSkeletonItem = memo(function Component() {
             <div className="h-2.5 bg-gray-300 rounded-full w-24" />
             <div className="h-2.5 bg-gray-300 rounded-full w-32" />
           </div>
-          <div className="hidden lg:flex flex flex-col items-end gap-2">
-            <div className="h-2.5 bg-gray-300 rounded-full w-24" />
-            <div className="h-2.5 bg-gray-300 rounded-full w-32" />
-          </div>
         </div>
       </div>
     </div>
