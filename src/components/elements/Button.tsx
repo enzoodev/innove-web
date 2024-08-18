@@ -25,7 +25,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
         type={type}
         onClick={onClick}
         disabled={isLoading}
-        className={`w-full
+        className={`
           flex
           flex-row
           justify-center
@@ -33,8 +33,9 @@ export const Button: React.NamedExoticComponent<Props> = memo(
           py-3.5
           px-6
           rounded-lg
-          shadow-[0_3px_10px_rgb(0,0,0,0.2)]
-          ${additionalClasses}`}
+        ${itsCancelButton ? '' : 'shadow-[0_3px_10px_rgb(0,0,0,0.2)]'}
+          ${additionalClasses}
+          `}
       >
         {isLoading ? (
           <div
@@ -58,7 +59,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
           </div>
         ) : (
           <span
-            className={`text-center text-md ${color} ${itsCancelButton ? 'font-regular' : 'font-bold'}`}
+            className={`text-center text-md ${color} ${itsCancelButton ? 'font-medium' : 'font-bold'}`}
           >
             {title}
           </span>
