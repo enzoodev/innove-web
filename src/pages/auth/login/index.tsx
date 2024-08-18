@@ -7,6 +7,7 @@ import { IconUserCircle } from '@tabler/icons-react'
 
 import { Routes } from '@/enums/Routes'
 import { useAuth } from '@/hooks/auth/useAuth'
+
 import { loginSchema, TLoginSchema } from '@/schemas/auth/loginSchema'
 
 import { LayoutAuth } from '@/components/layout/LayoutAuth'
@@ -50,7 +51,7 @@ const Login: NextPage = () => {
       <div className="w-96 p-4 flex flex-col gap-10 items-center">
         <div className="flex flex-col gap-2 items-center">
           <IconUserCircle stroke={0.75} className="text-gray-700 h-24 w-24" />
-          <h1 className="text-gray-700 text-gray-800 text-xl text-center font-semibold">
+          <h1 className="text-gray-700 text-xl text-center font-semibold">
             Acessar sistema Innove
           </h1>
         </div>
@@ -75,7 +76,7 @@ const Login: NextPage = () => {
           <Button
             title="Entrar"
             type="submit"
-            additionalClasses="mt-2 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
+            additionalClasses="w-full mt-2 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
             isLoading={isLoadingLogin}
           />
         </form>
