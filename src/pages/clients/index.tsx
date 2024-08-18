@@ -10,9 +10,9 @@ import { ListSeparators } from '@/utils/ListSeparators'
 import { LayoutApp } from '@/components/layout/LayoutApp'
 import { Input } from '@/components/elements/Input'
 import { ListEmpty } from '@/components/elements/ListEmpty'
-import { ClientItem } from '@/components/modules/ClientItem'
-import { ClientSkeletonItem } from '@/components/modules/ClientSkeletonItem'
-import { DeleteClientModal } from '@/components/modules/DeleteClientModal'
+import { ClientItem } from '@/components/modules/clients/ClientItem'
+import { ClientSkeletonItem } from '@/components/modules/clients/ClientSkeletonItem'
+import { DeleteClientModal } from '@/components/modules/clients/DeleteClientModal'
 
 const Clients: NextPage = () => {
   const { clients, isLoadingGetClients, searchText, setSearchText } =
