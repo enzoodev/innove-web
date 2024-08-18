@@ -20,19 +20,12 @@ import { SidebarModal } from './SiderbarModal'
 type Props = {
   title: string
   headTitle: string
-  searchText: string
-  setSearchText: (text: string) => void
+  headerRightComponent?: React.ReactNode
   children: React.ReactNode
 }
 
 export const LayoutApp: React.NamedExoticComponent<Props> = memo(
-  function Component({
-    title,
-    headTitle,
-    searchText,
-    setSearchText,
-    children,
-  }) {
+  function Component({ title, headTitle, headerRightComponent, children }) {
     const [isSidebarOpen, toggleSidebar] = useToggle()
     const router = useRouter()
     const { auth } = useAuth()
@@ -64,11 +57,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
           </div>
           <SidebarModal isOpen={isSidebarOpen} closeModal={toggleSidebar} />
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
-            <Header
-              title={title}
-              searchText={searchText}
-              setSearchText={setSearchText}
-            />
+            <Header title={title} rightComponent={headerRightComponent} />
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
           </div>
@@ -184,11 +173,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
             </Link>
           </div>
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
-            <Header
-              title={title}
-              searchText={searchText}
-              setSearchText={setSearchText}
-            />
+            <Header title={title} rightComponent={headerRightComponent} />
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
           </div>
