@@ -1,22 +1,13 @@
-import React, { memo, useCallback } from 'react'
-import { Input } from '../elements/Input'
+import React, { memo } from 'react'
 import { IconPlus } from '@tabler/icons-react'
 
 type Props = {
   title: string
-  searchText: string
-  setSearchText: (text: string) => void
+  rightComponent?: React.ReactNode
 }
 
 export const Header: React.NamedExoticComponent<Props> = memo(
-  function Component({ title, searchText, setSearchText }) {
-    const handleChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchText(e.target.value)
-      },
-      [setSearchText],
-    )
-
+  function Component({ title, rightComponent }) {
     return (
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
         <div className="flex flex-row items-center justify-between sm:justify-start gap-4">
@@ -28,18 +19,7 @@ export const Header: React.NamedExoticComponent<Props> = memo(
             <IconPlus stroke={1.75} className="w-7 h-7 text-white" />
           </button>
         </div>
-        <div className="w-full sm:w-72 lg:w-96">
-          <Input
-            placeholder="Qual cliente você procura?"
-            hasLabel={false}
-            value={searchText}
-            onChange={handleChange}
-            aria-label="Search"
-            autoFocus
-            spellCheck={false}
-            additionalClasses="bg-gray-300 placeholder-gray-500"
-          />
-        </div>
+        {rightComponent && rightComponent}
       </header>
     )
   },
