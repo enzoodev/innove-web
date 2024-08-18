@@ -7,5 +7,5 @@ type TUser = {
   phone: string
   login: string
   datelastlogin: string
-  statususer: string
+  statususer: '1' | '0'
 }
