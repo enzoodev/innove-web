@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 export const PageLoading: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -27,18 +27,16 @@ export const PageLoading: React.FC = () => {
       router.events.off('routeChangeComplete', handleComplete)
       router.events.off('routeChangeError', handleComplete)
     }
-  })
+  }, [router])
+
+  if (!isLoading) return null
 
   return (
-    <div
-      className={[
-        isLoading ? 'page-loading is--loading' : 'page-loading',
-        'd-print-none',
-      ].join(' ')}
-    >
-      <div>
-        <span />
-      </div>
+    <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 bg-white py-3 px-5 rounded-full border border-gray-300">
+      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-1"></div>
+      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-2"></div>
+      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-3"></div>
+      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-4"></div>
     </div>
   )
 }
