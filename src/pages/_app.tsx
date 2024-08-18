@@ -50,17 +50,13 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
     <Fragment>
       <ToastContainer
         position="bottom-left"
-        autoClose={5000}
-        pauseOnHover={true}
-        draggable={true}
+        autoClose={4000}
+        pauseOnHover
+        draggable
         draggableDirection="x"
-        closeOnClick={true}
+        closeOnClick
         transition={Slide}
-        closeButton={false}
-        icon={false}
-        hideProgressBar={true}
-        style={{ zIndex: 9999 }}
-        className={'d-print-none'}
+        closeButton
       />
       <PageLoading />
       <QueryClientProvider client={queryClient}>
