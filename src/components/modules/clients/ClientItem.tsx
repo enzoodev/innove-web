@@ -38,7 +38,7 @@ export const ClientItem: React.NamedExoticComponent<Props> = memo(
             <div className="w-12 h-12 flex self-start items-center justify-center bg-cyan-800 rounded-full">
               <IconUserCircle stroke={1.25} className="text-white w-7 h-7" />
             </div>
-            <div className="flex flex-1 flex-col sm:flex-row justify-between gap-3 sm:gap-4">
+            <div className="flex flex-1 flex-col sm:flex-row justify-between gap-4">
               <div className="flex flex-1 flex-col">
                 <span className="text-gray-700 break-word sm:max-w-none text-base font-bold break-words">
                   {item.name}
