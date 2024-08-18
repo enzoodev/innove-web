@@ -111,13 +111,6 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
               </div>
             </div>
             <div className="flex flex-col gap-3">
-              <span
-                className={`ml-2 text-sm font-semibold text-gray-100 ${
-                  isSidebarOpen ? 'inline-block' : 'hidden'
-                }`}
-              >
-                Navegação
-              </span>
               <nav>
                 <ul className="flex flex-col gap-2">
                   {appRoutes.map((item) => (
