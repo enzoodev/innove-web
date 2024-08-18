@@ -131,7 +131,6 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                             ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
                             : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
                         }`}
-                        onClick={toggleSidebar}
                       >
                         {item.renderIcon({
                           className: `w-7 h-7 ${
@@ -168,7 +167,6 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                             ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
                             : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
                         }`}
-                onClick={toggleSidebar}
               >
                 <IconSettings
                   className={`w-7 h-7 ${
