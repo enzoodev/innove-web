@@ -8,15 +8,15 @@ export class AuthRepository implements IAuthRepository {
   ) {}
 
   public async getUser(): Promise<TAuth | null> {
-    if (!this.tokenRepository.has()) {
-      return null
-    }
+    return getUserMock
+
+    // if (!this.tokenRepository.has()) {
+    //   return null
+    // }
 
     // return await this.httpServices.get<TAuth>({
     //   url: 'user',
     // });
-
-    return getUserMock
   }
 
   public async login(params: TLoginParams): Promise<TAuth> {
