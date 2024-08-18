@@ -1,13 +1,16 @@
 /* eslint-disable no-useless-constructor */
 
+import { getUsersMock } from '@/mocks/get-users-mock'
+
 export class UserRepository implements IUserRepository {
   constructor(private readonly baseRepository: IBaseRepository) {}
 
   public async getAll(params: TGetUsersParams): Promise<Array<TUser>> {
-    return this.baseRepository.getAll({
-      url: 'users',
-      params,
-    })
+    // return this.baseRepository.getAll({
+    //   url: 'users',
+    //   params,
+    // })
+    return getUsersMock as any
   }
 
   public async getById(params: TGetUserParams): Promise<TUser> {
