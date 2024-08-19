@@ -24,7 +24,7 @@ const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
 const clientRepository = new ClientRepository(baseRepository)
 
 export const useUpdateClient = (clientId: number) => {
-  const [isLoadingFetchFiles, setIsLoadingFetchFiles] = useState(false)
+  const [isLoadingFetchFiles, setIsLoadingFetchFiles] = useState(true)
   const queryClient = useQueryClient()
 
   const { mutateAsync: getClientByIdFn, isPending: isLoadingGetClient } =
