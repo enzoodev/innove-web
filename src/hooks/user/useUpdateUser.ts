@@ -1,6 +1,8 @@
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { UserRepository } from '@/infrastructure/repositories/UserRepository'
 import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
@@ -8,6 +10,7 @@ import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFact
 
 import { useAuth } from '@/hooks/auth/useAuth'
 
+import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUser'
 import { QueryKey } from '@/enums/QueryKey'
 
 import { UrlBuilder } from '@/utils/UrlBuilder'
@@ -30,37 +33,71 @@ export const useUpdateUser = (userId: number) => {
       mutationFn: userRepository.update,
     })
 
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    reset,
+  } = useForm<TSaveUserSchema>({
+    resolver: zodResolver(saveUserSchema),
+    defaultValues: {
+      nome: '',
+      telefone: '',
+      email: '',
+      ativo: true,
+      permission: [],
+    },
+  })
+
   const fetchUser = useCallback(async () => {
     try {
       const user = await getUserByIdFn({
         iduser: userId,
         idclient: clientId,
       })
+
+      reset({
+        nome: user.name,
+        telefone: user.phone,
+        email: user.email,
+        ativo: user.statususer === '1',
+        permission: user.permission,
+      })
     } catch (error) {
       toast.error('Não foi possível buscar os dados do usuário.')
     }
-  }, [userId, clientId, getUserByIdFn])
+  }, [getUserByIdFn, userId, clientId, reset])
 
-  const updateUser = useCallback(
-    async (data: TUpdateUserParams) => {
+  const onSubmit: SubmitHandler<TSaveUserSchema> = useCallback(
+    async (data) => {
       try {
-        await updateUserFn(data)
+        await updateUserFn({
+          ...data,
+          ativo: data.ativo ? '1' : '0',
+          idclient: clientId.toString(),
+          iduser: userId.toString(),
+        })
         toast.success('Usuário atualizado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
         queryClient.invalidateQueries({
           queryKey: [QueryKey.GET_USER_BY_ID, userId],
         })
+        reset()
       } catch (error) {
         toast.error('Não foi possível atualizar o usuário.')
       }
     },
-    [updateUserFn, queryClient, userId],
+    [updateUserFn, clientId, userId, queryClient, reset],
   )
+
+  const handleCreateUser = handleSubmit(onSubmit)
 
   return {
     fetchUser,
-    updateUser,
+    handleCreateUser,
     isLoadingUser,
     isLoadingUpdateUser,
+    register,
+    errors,
   }
 }
