@@ -12,7 +12,7 @@ import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFact
 import {
   saveClientSchema,
   TSaveClientSchema,
-} from '@/schemas/clients/saveClient'
+} from '@/schemas/clients/saveClientSchema'
 
 import { QueryKey } from '@/enums/QueryKey'
 
