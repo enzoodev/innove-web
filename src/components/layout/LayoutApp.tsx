@@ -20,12 +20,19 @@ import { SidebarModal } from './SiderbarModal'
 type Props = {
   title: string
   headTitle: string
-  headerRightComponent?: React.ReactNode
   children: React.ReactNode
+  hasCreateButton?: boolean
+  headerRightComponent?: React.ReactNode
 }
 
 export const LayoutApp: React.NamedExoticComponent<Props> = memo(
-  function Component({ title, headTitle, headerRightComponent, children }) {
+  function Component({
+    title,
+    headTitle,
+    children,
+    hasCreateButton = true,
+    headerRightComponent,
+  }) {
     const [isSidebarOpen, toggleSidebar] = useToggle()
     const router = useRouter()
     const { auth } = useAuth()
@@ -57,7 +64,11 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
           </div>
           <SidebarModal isOpen={isSidebarOpen} closeModal={toggleSidebar} />
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
-            <Header title={title} rightComponent={headerRightComponent} />
+            <Header
+              title={title}
+              hasCreateButton={hasCreateButton}
+              rightComponent={headerRightComponent}
+            />
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
           </div>
@@ -109,14 +120,14 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                           isSidebarOpen ? 'pl-4 pr-2 rounded' : 'p-3 rounded-xl'
                         } cursor-pointer
                         ${
-                          router.pathname === item.name
+                          router.pathname.includes(item.name)
                             ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
                             : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
                         }`}
                       >
                         {item.renderIcon({
                           className: `w-7 h-7 ${
-                            router.pathname === item.name
+                            router.pathname.includes(item.name)
                               ? 'text-white'
                               : 'text-gray-300'
                           }`,
@@ -126,7 +137,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                           className={`text-sm font-semibold ${
                             isSidebarOpen ? 'inline-block' : 'hidden'
                           } ${
-                            router.pathname === item.name
+                            router.pathname.includes(item.name)
                               ? 'text-white'
                               : 'text-gray-300'
                           }`}
@@ -145,14 +156,14 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                   isSidebarOpen ? 'pl-4 pr-2 rounded' : 'p-3 rounded-xl'
                 } cursor-pointer
                         ${
-                          router.pathname === Routes.CONFIG
+                          router.pathname.includes(Routes.CONFIG)
                             ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
                             : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
                         }`}
               >
                 <IconSettings
                   className={`w-7 h-7 ${
-                    router.pathname === Routes.CONFIG
+                    router.pathname.includes(Routes.CONFIG)
                       ? 'text-white'
                       : 'text-gray-300'
                   }`}
@@ -162,7 +173,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                   className={`text-sm font-semibold ${
                     isSidebarOpen ? 'inline-block' : 'hidden'
                   } ${
-                    router.pathname === Routes.CONFIG
+                    router.pathname.includes(Routes.CONFIG)
                       ? 'text-white'
                       : 'text-gray-300'
                   }`}
@@ -173,7 +184,11 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
             </Link>
           </div>
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
-            <Header title={title} rightComponent={headerRightComponent} />
+            <Header
+              title={title}
+              hasCreateButton={hasCreateButton}
+              rightComponent={headerRightComponent}
+            />
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
           </div>
