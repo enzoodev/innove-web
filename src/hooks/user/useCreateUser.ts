@@ -10,7 +10,7 @@ import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFact
 
 import { useAuth } from '@/hooks/auth/useAuth'
 
-import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUser'
+import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUserSchema'
 
 import { QueryKey } from '@/enums/QueryKey'
 
