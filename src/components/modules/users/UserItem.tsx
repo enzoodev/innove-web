@@ -1,4 +1,4 @@
-import React, { Fragment, memo } from 'react'
+import React, { memo } from 'react'
 import {
   IconDotsVertical,
   IconEdit,
@@ -44,16 +44,20 @@ export const UserItem: React.NamedExoticComponent<Props> = memo(
               </span>
               <span className="text-gray-600 text-sm">{creationDate}</span>
             </div>
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-row items-center gap-4">
               <div className="flex flex-col">
-                <span className="text-gray-600 text-sm">Telefone</span>
-                <span className="text-gray-600 text-sm font-semibold">
+                <span className="text-gray-600 text-sm lg:text-base">
+                  Telefone
+                </span>
+                <span className="text-gray-600 text-sm lg:text-base font-semibold">
                   {item.phone}
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="text-gray-600 text-sm">Status</span>
-                <span className="text-gray-600 text-sm font-semibold">
+                <span className="text-gray-600 text-sm lg:text-base">
+                  Status
+                </span>
+                <span className="text-gray-600 text-sm lg:text-base font-semibold">
                   {status}
                 </span>
               </div>
