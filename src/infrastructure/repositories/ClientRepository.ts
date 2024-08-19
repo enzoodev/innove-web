@@ -8,7 +8,7 @@ export class ClientRepository implements IClientRepository {
     // return this.baseRepository.getAll({
     //   url: 'clients',
     // })
-    return getClientsMock
+    return getClientsMock as any
   }
 
   public async getById(params: TGetClientParams): Promise<TClient> {
@@ -20,17 +20,19 @@ export class ClientRepository implements IClientRepository {
     return client
   }
 
-  public async create(params: TCreateClientParams): Promise<void> {
+  public async create({ data, formData }: TCreateClientParams): Promise<void> {
     await this.baseRepository.create({
       url: 'addclient',
-      data: params,
+      data,
+      formData,
     })
   }
 
-  public async update(params: TUpdateClientParams): Promise<void> {
+  public async update({ data, formData }: TUpdateClientParams): Promise<void> {
     await this.baseRepository.create({
       url: 'addclient',
-      data: params,
+      data,
+      formData,
     })
   }
 
