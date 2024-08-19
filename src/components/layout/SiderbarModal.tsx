@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/auth/useAuth'
 
 import { Routes } from '@/enums/Routes'
 
-import { appRoutes } from '@/utils/appRoutes'
+import { appRoutes } from '@/utils/constants/appRoutes'
 import { PhotoFormatter } from '@/utils/PhotoFormatter'
 
 type SidebarModalProps = {

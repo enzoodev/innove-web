@@ -10,7 +10,7 @@ import { useToggle } from '@/hooks/shared/useToggle'
 
 import { Routes } from '@/enums/Routes'
 
-import { appRoutes } from '@/utils/appRoutes'
+import { appRoutes } from '@/utils/constants/appRoutes'
 import { PhotoFormatter } from '@/utils/PhotoFormatter'
 
 import { Header } from './Header'
