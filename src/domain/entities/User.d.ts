@@ -8,5 +8,5 @@ type TUser = {
   login: string
   datelastlogin: string
   statususer: '1' | '0'
-  permission: Array<number>
+  permission: Array<TPermission>
 }
