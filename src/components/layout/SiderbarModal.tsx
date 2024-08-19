@@ -83,7 +83,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
                   <li
                     className={`h-12 w-full flex items-center gap-2 pl-4 pr-2 rounded cursor-pointer
                       ${
-                        router.pathname === item.name
+                        router.pathname.includes(item.name)
                           ? ' bg-gray-400 bg-opacity-20 active:bg-opacity-40'
                           : 'hover:bg-gray-400 active:bg-gray-400 hover:bg-opacity-10 active:bg-opacity-40'
                       }`}
@@ -91,7 +91,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
                   >
                     {item.renderIcon({
                       className: `w-7 h-7 ${
-                        router.pathname === item.name
+                        router.pathname.includes(item.name)
                           ? 'text-white'
                           : 'text-gray-300'
                       }`,
@@ -99,7 +99,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
                     })}
                     <span
                       className={`text-sm font-semibold ${
-                        router.pathname === item.name
+                        router.pathname.includes(item.name)
                           ? 'text-white'
                           : 'text-gray-300'
                       }`}
@@ -122,14 +122,14 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
             <IconSettings
               stroke={1.5}
               className={`w-7 h-7 ${
-                router.pathname === Routes.CONFIG
+                router.pathname.includes(Routes.CONFIG)
                   ? 'text-white'
                   : 'text-gray-300'
               }`}
             />
             <span
               className={`text-sm font-semibold ${
-                router.pathname === Routes.CONFIG
+                router.pathname.includes(Routes.CONFIG)
                   ? 'text-white'
                   : 'text-gray-300'
               }`}
