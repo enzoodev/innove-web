@@ -1,10 +1,19 @@
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
 import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
 import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
+
+import { useAuth } from '@/hooks/auth/useAuth'
+
+import {
+  saveAreaSchema,
+  TSaveAreaSchema,
+} from '@/schemas/location/saveAreaSchema'
 
 import { QueryKey } from '@/enums/QueryKey'
 
@@ -15,6 +24,7 @@ const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
 const locationRepository = new LocationRepository(baseRepository)
 
 export const useCreateArea = () => {
+  const { clientId } = useAuth()
   const queryClient = useQueryClient()
 
   const { mutateAsync: createAreaFn, isPending: isLoadingCreateArea } =
@@ -22,21 +32,45 @@ export const useCreateArea = () => {
       mutationFn: locationRepository.createArea,
     })
 
-  const createArea = useCallback(
-    async (data: TCreateAreaParams) => {
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    reset,
+  } = useForm<TSaveAreaSchema>({
+    resolver: zodResolver(saveAreaSchema),
+    defaultValues: {
+      nome: '',
+      responsavelnome: '',
+      responsavelemail: '',
+      ativo: true,
+    },
+  })
+
+  const onSubmit: SubmitHandler<TSaveAreaSchema> = useCallback(
+    async (data) => {
       try {
-        await createAreaFn(data)
+        await createAreaFn({
+          ...data,
+          idclient: clientId.toString(),
+          ativo: data.ativo ? '1' : '0',
+        })
         toast.success('Inspeção cadastrada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
+        reset()
       } catch (error) {
         toast.error('Não foi possível cadastrar a inspeção.')
       }
     },
-    [createAreaFn, queryClient],
+    [clientId, createAreaFn, queryClient, reset],
   )
 
+  const handleCreateArea = handleSubmit(onSubmit)
+
   return {
-    createArea,
+    handleCreateArea,
     isLoadingCreateArea,
+    register,
+    errors,
   }
 }
