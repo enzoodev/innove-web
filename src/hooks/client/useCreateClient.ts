@@ -1,10 +1,18 @@
-import { useCallback } from 'react'
+/* eslint-disable camelcase */
+import { ChangeEventHandler, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
 import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
 import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
+
+import {
+  saveClientSchema,
+  TSaveClientSchema,
+} from '@/schemas/clients/saveClient'
 
 import { QueryKey } from '@/enums/QueryKey'
 
@@ -22,21 +30,86 @@ export const useCreateClient = () => {
       mutationFn: clientRepository.create,
     })
 
-  const createClient = useCallback(
-    async (data: TCreateClientParams) => {
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    setValue,
+    reset,
+  } = useForm<TSaveClientSchema>({
+    resolver: zodResolver(saveClientSchema),
+    defaultValues: {
+      name: '',
+      cpnj: '',
+      razaosocial: '',
+      rua: '',
+      numero: '',
+      complemento: '',
+      cep: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+      ativo: true,
+      file_icon: undefined,
+      file_logo: undefined,
+    },
+  })
+
+  const handleFileIcon: ChangeEventHandler<HTMLInputElement> = useCallback(
+    ({ target }) => {
+      if (!target.files) return
+      setValue('file_icon', target.files[0])
+    },
+    [setValue],
+  )
+
+  const handleFileLogo: ChangeEventHandler<HTMLInputElement> = useCallback(
+    ({ target }) => {
+      if (!target.files) return
+      setValue('file_logo', target.files[0])
+    },
+    [setValue],
+  )
+
+  const onSubmit: SubmitHandler<TSaveClientSchema> = useCallback(
+    async (data) => {
       try {
-        await createClientFn(data)
+        const { file_icon, file_logo, ...dataToRequest } = data
+        const formData = new FormData()
+
+        if (file_icon) {
+          formData.append('file_icon', file_icon)
+        }
+
+        if (file_logo) {
+          formData.append('file_logo', file_logo)
+        }
+
+        await createClientFn({
+          data: {
+            ...dataToRequest,
+            ativo: dataToRequest.ativo ? '1' : '0',
+          },
+          formData,
+        })
         toast.success('Cliente cadastrado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CLIENTS] })
+        reset()
       } catch (error) {
         toast.error('Não foi possível cadastrar o cliente.')
       }
     },
-    [createClientFn, queryClient],
+    [createClientFn, queryClient, reset],
   )
 
+  const handleCreateClient = handleSubmit(onSubmit)
+
   return {
-    createClient,
+    handleCreateClient,
     isLoadingCreateClient,
+    register,
+    errors,
+    handleFileIcon,
+    handleFileLogo,
   }
 }
