@@ -6,16 +6,14 @@ export const PageLoading: React.FC = () => {
   const router = useRouter()
 
   useEffect(() => {
-    const handleStart = (url: unknown) => {
+    const handleStart = (url: string) => {
       if (url !== router.asPath) {
         setIsLoading(true)
       }
     }
 
-    const handleComplete = (url: unknown) => {
-      if (url === router.asPath) {
-        setIsLoading(false)
-      }
+    const handleComplete = () => {
+      setIsLoading(false)
     }
 
     router.events.on('routeChangeStart', handleStart)
