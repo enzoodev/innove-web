@@ -16,7 +16,6 @@ export type TAuthContextDataProps = {
   auth: TAuth | null
   userId: number
   clientId: number
-  isAuthenticated: boolean
   isLoadingLogin: boolean
   isLoadingLogout: boolean
   isLoadingRecoverAccount: boolean
@@ -58,8 +57,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       }
     },
   })
-
-  const isAuthenticated = !!auth
 
   const { mutateAsync: loginFn, isPending: isLoadingLogin } = useMutation({
     mutationFn: authRepository.login,
@@ -146,7 +143,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       auth: auth ?? null,
       clientId: auth?.idclient ?? 0,
       userId: auth?.iduser ?? 0,
-      isAuthenticated,
       isLoadingLogin,
       isLoadingLogout,
       isLoadingRecoverAccount,
@@ -159,7 +155,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     }),
     [
       auth,
-      isAuthenticated,
       isLoadingLogin,
       isLoadingLogout,
       isLoadingRecoverAccount,
