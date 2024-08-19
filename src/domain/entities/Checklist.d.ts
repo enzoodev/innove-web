@@ -4,8 +4,13 @@ type TChecklistQuestion = {
   ativo: '1' | '0'
 }
 
-type TChecklist = {
-  idchecklist: string
+type TChecklistTopic = {
   subtitle: string
   questions: TChecklistQuestion[]
+}
+
+type TChecklist = {
+  idchecklist: string
+  name: string
+  topics: TChecklistTopic[]
 }
