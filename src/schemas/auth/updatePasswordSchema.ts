@@ -1,4 +1,4 @@
-import { z, TypeOf } from 'zod';
+import { z, TypeOf } from 'zod'
 
 export const passwordRules = [
   {
@@ -15,7 +15,7 @@ export const passwordRules = [
     message: 'A senha deve conter ao menos um caractere especial.',
   },
   { regex: /.{8,}/, message: 'A senha deve ter no mínimo 8 caracteres.' },
-];
+]
 
 export const updatePasswordSchema = z
   .object({
@@ -31,9 +31,9 @@ export const updatePasswordSchema = z
       .string()
       .min(1, 'A confirmação de senha é obrigatória.'),
   })
-  .refine(data => data.password === data.passwordConfirmation, {
+  .refine((data) => data.password === data.passwordConfirmation, {
     message: 'As senhas devem ser iguais.',
     path: ['passwordConfirmation'],
-  });
+  })
 
-export type TUpdatePasswordSchema = TypeOf<typeof updatePasswordSchema>;
+export type TUpdatePasswordSchema = TypeOf<typeof updatePasswordSchema>
