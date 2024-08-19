@@ -1,6 +1,6 @@
 type TClientAttachments = {
-  icon: TFile
-  incon: TFile
+  icon: TFile | null
+  incon: TFile | null
 }
 
 type TClient = {
@@ -12,5 +12,5 @@ type TClient = {
   datelasfmodify: string
   status: string
   address: Array<TAddress>
-  anexo?: TClientAttachments
+  anexo: TClientAttachments
 }
