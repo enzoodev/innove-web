@@ -1,9 +1,3 @@
-type TAuthPermission = {
-  id: string
-  idpermission: string
-  name: string
-}
-
 type TAuth = {
   iduser: number
   idclient: number
@@ -13,6 +7,6 @@ type TAuth = {
   phone: string
   token: string
   lastlogin: string
-  permissions: Array<TAuthPermission>
+  permissions: Array<TPermission>
   client_logo_icon: TFile
 }
