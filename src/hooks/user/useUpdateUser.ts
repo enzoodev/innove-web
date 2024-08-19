@@ -61,7 +61,9 @@ export const useUpdateUser = (userId: number) => {
         telefone: user.phone,
         email: user.email,
         ativo: user.statususer === '1',
-        permission: user.permission,
+        permission: user.permission.map((permission) =>
+          parseInt(permission.idpermission),
+        ),
       })
     } catch (error) {
       toast.error('Não foi possível buscar os dados do usuário.')
