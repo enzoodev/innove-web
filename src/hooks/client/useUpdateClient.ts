@@ -2,7 +2,7 @@
 import { ChangeEventHandler, useCallback, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
@@ -141,8 +141,8 @@ export const useUpdateClient = (clientId: number) => {
     }
   }, [clientId, fetchClientFiles, getClientByIdFn, reset])
 
-  const onSubmit: SubmitHandler<TSaveClientSchema> = useCallback(
-    async (data) => {
+  const onSubmit = useCallback(
+    async (data: TSaveClientSchema, callback: () => void) => {
       try {
         const { file_icon, file_logo, ...dataToRequest } = data
         const formData = new FormData()
@@ -163,6 +163,7 @@ export const useUpdateClient = (clientId: number) => {
           },
           formData,
         })
+        callback()
         toast.success('Cliente atualizado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CLIENTS] })
         queryClient.invalidateQueries({
@@ -176,7 +177,10 @@ export const useUpdateClient = (clientId: number) => {
     [updateClientFn, clientId, queryClient, reset],
   )
 
-  const handleUpdateClient = handleSubmit(onSubmit)
+  const handleUpdateClient = useCallback(
+    (callback: () => void) => handleSubmit((data) => onSubmit(data, callback)),
+    [handleSubmit, onSubmit],
+  )
 
   return {
     fetchClient,
