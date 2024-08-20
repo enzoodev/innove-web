@@ -27,7 +27,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
       onClose={onClose}
       title="Cadastrar cliente"
       onSubmit={handleCreateClient(onClose)}
-      dialogPanelClassName="max-w-2xl"
+      size="lg"
       footer={
         <Fragment>
           <Button
