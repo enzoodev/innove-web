@@ -56,7 +56,6 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
             register={register}
           />
         </div>
-
         <Input
           placeholder={'CNPJ'}
           formError={errors.cpnj?.message}
@@ -71,7 +70,6 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           autoFocus
           register={register}
         />
-
         <Input
           placeholder={'Rua'}
           formError={errors.rua?.message}
@@ -123,7 +121,6 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           autoFocus
           register={register}
         />
-
         <div className="col-span-1 sm:col-span-2 flex items-center">
           <input type="checkbox" {...register('ativo')} />
           <label className="ml-2">Ativo</label>
