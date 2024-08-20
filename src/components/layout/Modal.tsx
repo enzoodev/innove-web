@@ -14,10 +14,20 @@ type Props = {
   title: string
   children: React.ReactNode
   footer?: React.ReactNode
+  onSubmit?: React.FormEventHandler<HTMLFormElement>
+  dialogPanelClassName?: string
 }
 
 export const Modal: React.NamedExoticComponent<Props> = memo(
-  function Component({ isOpen, onClose, title, children, footer }) {
+  function Component({
+    isOpen,
+    onClose,
+    title,
+    children,
+    footer,
+    onSubmit,
+    dialogPanelClassName,
+  }) {
     return (
       <Transition appear show={isOpen} as={React.Fragment}>
         <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -43,24 +53,28 @@ export const Modal: React.NamedExoticComponent<Props> = memo(
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="flex flex-col w-full max-w-md overflow-hidden text-left align-middle transition-all transform bg-gray-50 border border-gray-300 shadow-lg rounded-xl">
-                  <div className="w-full flex flex-row items-center justify-between py-3 px-4 border-b border-gray-300">
-                    <DialogTitle
-                      as="h3"
-                      className="text-lg font-semibold leading-6 text-gray-900"
-                    >
-                      {title}
-                    </DialogTitle>
-                    <button type="button" onClick={onClose}>
-                      <IconX stroke={1.5} className="w-6 h-6 text-gray-800" />
-                    </button>
-                  </div>
-                  <div className="p-4">{children}</div>
-                  {footer && (
-                    <div className="w-full flex p-4 gap-4 justify-end border-t border-gray-300">
-                      {footer}
+                <DialogPanel
+                  className={`flex flex-col w-full max-w-md overflow-hidden text-left align-middle transition-all transform bg-gray-50 border border-gray-300 shadow-lg rounded-xl ${dialogPanelClassName}`}
+                >
+                  <form onSubmit={onSubmit}>
+                    <div className="w-full flex flex-row items-center justify-between py-3 px-4 border-b border-gray-300">
+                      <DialogTitle
+                        as="h3"
+                        className="text-lg font-semibold leading-6 text-gray-900"
+                      >
+                        {title}
+                      </DialogTitle>
+                      <button type="button" onClick={onClose}>
+                        <IconX stroke={1.5} className="w-6 h-6 text-gray-800" />
+                      </button>
                     </div>
-                  )}
+                    <div className="p-4">{children}</div>
+                    {footer && (
+                      <div className="w-full flex p-4 gap-4 justify-end border-t border-gray-300">
+                        {footer}
+                      </div>
+                    )}
+                  </form>
                 </DialogPanel>
               </TransitionChild>
             </div>
