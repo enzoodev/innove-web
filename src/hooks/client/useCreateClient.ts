@@ -2,7 +2,7 @@
 import { ChangeEventHandler, useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
@@ -71,8 +71,8 @@ export const useCreateClient = () => {
     [setValue],
   )
 
-  const onSubmit: SubmitHandler<TSaveClientSchema> = useCallback(
-    async (data) => {
+  const onSubmit = useCallback(
+    async (data: TSaveClientSchema, callback: () => void) => {
       try {
         const { file_icon, file_logo, ...dataToRequest } = data
         const formData = new FormData()
@@ -92,6 +92,7 @@ export const useCreateClient = () => {
           },
           formData,
         })
+        callback()
         toast.success('Cliente cadastrado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CLIENTS] })
         reset()
@@ -102,7 +103,10 @@ export const useCreateClient = () => {
     [createClientFn, queryClient, reset],
   )
 
-  const handleCreateClient = handleSubmit(onSubmit)
+  const handleCreateClient = useCallback(
+    (callback: () => void) => handleSubmit((data) => onSubmit(data, callback)),
+    [handleSubmit, onSubmit],
+  )
 
   return {
     handleCreateClient,
