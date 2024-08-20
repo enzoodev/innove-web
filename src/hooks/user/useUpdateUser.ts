@@ -110,7 +110,7 @@ export const useUpdateUser = (userId: number) => {
         })
         reset()
       } catch (error) {
-        toast.error('Não foi possível atualizar o usuário.')
+        toast.error('Não foi possível editar o usuário.')
       }
     },
     [updateUserFn, clientId, userId, queryClient, reset],

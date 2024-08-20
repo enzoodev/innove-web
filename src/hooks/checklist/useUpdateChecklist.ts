@@ -54,7 +54,7 @@ export const useUpdateChecklist = (checklistId: number) => {
           queryKey: [QueryKey.GET_CHECKLIST_BY_ID, checklistId],
         })
       } catch (error) {
-        toast.error('Não foi possível atualizar o checklist.')
+        toast.error('Não foi possível editar o checklist.')
       }
     },
     [updateChecklistFn, queryClient, checklistId],

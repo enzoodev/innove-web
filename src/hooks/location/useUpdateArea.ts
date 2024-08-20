@@ -84,7 +84,7 @@ export const useUpdateArea = (params: TGetLocationParams) => {
         })
         reset()
       } catch (error) {
-        toast.error('Não foi possível atualizar a inspeção.')
+        toast.error('Não foi possível editar a inspeção.')
       }
     },
     [updateAreaFn, params.idlocal, clientId, queryClient, reset],

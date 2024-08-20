@@ -171,7 +171,7 @@ export const useUpdateClient = (clientId: number) => {
         })
         reset()
       } catch (error) {
-        toast.error('Não foi possível atualizar o cliente.')
+        toast.error('Não foi possível editar o cliente.')
       }
     },
     [updateClientFn, clientId, queryClient, reset],

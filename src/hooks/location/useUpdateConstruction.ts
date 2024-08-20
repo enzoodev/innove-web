@@ -48,7 +48,7 @@ export const useUpdateConstruction = (params: TGetLocationParams) => {
           queryKey: [QueryKey.GET_CONSTRUCTION_BY_ID, params.idlocal],
         })
       } catch (error) {
-        toast.error('Não foi possível atualizar a inspeção.')
+        toast.error('Não foi possível editar a inspeção.')
       }
     },
     [updateConstructionFn, queryClient, params.idlocal],

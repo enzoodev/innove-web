@@ -48,7 +48,7 @@ export const useUpdateEquipment = (params: TGetLocationParams) => {
           queryKey: [QueryKey.GET_EQUIPMENT_BY_ID, params.idlocal],
         })
       } catch (error) {
-        toast.error('Não foi possível atualizar a inspeção.')
+        toast.error('Não foi possível editar a inspeção.')
       }
     },
     [updateEquipmentFn, queryClient, params.idlocal],
