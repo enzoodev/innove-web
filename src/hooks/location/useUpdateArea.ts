@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
@@ -67,8 +67,8 @@ export const useUpdateArea = (params: TGetLocationParams) => {
     }
   }, [getAreaFn, params, reset])
 
-  const onSubmit: SubmitHandler<TSaveAreaSchema> = useCallback(
-    async (data) => {
+  const onSubmit = useCallback(
+    async (data: TSaveAreaSchema, callback: () => void) => {
       try {
         await updateAreaFn({
           ...data,
@@ -76,6 +76,7 @@ export const useUpdateArea = (params: TGetLocationParams) => {
           idclient: clientId.toString(),
           ativo: data.ativo ? '1' : '0',
         })
+        callback()
         toast.success('Inspeção atualizada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         queryClient.invalidateQueries({
@@ -89,7 +90,10 @@ export const useUpdateArea = (params: TGetLocationParams) => {
     [updateAreaFn, params.idlocal, clientId, queryClient, reset],
   )
 
-  const handleUpdateArea = handleSubmit(onSubmit)
+  const handleUpdateArea = useCallback(
+    (callback: () => void) => handleSubmit((data) => onSubmit(data, callback)),
+    [handleSubmit, onSubmit],
+  )
 
   return {
     fetchArea,
