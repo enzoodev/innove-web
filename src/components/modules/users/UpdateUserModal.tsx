@@ -83,6 +83,7 @@ export const UpdateUserModal: React.FC<Props> = ({
         />
         <Input
           placeholder="Email"
+          type="email"
           formError={errors.email?.message}
           name="email"
           autoFocus
