@@ -43,9 +43,9 @@ export const UpdateUserModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Atualizar usuário"
+      title="Editar usuário"
       onSubmit={handleUpdateUser(onClose)}
-      dialogPanelClassName="max-w-2xl"
+      size="lg"
       footer={
         <Fragment>
           <Button
