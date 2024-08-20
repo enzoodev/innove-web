@@ -13,10 +13,13 @@ import { ListEmpty } from '@/components/elements/ListEmpty'
 import { UserItem } from '@/components/modules/users/UserItem'
 import { UserSkeletonItem } from '@/components/modules/users/UserSkeletonItem'
 import { DeleteUserModal } from '@/components/modules/users/DeleteUserModal'
+import { CreateUserModal } from '@/components/modules/users/CreateUserModal'
+import { UpdateUserModal } from '@/components/modules/users/UpdateUserModal'
 
 const Users: NextPage = () => {
   const { users, isLoadingGetUsers, searchText, setSearchText } = useGetUsers()
 
+  const [isOpenCreateModal, toggleOpenCreateModal] = useToggle()
   const [isOpenUpdateModal, toggleOpenUpdateModal] = useToggle()
   const [isOpenDeleteModal, toggleOpenDeleteModal] = useToggle()
   const [user, setUser] = useState({
@@ -97,6 +100,7 @@ const Users: NextPage = () => {
     <LayoutApp
       title="Usuários"
       headTitle="Usuários - Innove"
+      onCreate={toggleOpenCreateModal}
       headerRightComponent={
         <div className="w-full sm:w-72 lg:w-96">
           <Input
@@ -113,6 +117,15 @@ const Users: NextPage = () => {
       }
     >
       {renderItems()}
+      <CreateUserModal
+        isOpen={isOpenCreateModal}
+        onClose={toggleOpenCreateModal}
+      />
+      <UpdateUserModal
+        userId={user.id}
+        isOpen={isOpenUpdateModal}
+        onClose={toggleOpenUpdateModal}
+      />
       <DeleteUserModal
         item={user}
         isOpen={isOpenDeleteModal}
