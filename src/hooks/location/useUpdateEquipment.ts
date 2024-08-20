@@ -42,7 +42,7 @@ export const useUpdateEquipment = (params: TGetLocationParams) => {
     async (data: TUpdateEquipmentParams) => {
       try {
         await updateEquipmentFn(data)
-        toast.success('Inspeção atualizada com sucesso!')
+        toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         queryClient.invalidateQueries({
           queryKey: [QueryKey.GET_EQUIPMENT_BY_ID, params.idlocal],

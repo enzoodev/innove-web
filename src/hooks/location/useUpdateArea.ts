@@ -77,7 +77,7 @@ export const useUpdateArea = (params: TGetLocationParams) => {
           ativo: data.ativo ? '1' : '0',
         })
         callback()
-        toast.success('Inspeção atualizada com sucesso!')
+        toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         queryClient.invalidateQueries({
           queryKey: [QueryKey.GET_AREA_BY_ID, params.idlocal],

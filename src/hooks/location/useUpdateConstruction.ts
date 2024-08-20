@@ -42,7 +42,7 @@ export const useUpdateConstruction = (params: TGetLocationParams) => {
     async (data: TUpdateConstructionParams) => {
       try {
         await updateConstructionFn(data)
-        toast.success('Inspeção atualizada com sucesso!')
+        toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         queryClient.invalidateQueries({
           queryKey: [QueryKey.GET_CONSTRUCTION_BY_ID, params.idlocal],

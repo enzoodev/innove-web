@@ -164,7 +164,7 @@ export const useUpdateClient = (clientId: number) => {
           formData,
         })
         callback()
-        toast.success('Cliente atualizado com sucesso!')
+        toast.success('Cliente editado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CLIENTS] })
         queryClient.invalidateQueries({
           queryKey: [QueryKey.GET_CLIENT_BY_ID, clientId],

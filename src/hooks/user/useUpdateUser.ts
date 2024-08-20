@@ -103,7 +103,7 @@ export const useUpdateUser = (userId: number) => {
           iduser: userId.toString(),
         })
         callback()
-        toast.success('Usuário atualizado com sucesso!')
+        toast.success('Usuário editado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
         queryClient.invalidateQueries({
           queryKey: [QueryKey.GET_USER_BY_ID, userId],

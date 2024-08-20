@@ -48,7 +48,7 @@ export const useUpdateChecklist = (checklistId: number) => {
     async (data: TUpdateChecklistParams) => {
       try {
         await updateChecklistFn(data)
-        toast.success('Checklist atualizado com sucesso!')
+        toast.success('Checklist editado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CHECKLISTS] })
         queryClient.invalidateQueries({
           queryKey: [QueryKey.GET_CHECKLIST_BY_ID, checklistId],
