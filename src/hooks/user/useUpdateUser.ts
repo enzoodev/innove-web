@@ -14,6 +14,7 @@ import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUserSchema'
 import { QueryKey } from '@/enums/QueryKey'
 
 import { UrlBuilder } from '@/utils/UrlBuilder'
+import { permissions } from '@/utils/constants/permissions'
 
 const httpServices = httpServicesFactory()
 const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
@@ -38,6 +39,8 @@ export const useUpdateUser = (userId: number) => {
     formState: { errors },
     register,
     reset,
+    watch,
+    setValue,
   } = useForm<TSaveUserSchema>({
     resolver: zodResolver(saveUserSchema),
     defaultValues: {
@@ -45,9 +48,23 @@ export const useUpdateUser = (userId: number) => {
       telefone: '',
       email: '',
       ativo: true,
-      permission: [],
+      permission: permissions.map((item) => ({ ...item, isActive: false })),
     },
   })
+
+  const userPermissions = watch('permission')
+  const userIsActive = watch('ativo')
+
+  const handlePermissionChange = useCallback(
+    (index: number) => {
+      setValue(`permission.${index}.isActive`, !userPermissions[index].isActive)
+    },
+    [setValue, userPermissions],
+  )
+
+  const handleUserActiveChange = useCallback(() => {
+    setValue('ativo', !userIsActive)
+  }, [setValue, userIsActive])
 
   const fetchUser = useCallback(async () => {
     try {
@@ -61,9 +78,12 @@ export const useUpdateUser = (userId: number) => {
         telefone: user.phone,
         email: user.email,
         ativo: user.statususer === '1',
-        permission: user.permission.map((permission) =>
-          parseInt(permission.idpermission),
-        ),
+        permission: permissions.map((item) => ({
+          ...item,
+          isActive: user.permission.some(
+            (permission) => permission.idpermission === item.value,
+          ),
+        })),
       })
     } catch (error) {
       toast.error('Não foi possível buscar os dados do usuário.')
@@ -76,6 +96,9 @@ export const useUpdateUser = (userId: number) => {
         await updateUserFn({
           ...data,
           ativo: data.ativo ? '1' : '0',
+          permission: data.permission
+            .filter((item) => item.isActive)
+            .map((item) => parseInt(item.value)),
           idclient: clientId.toString(),
           iduser: userId.toString(),
         })
@@ -105,5 +128,9 @@ export const useUpdateUser = (userId: number) => {
     isLoadingUpdateUser,
     register,
     errors,
+    userIsActive,
+    userPermissions,
+    handleUserActiveChange,
+    handlePermissionChange,
   }
 }
