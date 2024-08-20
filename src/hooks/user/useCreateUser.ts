@@ -15,6 +15,7 @@ import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUserSchema'
 import { QueryKey } from '@/enums/QueryKey'
 
 import { UrlBuilder } from '@/utils/UrlBuilder'
+import { permissions } from '@/utils/constants/permissions'
 
 const httpServices = httpServicesFactory()
 const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
@@ -34,6 +35,8 @@ export const useCreateUser = () => {
     formState: { errors },
     register,
     reset,
+    watch,
+    setValue,
   } = useForm<TSaveUserSchema>({
     resolver: zodResolver(saveUserSchema),
     defaultValues: {
@@ -41,9 +44,23 @@ export const useCreateUser = () => {
       telefone: '',
       email: '',
       ativo: true,
-      permission: [],
+      permission: permissions.map((item) => ({ ...item, isActive: false })),
     },
   })
+
+  const userPermissions = watch('permission')
+  const userIsActive = watch('ativo')
+
+  const handlePermissionChange = useCallback(
+    (index: number) => {
+      setValue(`permission.${index}.isActive`, !userPermissions[index].isActive)
+    },
+    [setValue, userPermissions],
+  )
+
+  const handleUserActiveChange = useCallback(() => {
+    setValue('ativo', !userIsActive)
+  }, [setValue, userIsActive])
 
   const onSubmit = useCallback(
     async (data: TSaveUserSchema, callback: () => void) => {
@@ -51,6 +68,9 @@ export const useCreateUser = () => {
         await createUserFn({
           ...data,
           idclient: clientId.toString(),
+          permission: data.permission
+            .filter((item) => item.isActive)
+            .map((item) => parseInt(item.value)),
           ativo: data.ativo ? '1' : '0',
         })
         callback()
@@ -74,5 +94,9 @@ export const useCreateUser = () => {
     isLoadingCreateUser,
     register,
     errors,
+    userIsActive,
+    userPermissions,
+    handleUserActiveChange,
+    handlePermissionChange,
   }
 }
