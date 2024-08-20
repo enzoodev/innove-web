@@ -43,7 +43,7 @@ export const UpdateUserModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar usuário"
+      title="Atualizar usuário"
       onSubmit={handleUpdateUser(onClose)}
       dialogPanelClassName="max-w-2xl"
       footer={
