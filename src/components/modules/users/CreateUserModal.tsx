@@ -69,6 +69,7 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
         />
         <Input
           placeholder="Email"
+          type="email"
           formError={errors.email?.message}
           name="email"
           autoFocus
