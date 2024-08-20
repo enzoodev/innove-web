@@ -21,6 +21,7 @@ type Props = InputProps & {
   name?: Path<any>
   register?: UseFormRegister<any>
   additionalClasses?: string
+  isLoading?: boolean
 }
 
 export const Input: React.NamedExoticComponent<Props> = memo(
@@ -32,11 +33,20 @@ export const Input: React.NamedExoticComponent<Props> = memo(
     name,
     register,
     additionalClasses,
+    isLoading = false,
     ...rest
   }) {
     const registerData = register && name ? register(name) : {}
 
     function Field() {
+      if (isLoading) {
+        return (
+          <div className="flex flex-col gap-2 w-full animate-pulse">
+            <div className="h-10 bg-gray-300 rounded-lg" />
+          </div>
+        )
+      }
+
       return (
         <div className="flex flex-col gap-2 w-full">
           <input
