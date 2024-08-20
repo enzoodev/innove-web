@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { UserRepository } from '@/infrastructure/repositories/UserRepository'
@@ -70,8 +70,8 @@ export const useUpdateUser = (userId: number) => {
     }
   }, [getUserByIdFn, userId, clientId, reset])
 
-  const onSubmit: SubmitHandler<TSaveUserSchema> = useCallback(
-    async (data) => {
+  const onSubmit = useCallback(
+    async (data: TSaveUserSchema, callback: () => void) => {
       try {
         await updateUserFn({
           ...data,
@@ -79,6 +79,7 @@ export const useUpdateUser = (userId: number) => {
           idclient: clientId.toString(),
           iduser: userId.toString(),
         })
+        callback()
         toast.success('Usuário atualizado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
         queryClient.invalidateQueries({
@@ -92,11 +93,14 @@ export const useUpdateUser = (userId: number) => {
     [updateUserFn, clientId, userId, queryClient, reset],
   )
 
-  const handleCreateUser = handleSubmit(onSubmit)
+  const handleUpdateUser = useCallback(
+    (callback: () => void) => handleSubmit((data) => onSubmit(data, callback)),
+    [handleSubmit, onSubmit],
+  )
 
   return {
     fetchUser,
-    handleCreateUser,
+    handleUpdateUser,
     isLoadingUser,
     isLoadingUpdateUser,
     register,
