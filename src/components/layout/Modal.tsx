@@ -15,7 +15,7 @@ type Props = {
   children: React.ReactNode
   footer?: React.ReactNode
   onSubmit?: React.FormEventHandler<HTMLFormElement>
-  dialogPanelClassName?: string
+  size?: 'sm' | 'lg'
 }
 
 export const Modal: React.NamedExoticComponent<Props> = memo(
@@ -26,7 +26,7 @@ export const Modal: React.NamedExoticComponent<Props> = memo(
     children,
     footer,
     onSubmit,
-    dialogPanelClassName,
+    size = 'sm',
   }) {
     return (
       <Transition appear show={isOpen} as={React.Fragment}>
@@ -54,7 +54,7 @@ export const Modal: React.NamedExoticComponent<Props> = memo(
                 leaveTo="opacity-0 scale-95"
               >
                 <DialogPanel
-                  className={`flex flex-col w-full max-w-md overflow-hidden text-left align-middle transition-all transform bg-gray-50 border border-gray-300 shadow-lg rounded-xl ${dialogPanelClassName}`}
+                  className={`flex flex-col w-full ${size === 'sm' ? 'max-w-md' : 'max-w-2xl'} overflow-hidden text-left align-middle transition-all transform bg-gray-50 border border-gray-300 shadow-lg rounded-xl`}
                 >
                   <form onSubmit={onSubmit}>
                     <div className="w-full flex flex-row items-center justify-between py-3 px-4 border-b border-gray-300">
