@@ -13,11 +13,13 @@ import { ListEmpty } from '@/components/elements/ListEmpty'
 import { ClientItem } from '@/components/modules/clients/ClientItem'
 import { ClientSkeletonItem } from '@/components/modules/clients/ClientSkeletonItem'
 import { DeleteClientModal } from '@/components/modules/clients/DeleteClientModal'
+import { CreateClientModal } from '@/components/modules/clients/CreateClientModal'
 
 const Clients: NextPage = () => {
   const { clients, isLoadingGetClients, searchText, setSearchText } =
     useGetClients()
 
+  const [isOpenCreateModal, toggleOpenCreateModal] = useToggle()
   const [isOpenUpdateModal, toggleOpenUpdateModal] = useToggle()
   const [isOpenDeleteModal, toggleOpenDeleteModal] = useToggle()
   const [client, setClient] = useState({
@@ -98,6 +100,7 @@ const Clients: NextPage = () => {
     <LayoutApp
       title="Clientes"
       headTitle="Clientes - Innove"
+      onCreate={toggleOpenCreateModal}
       headerRightComponent={
         <div className="w-full sm:w-72 lg:w-96">
           <Input
@@ -114,6 +117,10 @@ const Clients: NextPage = () => {
       }
     >
       {renderItems()}
+      <CreateClientModal
+        isOpen={isOpenCreateModal}
+        onClose={toggleOpenCreateModal}
+      />
       <DeleteClientModal
         item={client}
         isOpen={isOpenDeleteModal}
