@@ -1,14 +1,14 @@
 export const permissions = [
   {
-    idpermission: '1',
+    value: '1',
     label: 'Acesso Web - Cliente',
   },
   {
-    idpermission: '2',
+    value: '2',
     label: 'Acesso App - Cliente',
   },
   {
-    idpermission: '9',
+    value: '9',
     label: 'Administrador - Owner',
   },
 ]
