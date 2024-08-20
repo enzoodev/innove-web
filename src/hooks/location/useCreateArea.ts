@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
@@ -47,14 +47,15 @@ export const useCreateArea = () => {
     },
   })
 
-  const onSubmit: SubmitHandler<TSaveAreaSchema> = useCallback(
-    async (data) => {
+  const onSubmit = useCallback(
+    async (data: TSaveAreaSchema, callback: () => void) => {
       try {
         await createAreaFn({
           ...data,
           idclient: clientId.toString(),
           ativo: data.ativo ? '1' : '0',
         })
+        callback()
         toast.success('Inspeção cadastrada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         reset()
@@ -65,7 +66,10 @@ export const useCreateArea = () => {
     [clientId, createAreaFn, queryClient, reset],
   )
 
-  const handleCreateArea = handleSubmit(onSubmit)
+  const handleCreateArea = useCallback(
+    (callback: () => void) => handleSubmit((data) => onSubmit(data, callback)),
+    [handleSubmit, onSubmit],
+  )
 
   return {
     handleCreateArea,
