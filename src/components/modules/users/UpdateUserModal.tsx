@@ -72,6 +72,7 @@ export const UpdateUserModal: React.FC<Props> = ({
             name="nome"
             autoFocus
             register={register}
+            isLoading={isLoadingUser}
           />
         </div>
         <Input
@@ -80,6 +81,7 @@ export const UpdateUserModal: React.FC<Props> = ({
           name="telefone"
           autoFocus
           register={register}
+          isLoading={isLoadingUser}
         />
         <Input
           placeholder="Email"
@@ -88,6 +90,7 @@ export const UpdateUserModal: React.FC<Props> = ({
           name="email"
           autoFocus
           register={register}
+          isLoading={isLoadingUser}
         />
         <div className="col-span-1 sm:col-span-2">
           <CheckboxGroup
