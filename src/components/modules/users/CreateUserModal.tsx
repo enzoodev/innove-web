@@ -31,7 +31,7 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
       onClose={onClose}
       title="Cadastrar usuário"
       onSubmit={handleCreateUser(onClose)}
-      dialogPanelClassName="max-w-2xl"
+      size="lg"
       footer={
         <Fragment>
           <Button
