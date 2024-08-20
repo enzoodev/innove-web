@@ -22,6 +22,7 @@ type Props = {
   headTitle: string
   children: React.ReactNode
   hasCreateButton?: boolean
+  onCreate?: () => void
   headerRightComponent?: React.ReactNode
 }
 
@@ -30,6 +31,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
     title,
     headTitle,
     children,
+    onCreate,
     hasCreateButton = true,
     headerRightComponent,
   }) {
@@ -67,6 +69,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
             <Header
               title={title}
               hasCreateButton={hasCreateButton}
+              onCreate={onCreate}
               rightComponent={headerRightComponent}
             />
             <main className="w-full flex-1">{children}</main>
@@ -187,6 +190,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
             <Header
               title={title}
               hasCreateButton={hasCreateButton}
+              onCreate={onCreate}
               rightComponent={headerRightComponent}
             />
             <main className="w-full flex-1">{children}</main>
