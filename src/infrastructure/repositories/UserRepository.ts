@@ -10,14 +10,17 @@ export class UserRepository implements IUserRepository {
     //   url: 'users',
     //   params,
     // })
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     return getUsersMock as any
   }
 
   public async getById(params: TGetUserParams): Promise<TUser> {
-    return this.baseRepository.get({
-      url: 'users',
-      params,
-    })
+    // return this.baseRepository.get({
+    //   url: 'users',
+    //   params,
+    // })
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    return getUsersMock[0] as any
   }
 
   public async create(params: TCreateUserParams): Promise<void> {
