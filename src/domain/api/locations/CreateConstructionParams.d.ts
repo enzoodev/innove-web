@@ -6,7 +6,7 @@ type TCreateConstructionParams = {
   datastart: string
   rua: string
   numero: string
-  complemento: string
+  complemento?: string
   cep: string
   bairro: string
   cidade: string
