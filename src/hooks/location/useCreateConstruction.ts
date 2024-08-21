@@ -2,17 +2,9 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
+import { createConstruction } from '@/query/location/createConstruction'
 
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const locationRepository = new LocationRepository(baseRepository)
 
 export const useCreateConstruction = () => {
   const queryClient = useQueryClient()
@@ -21,13 +13,14 @@ export const useCreateConstruction = () => {
     mutateAsync: createConstructionFn,
     isPending: isLoadingCreateConstruction,
   } = useMutation({
-    mutationFn: locationRepository.createConstruction,
+    mutationFn: createConstruction,
   })
 
-  const createConstruction = useCallback(
-    async (data: TCreateConstructionParams) => {
+  const onSubmit = useCallback(
+    async (callback: () => void) => {
       try {
-        await createConstructionFn(data)
+        await createConstructionFn({})
+        callback()
         toast.success('Inspeção cadastrada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
       } catch (error) {
@@ -38,7 +31,7 @@ export const useCreateConstruction = () => {
   )
 
   return {
-    createConstruction,
+    handleCreateConstruction: onSubmit,
     isLoadingCreateConstruction,
   }
 }

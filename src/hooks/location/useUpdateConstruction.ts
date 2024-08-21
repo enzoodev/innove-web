@@ -2,17 +2,10 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
+import { getConstruction } from '@/query/location/getConstruction'
+import { updateConstruction } from '@/query/location/updateConstruction'
 
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const locationRepository = new LocationRepository(baseRepository)
 
 export const useUpdateConstruction = (params: TGetLocationParams) => {
   const queryClient = useQueryClient()
@@ -20,14 +13,14 @@ export const useUpdateConstruction = (params: TGetLocationParams) => {
   const { mutateAsync: getConstructionFn, isPending: isLoadingConstruction } =
     useMutation({
       mutationKey: [QueryKey.GET_CONSTRUCTION_BY_ID, params.idlocal],
-      mutationFn: locationRepository.getConstruction,
+      mutationFn: getConstruction,
     })
 
   const {
     mutateAsync: updateConstructionFn,
     isPending: isLoadingUpdateConstruction,
   } = useMutation({
-    mutationFn: locationRepository.updateConstruction,
+    mutationFn: updateConstruction,
   })
 
   const fetchConstruction = useCallback(async () => {
@@ -38,10 +31,11 @@ export const useUpdateConstruction = (params: TGetLocationParams) => {
     }
   }, [getConstructionFn, params])
 
-  const updateConstruction = useCallback(
-    async (data: TUpdateConstructionParams) => {
+  const onSubmit = useCallback(
+    async (callback: () => void) => {
       try {
-        await updateConstructionFn(data)
+        await updateConstructionFn({})
+        callback()
         toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         queryClient.invalidateQueries({
@@ -56,7 +50,7 @@ export const useUpdateConstruction = (params: TGetLocationParams) => {
 
   return {
     fetchConstruction,
-    updateConstruction,
+    updateConstruction: onSubmit,
     isLoadingConstruction,
     isLoadingUpdateConstruction,
   }

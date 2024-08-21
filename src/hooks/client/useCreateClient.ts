@@ -5,29 +5,21 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-
 import {
   saveClientSchema,
   TSaveClientSchema,
 } from '@/schemas/clients/saveClientSchema'
 
+import { createClient } from '@/query/client/createClient'
+
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const clientRepository = new ClientRepository(baseRepository)
 
 export const useCreateClient = () => {
   const queryClient = useQueryClient()
 
   const { mutateAsync: createClientFn, isPending: isLoadingCreateClient } =
     useMutation({
-      mutationFn: clientRepository.create,
+      mutationFn: createClient,
     })
 
   const {

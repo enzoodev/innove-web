@@ -3,23 +3,15 @@ import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import { UserRepository } from '@/infrastructure/repositories/UserRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-
 import { useAuth } from '@/hooks/auth/useAuth'
 
 import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUserSchema'
 
+import { createUser } from '@/query/user/createUser'
+
 import { QueryKey } from '@/enums/QueryKey'
 
-import { UrlBuilder } from '@/utils/UrlBuilder'
 import { permissions } from '@/utils/constants/permissions'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const userRepository = new UserRepository(baseRepository)
 
 export const useCreateUser = () => {
   const { clientId } = useAuth()
@@ -27,7 +19,7 @@ export const useCreateUser = () => {
 
   const { mutateAsync: createUserFn, isPending: isLoadingCreateUser } =
     useMutation({
-      mutationFn: (params: TCreateUserParams) => userRepository.create(params),
+      mutationFn: createUser,
     })
 
   const {

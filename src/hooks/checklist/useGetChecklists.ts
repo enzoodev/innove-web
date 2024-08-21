@@ -2,27 +2,23 @@ import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { ChecklistRepository } from '@/infrastructure/repositories/ChecklistRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
+import { useAuth } from '@/hooks/auth/useAuth'
+
+import { getAllChecklists } from '@/query/checklist/getAllChecklists'
 
 import { QueryKey } from '@/enums/QueryKey'
 
-import { UrlBuilder } from '@/utils/UrlBuilder'
 import { filterData } from '@/utils/filterData'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const checklistRepository = new ChecklistRepository(baseRepository)
 
 export const useGetChecklists = () => {
   const [searchText, setSearchText] = useState('')
+  const { clientId } = useAuth()
 
   const { data: checklists, isLoading: isLoadingGetChecklists } = useQuery({
     queryKey: [QueryKey.GET_CHECKLISTS],
     queryFn: async () => {
       try {
-        return await checklistRepository.getAll()
+        return await getAllChecklists({ idclient: clientId })
       } catch (error) {
         toast.error('Não foi possível buscar os checklists.')
         throw error

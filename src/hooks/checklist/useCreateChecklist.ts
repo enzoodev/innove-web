@@ -2,17 +2,9 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { ChecklistRepository } from '@/infrastructure/repositories/ChecklistRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
+import { createChecklist } from '@/query/checklist/createChecklist'
 
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const checklistRepository = new ChecklistRepository(baseRepository)
 
 export const useCreateChecklist = () => {
   const queryClient = useQueryClient()
@@ -21,10 +13,10 @@ export const useCreateChecklist = () => {
     mutateAsync: createChecklistFn,
     isPending: isLoadingCreateChecklist,
   } = useMutation({
-    mutationFn: checklistRepository.create,
+    mutationFn: createChecklist,
   })
 
-  const createChecklist = useCallback(
+  const onSubmit = useCallback(
     async (data: TCreateChecklistParams) => {
       try {
         await createChecklistFn(data)
@@ -38,7 +30,7 @@ export const useCreateChecklist = () => {
   )
 
   return {
-    createChecklist,
+    createChecklist: onSubmit,
     isLoadingCreateChecklist,
   }
 }

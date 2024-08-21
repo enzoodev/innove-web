@@ -3,11 +3,6 @@ import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-
-import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-
 import { useAuth } from '@/hooks/auth/useAuth'
 
 import {
@@ -15,13 +10,10 @@ import {
   TSaveAreaSchema,
 } from '@/schemas/location/saveAreaSchema'
 
+import { getArea } from '@/query/location/getArea'
+import { updateArea } from '@/query/location/updateArea'
+
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const locationRepository = new LocationRepository(baseRepository)
 
 export const useUpdateArea = (params: TGetLocationParams) => {
   const { clientId } = useAuth()
@@ -29,12 +21,12 @@ export const useUpdateArea = (params: TGetLocationParams) => {
 
   const { mutateAsync: getAreaFn, isPending: isLoadingArea } = useMutation({
     mutationKey: [QueryKey.GET_AREA_BY_ID, params.idlocal],
-    mutationFn: locationRepository.getArea,
+    mutationFn: getArea,
   })
 
   const { mutateAsync: updateAreaFn, isPending: isLoadingUpdateArea } =
     useMutation({
-      mutationFn: locationRepository.updateArea,
+      mutationFn: updateArea,
     })
 
   const {

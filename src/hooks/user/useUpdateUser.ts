@@ -4,21 +4,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { UserRepository } from '@/infrastructure/repositories/UserRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-
 import { useAuth } from '@/hooks/auth/useAuth'
 
 import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUserSchema'
+
+import { getUserById } from '@/query/user/getUserById'
+import { updateUser } from '@/query/user/updateUser'
+
 import { QueryKey } from '@/enums/QueryKey'
 
-import { UrlBuilder } from '@/utils/UrlBuilder'
 import { permissions } from '@/utils/constants/permissions'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const userRepository = new UserRepository(baseRepository)
 
 export const useUpdateUser = (userId: number) => {
   const { clientId } = useAuth()
@@ -26,12 +21,12 @@ export const useUpdateUser = (userId: number) => {
 
   const { mutateAsync: getUserByIdFn, isPending: isLoadingUser } = useMutation({
     mutationKey: [QueryKey.GET_USER_BY_ID, userId],
-    mutationFn: userRepository.getById,
+    mutationFn: getUserById,
   })
 
   const { mutateAsync: updateUserFn, isPending: isLoadingUpdateUser } =
     useMutation({
-      mutationFn: userRepository.update,
+      mutationFn: updateUser,
     })
 
   const {

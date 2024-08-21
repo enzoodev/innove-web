@@ -2,19 +2,12 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { ChecklistRepository } from '@/infrastructure/repositories/ChecklistRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-
 import { useAuth } from '@/hooks/auth/useAuth'
 
+import { getChecklistById } from '@/query/checklist/getChecklistById'
+import { updateChecklist } from '@/query/checklist/updateChecklist'
+
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const checklistRepository = new ChecklistRepository(baseRepository)
 
 export const useUpdateChecklist = (checklistId: number) => {
   const { clientId } = useAuth()
@@ -23,14 +16,14 @@ export const useUpdateChecklist = (checklistId: number) => {
   const { mutateAsync: getChecklistByIdFn, isPending: isLoadingChecklist } =
     useMutation({
       mutationKey: [QueryKey.GET_CHECKLIST_BY_ID, checklistId],
-      mutationFn: checklistRepository.getById,
+      mutationFn: getChecklistById,
     })
 
   const {
     mutateAsync: updateChecklistFn,
     isPending: isLoadingUpdateChecklist,
   } = useMutation({
-    mutationFn: checklistRepository.update,
+    mutationFn: updateChecklist,
   })
 
   const fetchChecklist = useCallback(async () => {
@@ -44,7 +37,7 @@ export const useUpdateChecklist = (checklistId: number) => {
     }
   }, [checklistId, clientId, getChecklistByIdFn])
 
-  const updateChecklist = useCallback(
+  const onSubmit = useCallback(
     async (data: TUpdateChecklistParams) => {
       try {
         await updateChecklistFn(data)
@@ -62,7 +55,7 @@ export const useUpdateChecklist = (checklistId: number) => {
 
   return {
     fetchChecklist,
-    updateChecklist,
+    handleUpdateChecklist: onSubmit,
     isLoadingChecklist,
     isLoadingUpdateChecklist,
   }

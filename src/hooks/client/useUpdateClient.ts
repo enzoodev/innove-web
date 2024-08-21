@@ -5,23 +5,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { ClientRepository } from '@/infrastructure/repositories/ClientRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-
 import {
   saveClientSchema,
   TSaveClientSchema,
 } from '@/schemas/clients/saveClientSchema'
 
+import { getClientById } from '@/query/client/getClientById'
+import { updateClient } from '@/query/client/updateClient'
+
 import { QueryKey } from '@/enums/QueryKey'
 
-import { UrlBuilder } from '@/utils/UrlBuilder'
 import { createFile } from '@/utils/createFile'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const clientRepository = new ClientRepository(baseRepository)
 
 export const useUpdateClient = (clientId: number) => {
   const [isLoadingFetchFiles, setIsLoadingFetchFiles] = useState(true)
@@ -30,12 +24,12 @@ export const useUpdateClient = (clientId: number) => {
   const { mutateAsync: getClientByIdFn, isPending: isLoadingGetClient } =
     useMutation({
       mutationKey: [QueryKey.GET_CLIENT_BY_ID, clientId],
-      mutationFn: clientRepository.getById,
+      mutationFn: getClientById,
     })
 
   const { mutateAsync: updateClientFn, isPending: isLoadingUpdateClient } =
     useMutation({
-      mutationFn: clientRepository.update,
+      mutationFn: updateClient,
     })
 
   const {

@@ -4,10 +4,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-
 import { useAuth } from '@/hooks/auth/useAuth'
 
 import {
@@ -15,13 +11,9 @@ import {
   TSaveAreaSchema,
 } from '@/schemas/location/saveAreaSchema'
 
+import { createArea } from '@/query/location/createArea'
+
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const locationRepository = new LocationRepository(baseRepository)
 
 export const useCreateArea = () => {
   const { clientId } = useAuth()
@@ -29,7 +21,7 @@ export const useCreateArea = () => {
 
   const { mutateAsync: createAreaFn, isPending: isLoadingCreateArea } =
     useMutation({
-      mutationFn: locationRepository.createArea,
+      mutationFn: createArea,
     })
 
   const {

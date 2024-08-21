@@ -2,17 +2,10 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { LocationRepository } from '@/infrastructure/repositories/LocationRepository'
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
+import { getEquipment } from '@/query/location/getEquipment'
+import { updateEquipment } from '@/query/location/updateEquipment'
 
 import { QueryKey } from '@/enums/QueryKey'
-
-import { UrlBuilder } from '@/utils/UrlBuilder'
-
-const httpServices = httpServicesFactory()
-const baseRepository = new BaseRepository(httpServices, new UrlBuilder())
-const locationRepository = new LocationRepository(baseRepository)
 
 export const useUpdateEquipment = (params: TGetLocationParams) => {
   const queryClient = useQueryClient()
@@ -20,14 +13,14 @@ export const useUpdateEquipment = (params: TGetLocationParams) => {
   const { mutateAsync: getEquipmentFn, isPending: isLoadingEquipment } =
     useMutation({
       mutationKey: [QueryKey.GET_EQUIPMENT_BY_ID, params.idlocal],
-      mutationFn: locationRepository.getEquipment,
+      mutationFn: getEquipment,
     })
 
   const {
     mutateAsync: updateEquipmentFn,
     isPending: isLoadingUpdateEquipment,
   } = useMutation({
-    mutationFn: locationRepository.updateEquipment,
+    mutationFn: updateEquipment,
   })
 
   const fetchEquipment = useCallback(async () => {
@@ -38,10 +31,11 @@ export const useUpdateEquipment = (params: TGetLocationParams) => {
     }
   }, [getEquipmentFn, params])
 
-  const updateEquipment = useCallback(
-    async (data: TUpdateEquipmentParams) => {
+  const onSubmit = useCallback(
+    async (callback: () => void) => {
       try {
-        await updateEquipmentFn(data)
+        await updateEquipmentFn({})
+        callback()
         toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         queryClient.invalidateQueries({
@@ -56,7 +50,7 @@ export const useUpdateEquipment = (params: TGetLocationParams) => {
 
   return {
     fetchEquipment,
-    updateEquipment,
+    updateEquipment: onSubmit,
     isLoadingEquipment,
     isLoadingUpdateEquipment,
   }
