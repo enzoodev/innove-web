@@ -80,7 +80,7 @@ export const useUpdateUser = (userId: number) => {
         ativo: user.statususer === '1',
         permission: permissions.map((item) => ({
           ...item,
-          isActive: user.permission.some(
+          isActive: user.permissions.some(
             (permission) => permission.idpermission === item.value,
           ),
         })),

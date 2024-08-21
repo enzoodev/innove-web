@@ -27,7 +27,7 @@ export const useCreateUser = () => {
 
   const { mutateAsync: createUserFn, isPending: isLoadingCreateUser } =
     useMutation({
-      mutationFn: userRepository.create,
+      mutationFn: (params: TCreateUserParams) => userRepository.create(params),
     })
 
   const {
@@ -78,6 +78,7 @@ export const useCreateUser = () => {
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
         reset()
       } catch (error) {
+        console.log(error)
         toast.error('Não foi possível cadastrar o usuário.')
       }
     },
