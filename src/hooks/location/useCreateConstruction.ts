@@ -1,12 +1,22 @@
 import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+import { useAuth } from '@/hooks/auth/useAuth'
+
+import {
+  saveConstructionSchema,
+  TSaveConstructionSchema,
+} from '@/schemas/location/saveConstructionSchema'
 
 import { createConstruction } from '@/query/location/createConstruction'
 
 import { QueryKey } from '@/enums/QueryKey'
 
 export const useCreateConstruction = () => {
+  const { clientId } = useAuth()
   const queryClient = useQueryClient()
 
   const {
@@ -16,22 +26,69 @@ export const useCreateConstruction = () => {
     mutationFn: createConstruction,
   })
 
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+    watch,
+    setValue,
+    reset,
+  } = useForm<TSaveConstructionSchema>({
+    resolver: zodResolver(saveConstructionSchema),
+    defaultValues: {
+      nome: '',
+      cnpj: '',
+      razaosocial: '',
+      datastart: '',
+      rua: '',
+      numero: '',
+      complemento: '',
+      cep: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+      responsavelnome: '',
+      responsavelemail: '',
+      ativo: true,
+    },
+  })
+
+  const userIsActive = watch('ativo')
+
+  const handleUserActiveChange = useCallback(() => {
+    setValue('ativo', !userIsActive)
+  }, [setValue, userIsActive])
+
   const onSubmit = useCallback(
-    async (callback: () => void) => {
+    async (data: TSaveConstructionSchema, callback: () => void) => {
       try {
-        await createConstructionFn({})
+        await createConstructionFn({
+          ...data,
+          idclient: clientId.toString(),
+          ativo: data.ativo ? '1' : '0',
+        })
         callback()
         toast.success('Inspeção cadastrada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
+        reset()
       } catch (error) {
         toast.error('Não foi possível cadastrar a inspeção.')
       }
     },
-    [createConstructionFn, queryClient],
+    [clientId, createConstructionFn, queryClient, reset],
+  )
+
+  const handleCreateConstruction = useCallback(
+    (callback: () => void) => handleSubmit((data) => onSubmit(data, callback)),
+    [handleSubmit, onSubmit],
   )
 
   return {
-    handleCreateConstruction: onSubmit,
+    handleCreateConstruction,
     isLoadingCreateConstruction,
+    register,
+    errors,
+    userIsActive,
+    handleUserActiveChange,
   }
 }
