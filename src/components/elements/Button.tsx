@@ -6,6 +6,7 @@ type Props = {
   type?: 'button' | 'submit'
   itsCancelButton?: boolean
   isLoading?: boolean
+  isDisabled?: boolean
   additionalClasses?: string
   onClick?: () => void
 }
@@ -16,6 +17,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
     color = 'text-white',
     type = 'button',
     itsCancelButton = false,
+    isDisabled = false,
     isLoading = false,
     additionalClasses = '',
     onClick,
@@ -24,7 +26,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
       <button
         type={type}
         onClick={onClick}
-        disabled={isLoading}
+        disabled={isLoading || isDisabled}
         className={`
           flex
           flex-row
@@ -33,13 +35,13 @@ export const Button: React.NamedExoticComponent<Props> = memo(
           py-3.5
           px-6
           rounded-lg
+          ${isDisabled ? 'opacity-50' : ''}
         ${itsCancelButton ? '' : 'shadow-[0_3px_10px_rgb(0,0,0,0.2)]'}
           ${additionalClasses}
           `}
       >
         {isLoading ? (
-          <div
-            role="status"
+          <output
             className="inline-block
             h-6
             w-6
@@ -56,7 +58,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
             <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
               Loading...
             </span>
-          </div>
+          </output>
         ) : (
           <span
             className={`text-center text-md ${color} ${itsCancelButton ? 'font-medium' : 'font-bold'}`}
