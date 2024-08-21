@@ -4,4 +4,5 @@ type TRequestConfig = {
   data?: Record<string, unknown>
   formData?: FormData
   params?: Record<string, any>
+  type?: 'app' | 'auth'
 }
