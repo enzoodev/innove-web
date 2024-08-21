@@ -57,9 +57,10 @@ export const UpdateUserModal: React.FC<Props> = ({
           />
           <Button
             title="Salvar"
+            type="submit"
             additionalClasses="w-44 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
             isLoading={isLoadingUpdateUser}
-            type="submit"
+            isDisabled={isLoadingUser}
           />
         </Fragment>
       }
@@ -98,6 +99,7 @@ export const UpdateUserModal: React.FC<Props> = ({
             options={userPermissions}
             onSelectItem={handlePermissionChange}
             formError={errors.permission?.message}
+            isLoading={isLoadingUser}
           />
         </div>
         <div className="col-span-1 sm:col-span-2">
@@ -107,6 +109,7 @@ export const UpdateUserModal: React.FC<Props> = ({
             checked={userIsActive}
             onChange={handleUserActiveChange}
             formError={errors.ativo?.message}
+            isLoading={isLoadingUser}
           />
         </div>
       </div>
