@@ -121,7 +121,7 @@ export const useUpdateClient = (clientId: number) => {
         razaosocial: client.razaosocial,
         rua: address.rua,
         numero: address.numero,
-        complemento: address.complemento ?? undefined,
+        complemento: address.complemento ?? '',
         cep: address.cep,
         bairro: address.bairro,
         cidade: address.cidade,
