@@ -1,12 +1,6 @@
-import { DetailedHTMLProps, InputHTMLAttributes, memo } from 'react'
 import { Checkbox as HeadlessCheckbox } from '@headlessui/react'
 
 import { FormError } from './FormError'
-
-type InputProps = DetailedHTMLProps<
-  InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->
 
 type CheckboxOption = {
   label: string
@@ -14,25 +8,24 @@ type CheckboxOption = {
   isActive: boolean
 }
 
-type Props = InputProps & {
+type Props = {
   options: CheckboxOption[]
   onSelectItem: (index: number) => void
   formError?: string
   hasLabel?: boolean
   placeholder?: string
-  additionalClasses?: string
+  isLoading?: boolean
 }
 
-export const CheckboxGroup: React.NamedExoticComponent<Props> = memo(
-  function Component({
-    options,
-    onSelectItem,
-    formError,
-    hasLabel = true,
-    placeholder,
-    additionalClasses,
-    ...rest
-  }) {
+export const CheckboxGroup: React.FC<Props> = function Component({
+  options,
+  onSelectItem,
+  formError,
+  hasLabel = true,
+  placeholder,
+  isLoading = false,
+}) {
+  if (isLoading) {
     return (
       <div className="flex flex-col gap-2 w-full">
         {hasLabel && (
@@ -40,33 +33,53 @@ export const CheckboxGroup: React.NamedExoticComponent<Props> = memo(
             {placeholder}
           </label>
         )}
-        {options.map(({ label, value, isActive }, index) => (
-          <div key={value} className="flex items-center gap-2">
-            <HeadlessCheckbox
-              checked={isActive}
-              onChange={() => onSelectItem(index)}
-              className="group block size-4 rounded border bg-white data-[checked]:bg-cyan-800"
-            >
-              <svg
-                className="stroke-white opacity-0 group-data-[checked]:opacity-100"
-                viewBox="0 0 14 14"
-                fill="none"
-              >
-                <path
-                  d="M3 8L6 11L11 3.5"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </HeadlessCheckbox>
-            <label htmlFor={value} className="text-gray-700 text-md">
-              {label}
-            </label>
+        {[...Array(3)].map((_, index) => (
+          <div key={index} className="flex items-center gap-2 animate-pulse">
+            <div className="h-6 w-6 bg-gray-300 rounded" />
+            <div className="h-4 bg-gray-300 rounded w-48" />
           </div>
         ))}
-        {formError && <FormError message={formError} />}
       </div>
     )
-  },
-)
+  }
+
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      {hasLabel && (
+        <label className="text-gray-700 text-md font-semibold">
+          {placeholder}
+        </label>
+      )}
+      {options.map(({ label, value, isActive }, index) => (
+        <button key={value} type="button" className="flex items-center gap-2">
+          <HeadlessCheckbox
+            checked={isActive}
+            onChange={() => onSelectItem(index)}
+            className="group block size-6 p-1 rounded border bg-white data-[checked]:bg-cyan-800"
+          >
+            <svg
+              className="stroke-white opacity-0 group-data-[checked]:opacity-100"
+              viewBox="0 0 14 14"
+              fill="none"
+            >
+              <path
+                d="M3 8L6 11L11 3.5"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </HeadlessCheckbox>
+          <label
+            htmlFor={value}
+            className="text-gray-700 text-md active:opacity-70"
+            onClick={() => onSelectItem(index)}
+          >
+            {label}
+          </label>
+        </button>
+      ))}
+      {formError && <FormError message={formError} />}
+    </div>
+  )
+}
