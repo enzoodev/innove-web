@@ -1,13 +1,11 @@
 export const getUserMock = {
   iduser: 3,
-  idclient: 1,
-  login: 'marcos.gabriel',
+  datecreate: '05/05/2024 12:17:14',
+  createdby: 'Marcos Gabriel Andrade Pierandrei',
   name: 'Marcos Gabriel Andrade Pierandrei',
   email: 'marcos.pierandrei@gmail.com',
   phone: '(31) 984399582',
-  token:
-    '333137323131373938333157926e346f49a4ee79bd99184246d2589bb7dcdbd27c02bb4c5e25bcc30e646a',
-  lastlogin: '05/08/2024 12:16:48',
+  login: 'marcos.gabriel',
   permissions: [
     {
       id: '6',
@@ -15,6 +13,8 @@ export const getUserMock = {
       name: 'Administrador - Owner',
     },
   ],
+  datelastlogin: '18/08/2024 10:44:25',
+  statususer: '1',
   client_logo_icon: {
     filename: null,
     extension: 'image/jpeg',

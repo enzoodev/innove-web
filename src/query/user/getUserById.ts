@@ -1,8 +1,10 @@
+import { getUserMock } from '@/mocks/get-user-mock'
 import { HttpServices } from '@/services/HttpServices'
 
 export const getUserById = async (params: TGetUserParams) => {
-  return HttpServices.get<TUser>({
-    url: 'users',
-    params,
-  })
+  // return HttpServices.get<TUser>({
+  //   url: 'users',
+  //   params,
+  // })
+  return getUserMock as TUser
 }
