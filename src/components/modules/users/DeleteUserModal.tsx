@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback } from 'react'
+import React, { Fragment } from 'react'
 
 import { useDeleteUser } from '@/hooks/user/useDeleteUser'
 
@@ -15,12 +15,7 @@ type Props = {
 }
 
 export const DeleteUserModal: React.FC<Props> = ({ isOpen, item, onClose }) => {
-  const { deleteUser, isLoadingDeleteUser } = useDeleteUser(item.id)
-
-  const handleDelete = useCallback(async () => {
-    await deleteUser()
-    onClose()
-  }, [deleteUser, onClose])
+  const { handleDeleteUser, isLoadingDeleteUser } = useDeleteUser(item.id)
 
   return (
     <Modal
@@ -37,7 +32,7 @@ export const DeleteUserModal: React.FC<Props> = ({ isOpen, item, onClose }) => {
             color="text-gray-700"
           />
           <Button
-            onClick={handleDelete}
+            onClick={() => handleDeleteUser(onClose)}
             title="Confirmar"
             additionalClasses="w-36 bg-red-700 hover:bg-red-800 active:bg-red-900"
             isLoading={isLoadingDeleteUser}

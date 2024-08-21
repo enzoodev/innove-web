@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback } from 'react'
+import React, { Fragment } from 'react'
 
 import { useDeleteClient } from '@/hooks/client/useDeleteClient'
 
@@ -19,12 +19,7 @@ export const DeleteClientModal: React.FC<Props> = ({
   item,
   onClose,
 }) => {
-  const { deleteClient, isLoadingDeleteClient } = useDeleteClient(item.id)
-
-  const handleDelete = useCallback(async () => {
-    await deleteClient()
-    onClose()
-  }, [deleteClient, onClose])
+  const { handleDeleteClient, isLoadingDeleteClient } = useDeleteClient(item.id)
 
   return (
     <Modal
@@ -41,7 +36,7 @@ export const DeleteClientModal: React.FC<Props> = ({
             color="text-gray-700"
           />
           <Button
-            onClick={handleDelete}
+            onClick={() => handleDeleteClient(onClose)}
             title="Confirmar"
             additionalClasses="w-36 bg-red-700 hover:bg-red-800 active:bg-red-900"
             isLoading={isLoadingDeleteClient}
