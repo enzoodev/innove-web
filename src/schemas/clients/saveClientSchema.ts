@@ -2,7 +2,10 @@ import { z, TypeOf } from 'zod'
 
 export const saveClientSchema = z.object({
   name: z.string().min(1, 'O nome é obrigatório.'),
-  cpnj: z.string().min(1, 'O CNPJ é obrigatório.'),
+  cpnj: z
+    .string()
+    .min(1, 'O CNPJ é obrigatório.')
+    .regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, 'CNPJ inválido.'),
   razaosocial: z.string().min(1, 'A razão social é obrigatória.'),
   rua: z.string().min(1, 'A rua é obrigatória.'),
   numero: z.string().min(1, 'O número é obrigatório.'),
