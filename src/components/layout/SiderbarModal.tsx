@@ -23,12 +23,8 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
   const router = useRouter()
   const { auth } = useAuth()
 
-  if (!auth) {
-    return null
-  }
-
-  const [firstName, secondName] = auth.name.split(' ')
-  const clientLogo = PhotoFormatter.formatUri(auth.client_logo_icon)
+  const [firstName, secondName] = auth?.name.split(' ') ?? ['', '']
+  const clientLogo = PhotoFormatter.formatUri(auth?.client_logo_icon)
 
   return (
     <div
@@ -69,7 +65,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
                 {firstName} {secondName}
               </span>
               <span className="text-sm font-semibold text-gray-400 break-words">
-                {auth.email}
+                {auth?.email}
               </span>
             </div>
           </div>

@@ -39,12 +39,8 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
     const router = useRouter()
     const { auth } = useAuth()
 
-    if (!auth) {
-      return null
-    }
-
-    const [firstName, secondName] = auth.name.split(' ')
-    const clientLogo = PhotoFormatter.formatUri(auth.client_logo_icon)
+    const [firstName, secondName] = auth?.name.split(' ') ?? ['', '']
+    const clientLogo = PhotoFormatter.formatUri(auth?.client_logo_icon)
 
     return (
       <Fragment>
@@ -108,7 +104,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                     {firstName} {secondName}
                   </span>
                   <span className="text-xs font-semibold text-gray-400 break-words">
-                    {auth.email}
+                    {auth?.email}
                   </span>
                 </div>
               </div>
