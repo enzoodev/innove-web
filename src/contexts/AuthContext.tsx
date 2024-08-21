@@ -3,11 +3,11 @@ import { useRouter } from 'next/router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-import { AuthRepository } from '@/infrastructure/repositories/AuthRepository'
-import { TokenRepository } from '@/infrastructure/repositories/TokenRepository'
-import { httpServicesFactory } from '@/infrastructure/factories/httpServicesFactory'
-import { EncryptionService } from '@/infrastructure/services/EncryptionService'
-import { CookieService } from '@/infrastructure/services/CookieService'
+import { getAuth } from '@/query/auth/getAuth'
+import { login } from '@/query/auth/login'
+import { logout } from '@/query/auth/logout'
+import { recoverAccount } from '@/query/auth/recoverAccount'
+import { updatePassword } from '@/query/auth/updatePassword'
 
 import { Routes } from '@/enums/Routes'
 import { QueryKey } from '@/enums/QueryKey'
@@ -35,13 +35,6 @@ export const AuthContext = React.createContext<TAuthContextDataProps>(
   {} as TAuthContextDataProps,
 )
 
-const httpServices = httpServicesFactory()
-const tokenRepository = new TokenRepository(
-  new EncryptionService(),
-  new CookieService(),
-)
-const authRepository = new AuthRepository(httpServices, tokenRepository)
-
 export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -50,7 +43,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     queryKey: [QueryKey.GET_USER],
     queryFn: async () => {
       try {
-        return await authRepository.getUser()
+        return await getAuth()
       } catch (error) {
         toast.error('Não foi possível buscar seus dados.')
         throw error
@@ -59,21 +52,21 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   })
 
   const { mutateAsync: loginFn, isPending: isLoadingLogin } = useMutation({
-    mutationFn: authRepository.login,
+    mutationFn: login,
   })
 
   const { mutateAsync: logoutFn, isPending: isLoadingLogout } = useMutation({
-    mutationFn: authRepository.logout,
+    mutationFn: logout,
   })
 
   const { mutateAsync: recoverAccountFn, isPending: isLoadingRecoverAccount } =
     useMutation({
-      mutationFn: authRepository.recoverAccount,
+      mutationFn: recoverAccount,
     })
 
   const { mutateAsync: updatePasswordFn, isPending: isLoadingUpdatePassword } =
     useMutation({
-      mutationFn: authRepository.updatePassword,
+      mutationFn: updatePassword,
     })
 
   const handleLogin = useCallback(
