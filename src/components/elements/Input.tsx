@@ -42,7 +42,7 @@ export const Input: React.NamedExoticComponent<Props> = memo(
       if (isLoading) {
         return (
           <div className="flex flex-col gap-2 w-full animate-pulse">
-            <div className="h-10 bg-gray-300 rounded-lg" />
+            <div className="h-12 bg-gray-300 rounded-lg" />
           </div>
         )
       }
