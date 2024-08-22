@@ -118,16 +118,16 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           register={register}
         />
         <Input
-          placeholder={'Cidade'}
-          formError={errors.cidade?.message}
-          name="cidade"
+          placeholder={'Estado'}
+          formError={errors.estado?.message}
+          name="estado"
           autoFocus
           register={register}
         />
         <Input
-          placeholder={'Estado'}
-          formError={errors.estado?.message}
-          name="estado"
+          placeholder={'Cidade'}
+          formError={errors.cidade?.message}
+          name="cidade"
           autoFocus
           register={register}
         />
