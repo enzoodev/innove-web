@@ -23,9 +23,8 @@ export class HttpServices {
     type = 'app',
   }: TRequestConfig): Promise<T> {
     try {
-      const baseUrl =
-        type === 'app' ? `${this.baseUrl}/${this.appUrl}` : this.baseUrl
-      const constructedUrl = UrlBuilder.build(baseUrl, url, params)
+      const requestUrl = type === 'app' ? `${this.appUrl}/${url}` : url
+      const constructedUrl = UrlBuilder.build(this.baseUrl, requestUrl, params)
       const requestBody = formatRequest(data, formData)
       const token = TokenService.get()
 
