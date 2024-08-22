@@ -14,6 +14,7 @@ import { ClientItem } from '@/components/modules/clients/ClientItem'
 import { ClientSkeletonItem } from '@/components/modules/clients/ClientSkeletonItem'
 import { DeleteClientModal } from '@/components/modules/clients/DeleteClientModal'
 import { CreateClientModal } from '@/components/modules/clients/CreateClientModal'
+import { UpdateClientModal } from '@/components/modules/clients/UpdateClientModal'
 
 const Clients: NextPage = () => {
   const { clients, isLoadingGetClients, searchText, setSearchText } =
@@ -120,6 +121,11 @@ const Clients: NextPage = () => {
       <CreateClientModal
         isOpen={isOpenCreateModal}
         onClose={toggleOpenCreateModal}
+      />
+      <UpdateClientModal
+        clientId={client.id}
+        isOpen={isOpenUpdateModal}
+        onClose={toggleOpenUpdateModal}
       />
       <DeleteClientModal
         item={client}
