@@ -80,8 +80,8 @@ export const useUpdateEquipment = ({
         modelo: equipment.modelo,
         placa: equipment.placa,
         tag: equipment.tag,
-        responsavelnome: equipment.responsavelnome,
-        responsavelemail: equipment.responsavelemail,
+        responsavelnome: equipment.responsavel,
+        responsavelemail: equipment.emailresponsavel,
         ativo: equipment.status === '1',
       })
     } catch (error) {

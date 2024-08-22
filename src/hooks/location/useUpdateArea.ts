@@ -50,8 +50,8 @@ export const useUpdateArea = (params: TGetLocationParams) => {
 
       reset({
         nome: area.nome,
-        responsavelnome: area.responsavelnome,
-        responsavelemail: area.responsavelemail,
+        responsavelnome: area.responsavel,
+        responsavelemail: area.emailresponsavel,
         ativo: area.status === '1',
       })
     } catch (error) {

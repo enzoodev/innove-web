@@ -95,8 +95,8 @@ export const useUpdateConstruction = ({
         bairro: address.bairro,
         cidade: address.cidade,
         estado: address.estado,
-        responsavelnome: construction.responsavelnome,
-        responsavelemail: construction.responsavelemail,
+        responsavelnome: construction.responsavel,
+        responsavelemail: construction.emailresponsavel,
         ativo: construction.status === '1',
       })
     } catch (error) {
