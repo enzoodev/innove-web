@@ -38,6 +38,7 @@ export const useUpdateClient = (clientId: number) => {
     register,
     setValue,
     reset,
+    watch,
   } = useForm<TSaveClientSchema>({
     resolver: zodResolver(saveClientSchema),
     defaultValues: {
@@ -56,6 +57,12 @@ export const useUpdateClient = (clientId: number) => {
       file_logo: undefined,
     },
   })
+
+  const isActive = watch('ativo')
+
+  const handleActiveChange = useCallback(() => {
+    setValue('ativo', !isActive)
+  }, [setValue, isActive])
 
   const handleFileIcon: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
@@ -185,5 +192,7 @@ export const useUpdateClient = (clientId: number) => {
     errors,
     handleFileIcon,
     handleFileLogo,
+    isActive,
+    handleActiveChange,
   }
 }
