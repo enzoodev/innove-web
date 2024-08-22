@@ -18,6 +18,8 @@ type TLocationConstruction = {
   idclient: number
   status: TLocationStatus
   address: Array<TAddress>
+  responsavel: string
+  emailresponsavel: string
 }
 
 type TLocationEquipment = {
@@ -30,6 +32,8 @@ type TLocationEquipment = {
   datecreate: string
   idclient: number
   status: TLocationStatus
+  responsavel: string
+  emailresponsavel: string
 }
 
 type TLocationArea = {
@@ -39,6 +43,8 @@ type TLocationArea = {
   datecreate: string
   idclient: number
   status: TLocationStatus
+  responsavel: string
+  emailresponsavel: string
 }
 
 type TLocations = {
