@@ -1,10 +1,12 @@
 import { Fragment } from 'react'
+import Image from 'next/image'
 
 import { useCreateClient } from '@/hooks/client/useCreateClient'
 
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
+import { Checkbox } from '@/components/elements/Checkbox'
 
 type Props = {
   isOpen: boolean
@@ -19,6 +21,14 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
     errors,
     handleFileIcon,
     handleFileLogo,
+    isActive,
+    handleActiveChange,
+    iconInputRef,
+    logoInputRef,
+    previewIcon,
+    previewLogo,
+    handleIconContainerClick,
+    handleLogoContainerClick,
   } = useCreateClient()
 
   return (
@@ -121,9 +131,78 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           autoFocus
           register={register}
         />
-        <div className="col-span-1 sm:col-span-2 flex items-center">
-          <input type="checkbox" {...register('ativo')} />
-          <label className="ml-2">Ativo</label>
+        <div>
+          <label className="text-gray-700 text-md font-semibold mb-1">
+            Ícone do cliente
+          </label>
+          <div
+            className="mt-2 w-40 h-40 cursor-pointer"
+            onClick={handleIconContainerClick}
+          >
+            {previewIcon ? (
+              <Image
+                src={previewIcon}
+                alt="Pré-visualização do ícone"
+                width={160}
+                height={160}
+                className="rounded-full object-cover w-40 h-40"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
+                <span className="text-gray-600 font-semibold text-xs">
+                  Nenhuma imagem
+                </span>
+              </div>
+            )}
+          </div>
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={handleFileIcon}
+            ref={iconInputRef}
+            className="hidden"
+          />
+        </div>
+        <div>
+          <label className="text-gray-700 text-md font-semibold">
+            Logo do cliente
+          </label>
+          <div
+            className="mt-2 w-40 h-40 cursor-pointer"
+            onClick={handleLogoContainerClick}
+          >
+            {previewLogo ? (
+              <Image
+                src={previewLogo}
+                alt="Pré-visualização do logo"
+                width={160}
+                height={160}
+                className="rounded-full object-cover w-40 h-40"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
+                <span className="text-gray-600 font-semibold text-xs">
+                  Nenhuma imagem
+                </span>
+              </div>
+            )}
+          </div>
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={handleFileLogo}
+            ref={logoInputRef}
+            className="hidden"
+          />
+        </div>
+        <div className="col-span-1 sm:col-span-2">
+          <Checkbox
+            label="Status"
+            description="Defina se o cliente está ativo ou não."
+            checked={isActive}
+            onChange={handleActiveChange}
+            formError={errors.ativo?.message}
+          />
         </div>
       </div>
     </Modal>
