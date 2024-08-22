@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ChangeEventHandler, useCallback, useState } from 'react'
+import { ChangeEventHandler, useCallback, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -19,7 +19,19 @@ import { createFile } from '@/utils/createFile'
 
 export const useUpdateClient = (clientId: number) => {
   const [isLoadingFetchFiles, setIsLoadingFetchFiles] = useState(true)
+  const [previewIcon, setPreviewIcon] = useState<string | null>(null)
+  const [previewLogo, setPreviewLogo] = useState<string | null>(null)
+  const iconInputRef = useRef<HTMLInputElement | null>(null)
+  const logoInputRef = useRef<HTMLInputElement | null>(null)
   const queryClient = useQueryClient()
+
+  const handleIconContainerClick = useCallback(() => {
+    iconInputRef.current?.click()
+  }, [])
+
+  const handleLogoContainerClick = useCallback(() => {
+    logoInputRef.current?.click()
+  }, [])
 
   const { mutateAsync: getClientByIdFn, isPending: isLoadingGetClient } =
     useMutation({
@@ -67,7 +79,10 @@ export const useUpdateClient = (clientId: number) => {
   const handleFileIcon: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
       if (!target.files) return
-      setValue('file_icon', target.files[0])
+      const file = target.files[0]
+      const iconURL = URL.createObjectURL(file)
+      setPreviewIcon(iconURL)
+      setValue('file_icon', file)
     },
     [setValue],
   )
@@ -75,7 +90,10 @@ export const useUpdateClient = (clientId: number) => {
   const handleFileLogo: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
       if (!target.files) return
-      setValue('file_logo', target.files[0])
+      const file = target.files[0]
+      const iconURL = URL.createObjectURL(file)
+      setPreviewLogo(iconURL)
+      setValue('file_logo', file)
     },
     [setValue],
   )
@@ -121,6 +139,10 @@ export const useUpdateClient = (clientId: number) => {
       const client = await getClientByIdFn({ idclient: clientId })
       const { icon, logo } = await fetchClientFiles(client.anexo)
       const [address] = client.address
+      const iconURL = URL.createObjectURL(icon)
+      const logoURL = URL.createObjectURL(logo)
+      setPreviewLogo(iconURL)
+      setPreviewIcon(logoURL)
 
       reset({
         name: client.name,
@@ -194,5 +216,11 @@ export const useUpdateClient = (clientId: number) => {
     handleFileLogo,
     isActive,
     handleActiveChange,
+    iconInputRef,
+    logoInputRef,
+    previewIcon,
+    previewLogo,
+    handleIconContainerClick,
+    handleLogoContainerClick,
   }
 }
