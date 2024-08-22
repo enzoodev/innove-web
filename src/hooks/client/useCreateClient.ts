@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ChangeEventHandler, useCallback } from 'react'
+import { ChangeEventHandler, useCallback, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -15,7 +15,19 @@ import { createClient } from '@/query/client/createClient'
 import { QueryKey } from '@/enums/QueryKey'
 
 export const useCreateClient = () => {
+  const [previewIcon, setPreviewIcon] = useState<string | null>(null)
+  const [previewLogo, setPreviewLogo] = useState<string | null>(null)
+  const iconInputRef = useRef<HTMLInputElement | null>(null)
+  const logoInputRef = useRef<HTMLInputElement | null>(null)
   const queryClient = useQueryClient()
+
+  const handleIconContainerClick = useCallback(() => {
+    iconInputRef.current?.click()
+  }, [])
+
+  const handleLogoContainerClick = useCallback(() => {
+    logoInputRef.current?.click()
+  }, [])
 
   const { mutateAsync: createClientFn, isPending: isLoadingCreateClient } =
     useMutation({
@@ -28,6 +40,7 @@ export const useCreateClient = () => {
     register,
     setValue,
     reset,
+    watch,
   } = useForm<TSaveClientSchema>({
     resolver: zodResolver(saveClientSchema),
     defaultValues: {
@@ -47,10 +60,19 @@ export const useCreateClient = () => {
     },
   })
 
+  const isActive = watch('ativo')
+
+  const handleActiveChange = useCallback(() => {
+    setValue('ativo', !isActive)
+  }, [setValue, isActive])
+
   const handleFileIcon: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
       if (!target.files) return
-      setValue('file_icon', target.files[0])
+      const file = target.files[0]
+      const iconURL = URL.createObjectURL(file)
+      setPreviewIcon(iconURL)
+      setValue('file_icon', file)
     },
     [setValue],
   )
@@ -58,7 +80,10 @@ export const useCreateClient = () => {
   const handleFileLogo: ChangeEventHandler<HTMLInputElement> = useCallback(
     ({ target }) => {
       if (!target.files) return
-      setValue('file_logo', target.files[0])
+      const file = target.files[0]
+      const iconURL = URL.createObjectURL(file)
+      setPreviewLogo(iconURL)
+      setValue('file_logo', file)
     },
     [setValue],
   )
@@ -107,5 +132,13 @@ export const useCreateClient = () => {
     errors,
     handleFileIcon,
     handleFileLogo,
+    isActive,
+    handleActiveChange,
+    iconInputRef,
+    logoInputRef,
+    previewIcon,
+    previewLogo,
+    handleIconContainerClick,
+    handleLogoContainerClick,
   }
 }
