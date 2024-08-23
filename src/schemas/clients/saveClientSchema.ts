@@ -10,7 +10,10 @@ export const saveClientSchema = z.object({
   rua: z.string().min(1, 'A rua é obrigatória.'),
   numero: z.string().min(1, 'O número é obrigatório.'),
   complemento: z.string().optional(),
-  cep: z.string().min(1, 'O CEP é obrigatório.'),
+  cep: z
+    .string()
+    .min(1, 'O CEP é obrigatório.')
+    .regex(/^\d{5}-\d{3}$/, 'CEP inválido.'),
   bairro: z.string().min(1, 'O bairro é obrigatório.'),
   cidade: z.string().min(1, 'A cidade é obrigatória.'),
   estado: z.string().min(1, 'O estado é obrigatório.'),
