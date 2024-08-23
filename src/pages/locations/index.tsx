@@ -82,7 +82,7 @@ const Location: NextPage = () => {
         </div>
       }
     >
-      <div className="rounded-md border border-gray-300 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
+      <div className="bg-gray-100 rounded-md border border-gray-300 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
         <LocationDropDown
           title="Áreas"
           isOpen={openedType === 'area'}
@@ -90,6 +90,7 @@ const Location: NextPage = () => {
         >
           {renderAreas()}
         </LocationDropDown>
+        {openedType === 'area' && <div className="border-t border-gray-300" />}
         <LocationDropDown
           title="Obras"
           isOpen={openedType === 'construction'}
@@ -97,6 +98,9 @@ const Location: NextPage = () => {
         >
           {renderConstructions()}
         </LocationDropDown>
+        {openedType === 'construction' && (
+          <div className="border-t border-gray-300" />
+        )}
         <LocationDropDown
           title="Equipamentos"
           isOpen={openedType === 'equipment'}

@@ -70,7 +70,6 @@ export const useCreateUser = () => {
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
         reset()
       } catch (error) {
-        console.log(error)
         toast.error('Não foi possível cadastrar o usuário.')
       }
     },
