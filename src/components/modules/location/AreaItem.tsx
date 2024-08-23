@@ -3,7 +3,7 @@ import {
   IconDotsVertical,
   IconEdit,
   IconTrash,
-  IconUserCircle,
+  IconMapCog,
 } from '@tabler/icons-react'
 import {
   Menu,
@@ -14,12 +14,12 @@ import {
 } from '@headlessui/react'
 
 type Props = {
-  item: TClient
+  item: TLocationArea
   onUpdate: () => void
   onDelete: () => void
 }
 
-export const ClientItem: React.NamedExoticComponent<Props> = memo(
+export const AreaItem: React.NamedExoticComponent<Props> = memo(
   function Component({ item, onUpdate, onDelete }) {
     const [creationDate] = item.datecreate.split(' ')
     const status = item.status === '1' ? 'Ativo' : 'Inativo'
@@ -35,16 +35,24 @@ export const ClientItem: React.NamedExoticComponent<Props> = memo(
       >
         <div className="flex flex-1 flex-row gap-4">
           <div className="w-12 h-12 flex self-start items-center justify-center bg-cyan-800 rounded-full">
-            <IconUserCircle stroke={1.25} className="text-white w-7 h-7" />
+            <IconMapCog stroke={1.25} className="text-white w-7 h-7" />
           </div>
           <div className="flex flex-1 flex-col sm:flex-row justify-between gap-4">
             <div className="flex flex-1 flex-col">
               <span className="text-gray-700 break-word sm:max-w-none text-base font-bold break-words">
-                {item.name}
+                {item.nome}
               </span>
               <span className="text-gray-600 text-sm">{creationDate}</span>
             </div>
             <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-col">
+                <span className="text-gray-600 text-sm lg:text-base">
+                  Responsável
+                </span>
+                <span className="text-gray-600 text-sm lg:text-base font-semibold">
+                  {item.responsavel}
+                </span>
+              </div>
               <div className="flex flex-col">
                 <span className="text-gray-600 text-sm lg:text-base">
                   Status

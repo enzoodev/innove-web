@@ -7,6 +7,8 @@ import { useToggle } from '@/hooks/shared/useToggle'
 import { useGetLocations } from '@/hooks/location/useGetLocations'
 import { useDropdownLocations } from '@/hooks/location/useDropdownLocations'
 
+import { ListSeparators } from '@/utils/ListSeparators'
+
 import { LayoutApp } from '@/components/layout/LayoutApp'
 import { Input } from '@/components/elements/Input'
 import { LocationDropDown } from '@/components/modules/location/LocationDropDown'
@@ -18,6 +20,9 @@ import { UpdateAreaModal } from '@/components/modules/location/UpdateAreaModal'
 import { UpdateConstructionModal } from '@/components/modules/location/UpdateConstructionModal'
 import { UpdateEquipmentModal } from '@/components/modules/location/UpdateEquipmentModal'
 import { DeleteLocationModal } from '@/components/modules/location/DeleteLocationModal'
+import { AreaItem } from '@/components/modules/location/AreaItem'
+import { ConstructionItem } from '@/components/modules/location/ConstructionItem'
+import { EquipmentItem } from '@/components/modules/location/EquipmentItem'
 
 const Location: NextPage = () => {
   const { locations, isLoadingGetLocations, searchText, setSearchText } =
@@ -45,18 +50,46 @@ const Location: NextPage = () => {
     },
   })
 
-  const handleSelectLocation = useCallback(
-    (local: TLocationArea | TLocationConstruction | TLocationEquipment) => {
-      setLocation({
-        id: local.id,
-        name: local.nome,
-        type: {
-          id: local.tipo.id,
-          key: local.tipo.name,
-        },
-      })
+  const handleSelectLocation = useCallback((local: TLocation) => {
+    setLocation({
+      id: local.id,
+      name: local.nome,
+      type: {
+        id: local.tipo.id,
+        key: local.tipo.name,
+      },
+    })
+  }, [])
+
+  const handleUpdateLocation = useCallback(
+    (location: TLocation) => {
+      handleSelectLocation(location)
+
+      if (location.tipo.name === 'Area') {
+        toggleOpenUpdateAreaModal()
+        return
+      }
+      if (location.tipo.name === 'Obra') {
+        toggleOpenUpdateConstructionModal()
+        return
+      }
+
+      toggleOpenUpdateEquipmentModal()
     },
-    [],
+    [
+      handleSelectLocation,
+      toggleOpenUpdateAreaModal,
+      toggleOpenUpdateConstructionModal,
+      toggleOpenUpdateEquipmentModal,
+    ],
+  )
+
+  const handleDeleteLocation = useCallback(
+    (location: TLocation) => {
+      handleSelectLocation(location)
+      toggleOpenDeleteLocationModal()
+    },
+    [handleSelectLocation, toggleOpenDeleteLocationModal],
   )
 
   const renderAreas = useCallback(() => {
@@ -68,8 +101,25 @@ const Location: NextPage = () => {
       return <div>Nenhuma área encontrada</div>
     }
 
-    return locations.area.map((area) => <div key={area.id}>{area.nome}</div>)
-  }, [isLoadingGetLocations, locations.area])
+    return locations.area.map((item, index, array) => {
+      const hasSeparator = ListSeparators.getHasSeparator(index, array)
+      return (
+        <div key={item.idclient}>
+          <AreaItem
+            item={item}
+            onUpdate={() => handleUpdateLocation(item)}
+            onDelete={() => handleDeleteLocation(item)}
+          />
+          {hasSeparator && <hr className="border-t border-gray-300" />}
+        </div>
+      )
+    })
+  }, [
+    handleDeleteLocation,
+    handleUpdateLocation,
+    isLoadingGetLocations,
+    locations.area,
+  ])
 
   const renderConstructions = useCallback(() => {
     if (isLoadingGetLocations) {
@@ -80,10 +130,25 @@ const Location: NextPage = () => {
       return <div>Nenhuma construção encontrada</div>
     }
 
-    return locations.construction.map((construction) => (
-      <div key={construction.id}>{construction.nome}</div>
-    ))
-  }, [isLoadingGetLocations, locations.construction])
+    return locations.construction.map((item, index, array) => {
+      const hasSeparator = ListSeparators.getHasSeparator(index, array)
+      return (
+        <div key={item.idclient}>
+          <ConstructionItem
+            item={item}
+            onUpdate={() => handleUpdateLocation(item)}
+            onDelete={() => handleDeleteLocation(item)}
+          />
+          {hasSeparator && <hr className="border-t border-gray-300" />}
+        </div>
+      )
+    })
+  }, [
+    handleDeleteLocation,
+    handleUpdateLocation,
+    isLoadingGetLocations,
+    locations.construction,
+  ])
 
   const renderEquipments = useCallback(() => {
     if (isLoadingGetLocations) {
@@ -94,10 +159,25 @@ const Location: NextPage = () => {
       return <div>Nenhuma equipamento encontrada</div>
     }
 
-    return locations.equipment.map((equipment) => (
-      <div key={equipment.id}>{equipment.nome}</div>
-    ))
-  }, [isLoadingGetLocations, locations.equipment])
+    return locations.equipment.map((item, index, array) => {
+      const hasSeparator = ListSeparators.getHasSeparator(index, array)
+      return (
+        <div key={item.idclient}>
+          <EquipmentItem
+            item={item}
+            onUpdate={() => handleUpdateLocation(item)}
+            onDelete={() => handleDeleteLocation(item)}
+          />
+          {hasSeparator && <hr className="border-t border-gray-300" />}
+        </div>
+      )
+    })
+  }, [
+    handleDeleteLocation,
+    handleUpdateLocation,
+    isLoadingGetLocations,
+    locations.equipment,
+  ])
 
   return (
     <LayoutApp
