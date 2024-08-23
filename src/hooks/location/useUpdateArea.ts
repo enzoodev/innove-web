@@ -15,12 +15,20 @@ import { updateArea } from '@/query/location/updateArea'
 
 import { QueryKey } from '@/enums/QueryKey'
 
-export const useUpdateArea = (params: TGetLocationParams) => {
+type TUseUpdateAreaParams = {
+  locationId: number
+  locationTypeId: number
+}
+
+export const useUpdateArea = ({
+  locationId,
+  locationTypeId,
+}: TUseUpdateAreaParams) => {
   const { clientId } = useAuth()
   const queryClient = useQueryClient()
 
   const { mutateAsync: getAreaFn, isPending: isLoadingArea } = useMutation({
-    mutationKey: [QueryKey.GET_AREA_BY_ID, params.idlocal],
+    mutationKey: [QueryKey.GET_AREA_BY_ID, locationId],
     mutationFn: getArea,
   })
 
@@ -34,6 +42,8 @@ export const useUpdateArea = (params: TGetLocationParams) => {
     formState: { errors },
     register,
     reset,
+    watch,
+    setValue,
   } = useForm<TSaveAreaSchema>({
     resolver: zodResolver(saveAreaSchema),
     defaultValues: {
@@ -44,9 +54,19 @@ export const useUpdateArea = (params: TGetLocationParams) => {
     },
   })
 
+  const isActive = watch('ativo')
+
+  const handleActiveChange = useCallback(() => {
+    setValue('ativo', !isActive)
+  }, [setValue, isActive])
+
   const fetchArea = useCallback(async () => {
     try {
-      const area = await getAreaFn(params)
+      const area = await getAreaFn({
+        idlocal: locationId,
+        idclient: clientId,
+        idtipo: locationTypeId,
+      })
 
       reset({
         nome: area.nome,
@@ -57,14 +77,14 @@ export const useUpdateArea = (params: TGetLocationParams) => {
     } catch (error) {
       toast.error('Não foi possível buscar os dados da inspeção.')
     }
-  }, [getAreaFn, params, reset])
+  }, [clientId, getAreaFn, locationId, locationTypeId, reset])
 
   const onSubmit = useCallback(
     async (data: TSaveAreaSchema, callback: () => void) => {
       try {
         await updateAreaFn({
           ...data,
-          idlocal: params.idlocal.toString(),
+          idlocal: locationId.toString(),
           idclient: clientId.toString(),
           ativo: data.ativo ? '1' : '0',
         })
@@ -72,14 +92,14 @@ export const useUpdateArea = (params: TGetLocationParams) => {
         toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
         queryClient.invalidateQueries({
-          queryKey: [QueryKey.GET_AREA_BY_ID, params.idlocal],
+          queryKey: [QueryKey.GET_AREA_BY_ID, locationId],
         })
         reset()
       } catch (error) {
         toast.error('Não foi possível editar a inspeção.')
       }
     },
-    [updateAreaFn, params.idlocal, clientId, queryClient, reset],
+    [updateAreaFn, locationId, clientId, queryClient, reset],
   )
 
   const handleUpdateArea = useCallback(
@@ -94,5 +114,7 @@ export const useUpdateArea = (params: TGetLocationParams) => {
     isLoadingUpdateArea,
     register,
     errors,
+    isActive,
+    handleActiveChange,
   }
 }
