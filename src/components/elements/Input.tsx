@@ -3,8 +3,9 @@ import {
   HTMLInputTypeAttribute,
   InputHTMLAttributes,
   memo,
+  useCallback,
 } from 'react'
-import { type Path, type UseFormRegister } from 'react-hook-form'
+import { type Path } from 'react-hook-form'
 
 import { FormError } from './FormError'
 
@@ -19,9 +20,10 @@ type Props = InputProps & {
   hasLabel?: boolean
   type?: HTMLInputTypeAttribute
   name?: Path<any>
-  register?: UseFormRegister<any>
+  register?: any
   additionalClasses?: string
   isLoading?: boolean
+  masks?: Array<string>
 }
 
 export const Input: React.NamedExoticComponent<Props> = memo(
@@ -34,9 +36,20 @@ export const Input: React.NamedExoticComponent<Props> = memo(
     register,
     additionalClasses,
     isLoading = false,
+    masks,
     ...rest
   }) {
-    const registerData = register && name ? register(name) : {}
+    const getRegister = useCallback(() => {
+      if (!register || !name) {
+        return {}
+      }
+
+      if (masks) {
+        return register(name, masks)
+      }
+
+      return register(name)
+    }, [masks, name, register])
 
     function Field() {
       if (isLoading) {
@@ -65,7 +78,7 @@ export const Input: React.NamedExoticComponent<Props> = memo(
             selection:bg-gray-400
             ${additionalClasses ?? ''}`}
             {...rest}
-            {...registerData}
+            {...getRegister()}
           />
           {formError && <FormError message={formError} />}
         </div>

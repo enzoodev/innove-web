@@ -61,11 +61,11 @@ export const useUpdateEquipment = ({
     },
   })
 
-  const userIsActive = watch('ativo')
+  const isActive = watch('ativo')
 
-  const handleUserActiveChange = useCallback(() => {
-    setValue('ativo', !userIsActive)
-  }, [setValue, userIsActive])
+  const handleActiveChange = useCallback(() => {
+    setValue('ativo', !isActive)
+  }, [setValue, isActive])
 
   const fetchEquipment = useCallback(async () => {
     try {
@@ -124,7 +124,7 @@ export const useUpdateEquipment = ({
     isLoadingUpdateEquipment,
     register,
     errors,
-    userIsActive,
-    handleUserActiveChange,
+    isActive,
+    handleActiveChange,
   }
 }

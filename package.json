@@ -21,6 +21,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
     "react-toastify": "^10.0.5",
+    "use-mask-input": "^3.4.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

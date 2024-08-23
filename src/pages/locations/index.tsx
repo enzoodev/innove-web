@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 import { NextPage } from 'next'
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
+import { IconPlus } from '@tabler/icons-react'
 
 import { useToggle } from '@/hooks/shared/useToggle'
 import { useGetLocations } from '@/hooks/location/useGetLocations'
@@ -8,19 +10,54 @@ import { useDropdownLocations } from '@/hooks/location/useDropdownLocations'
 import { LayoutApp } from '@/components/layout/LayoutApp'
 import { Input } from '@/components/elements/Input'
 import { LocationDropDown } from '@/components/modules/location/LocationDropDown'
+import { CreateLocationPopoverPanelOption } from '@/components/modules/location/CreateLocationPopoverPanelOption'
+import { CreateAreaModal } from '@/components/modules/location/CreateAreaModal'
+import { CreateConstructionModal } from '@/components/modules/location/CreateConstructionModal'
+import { CreateEquipmentModal } from '@/components/modules/location/CreateEquipmentModal'
+import { UpdateAreaModal } from '@/components/modules/location/UpdateAreaModal'
+import { UpdateConstructionModal } from '@/components/modules/location/UpdateConstructionModal'
+import { UpdateEquipmentModal } from '@/components/modules/location/UpdateEquipmentModal'
+import { DeleteLocationModal } from '@/components/modules/location/DeleteLocationModal'
 
 const Location: NextPage = () => {
   const { locations, isLoadingGetLocations, searchText, setSearchText } =
     useGetLocations()
   const { openedType, openDropdown } = useDropdownLocations()
 
-  const [isOpenCreateModal, toggleOpenCreateModal] = useToggle()
-  const [isOpenUpdateModal, toggleOpenUpdateModal] = useToggle()
-  const [isOpenDeleteModal, toggleOpenDeleteModal] = useToggle()
+  const [isOpenCreateAreaModal, toggleOpenCreateAreaModal] = useToggle()
+  const [isOpenCreateConstructionModal, toggleOpenCreateConstructionModal] =
+    useToggle()
+  const [isOpenCreateEquipmentModal, toggleOpenCreateEquipmentModal] =
+    useToggle()
+  const [isOpenUpdateAreaModal, toggleOpenUpdateAreaModal] = useToggle()
+  const [isOpenUpdateConstructionModal, toggleOpenUpdateConstructionModal] =
+    useToggle()
+  const [isOpenUpdateEquipmentModal, toggleOpenUpdateEquipmentModal] =
+    useToggle()
+  const [isOpenDeleteLocationModal, toggleOpenDeleteLocationModal] = useToggle()
+
   const [location, setLocation] = useState({
     id: 0,
     name: '',
+    type: {
+      id: 0,
+      key: '' as unknown as TLocationTypeKey,
+    },
   })
+
+  const handleSelectLocation = useCallback(
+    (local: TLocationArea | TLocationConstruction | TLocationEquipment) => {
+      setLocation({
+        id: local.id,
+        name: local.nome,
+        type: {
+          id: local.tipo.id,
+          key: local.tipo.name,
+        },
+      })
+    },
+    [],
+  )
 
   const renderAreas = useCallback(() => {
     if (isLoadingGetLocations) {
@@ -66,7 +103,38 @@ const Location: NextPage = () => {
     <LayoutApp
       title="Inspeções"
       headTitle="Inspeções - Innove"
-      onCreate={toggleOpenCreateModal}
+      customCreateButton={
+        <Popover className="relative">
+          <PopoverButton className="w-12 h-12 flex items-center justify-center rounded-full bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+            <IconPlus stroke={1.75} className="w-7 h-7 text-white" />
+          </PopoverButton>
+          <PopoverPanel
+            anchor="bottom"
+            className="flex flex-col bg-gray-100 border border-gray-300 shadow-md rounded-lg"
+          >
+            <CreateLocationPopoverPanelOption
+              title="Área"
+              type="Area"
+              description="Cadastre uma nova área para inspeção."
+              onClick={toggleOpenCreateAreaModal}
+            />
+            <div className="border-t border-gray-300" />
+            <CreateLocationPopoverPanelOption
+              title="Obra"
+              type="Obra"
+              description="Cadastre uma nova obra para inspeção."
+              onClick={toggleOpenCreateConstructionModal}
+            />
+            <div className="border-t border-gray-300" />
+            <CreateLocationPopoverPanelOption
+              title="Equipamento"
+              type="Equipamento"
+              description="Cadastre um novo equipamento para inspeção."
+              onClick={toggleOpenCreateEquipmentModal}
+            />
+          </PopoverPanel>
+        </Popover>
+      }
       headerRightComponent={
         <div className="w-full sm:w-72 lg:w-96">
           <Input
@@ -109,6 +177,41 @@ const Location: NextPage = () => {
           {renderEquipments()}
         </LocationDropDown>
       </div>
+      <CreateAreaModal
+        isOpen={isOpenCreateAreaModal}
+        onClose={toggleOpenCreateAreaModal}
+      />
+      <CreateConstructionModal
+        isOpen={isOpenCreateConstructionModal}
+        onClose={toggleOpenCreateConstructionModal}
+      />
+      <CreateEquipmentModal
+        isOpen={isOpenCreateEquipmentModal}
+        onClose={toggleOpenCreateEquipmentModal}
+      />
+      <UpdateAreaModal
+        isOpen={isOpenUpdateAreaModal}
+        onClose={toggleOpenUpdateAreaModal}
+        locationId={location.id}
+        locationTypeId={location.type.id}
+      />
+      <UpdateConstructionModal
+        isOpen={isOpenUpdateConstructionModal}
+        onClose={toggleOpenUpdateConstructionModal}
+        locationId={location.id}
+        locationTypeId={location.type.id}
+      />
+      <UpdateEquipmentModal
+        isOpen={isOpenUpdateEquipmentModal}
+        onClose={toggleOpenUpdateEquipmentModal}
+        locationId={location.id}
+        locationTypeId={location.type.id}
+      />
+      <DeleteLocationModal
+        isOpen={isOpenDeleteLocationModal}
+        onClose={toggleOpenDeleteLocationModal}
+        item={location}
+      />
     </LayoutApp>
   )
 }

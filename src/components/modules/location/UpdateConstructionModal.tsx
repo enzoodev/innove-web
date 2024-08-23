@@ -1,9 +1,9 @@
-import { Fragment } from 'react'
-import Image from 'next/image'
+import { Fragment, useEffect } from 'react'
 
-import { useCreateClient } from '@/hooks/client/useCreateClient'
+import { useUpdateConstruction } from '@/hooks/location/useUpdateConstruction'
 
 import { cnpjMasks } from '@/utils/constants/masks/cnpjMasks'
+import { dateMasks } from '@/utils/constants/masks/dateMasks'
 import { cepMasks } from '@/utils/constants/masks/cepMasks'
 
 import { Modal } from '@/components/layout/Modal'
@@ -12,35 +12,46 @@ import { Input } from '@/components/elements/Input'
 import { Checkbox } from '@/components/elements/Checkbox'
 
 type Props = {
+  locationId: number
+  locationTypeId: number
   isOpen: boolean
   onClose: () => void
 }
 
-export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
+export const UpdateConstructionModal: React.FC<Props> = ({
+  locationId,
+  locationTypeId,
+  isOpen,
+  onClose,
+}) => {
   const {
-    handleCreateClient,
-    isLoadingCreateClient,
+    fetchConstruction,
+    handleUpdateConstruction,
+    isLoadingConstruction,
+    isLoadingUpdateConstruction,
     register,
     registerWithMask,
     errors,
-    handleFileIcon,
-    handleFileLogo,
     isActive,
     handleActiveChange,
-    iconInputRef,
-    logoInputRef,
-    previewIcon,
-    previewLogo,
-    handleIconContainerClick,
-    handleLogoContainerClick,
-  } = useCreateClient()
+  } = useUpdateConstruction({
+    locationId,
+    locationTypeId,
+  })
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchConstruction()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar cliente"
-      onSubmit={handleCreateClient(onClose)}
+      title="Cadastrar construção"
+      onSubmit={handleUpdateConstruction(onClose)}
       size="lg"
       footer={
         <Fragment>
@@ -54,7 +65,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           <Button
             title="Salvar"
             additionalClasses="w-44 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
-            isLoading={isLoadingCreateClient}
+            isLoading={isLoadingUpdateConstruction}
             type="submit"
           />
         </Fragment>
@@ -63,27 +74,41 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
         <div className="col-span-1 sm:col-span-2">
           <Input
-            placeholder={'Nome'}
-            formError={errors.name?.message}
-            name="name"
+            placeholder="Nome"
+            formError={errors.nome?.message}
+            name="nome"
             autoFocus
             register={register}
+            isLoading={isLoadingConstruction}
+          />
+        </div>
+        <div className="col-span-1 sm:col-span-2">
+          <Input
+            placeholder={'Razão Social'}
+            formError={errors.razaosocial?.message}
+            name="razaosocial"
+            autoFocus
+            register={register}
+            isLoading={isLoadingConstruction}
           />
         </div>
         <Input
-          placeholder={'Razão Social'}
-          formError={errors.razaosocial?.message}
-          name="razaosocial"
-          autoFocus
-          register={register}
-        />
-        <Input
           placeholder={'CNPJ'}
-          formError={errors.cpnj?.message}
+          formError={errors.cnpj?.message}
           name="cpnj"
           autoFocus
           register={registerWithMask}
           masks={cnpjMasks}
+          isLoading={isLoadingConstruction}
+        />
+        <Input
+          placeholder="Data de início"
+          formError={errors.datastart?.message}
+          name="datastart"
+          autoFocus
+          register={registerWithMask}
+          masks={dateMasks}
+          isLoading={isLoadingConstruction}
         />
         <Input
           placeholder={'Rua'}
@@ -91,6 +116,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="rua"
           autoFocus
           register={register}
+          isLoading={isLoadingConstruction}
         />
         <Input
           placeholder={'Número'}
@@ -98,6 +124,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="numero"
           autoFocus
           register={register}
+          isLoading={isLoadingConstruction}
         />
         <div className="col-span-1 sm:col-span-2">
           <Input
@@ -106,6 +133,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
             name="complemento"
             autoFocus
             register={register}
+            isLoading={isLoadingConstruction}
           />
         </div>
         <Input
@@ -114,6 +142,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="bairro"
           autoFocus
           register={register}
+          isLoading={isLoadingConstruction}
         />
         <Input
           placeholder={'CEP'}
@@ -122,6 +151,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           autoFocus
           register={registerWithMask}
           masks={cepMasks}
+          isLoading={isLoadingConstruction}
         />
         <Input
           placeholder={'Estado'}
@@ -129,6 +159,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="estado"
           autoFocus
           register={register}
+          isLoading={isLoadingConstruction}
         />
         <Input
           placeholder={'Cidade'}
@@ -136,78 +167,33 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="cidade"
           autoFocus
           register={register}
+          isLoading={isLoadingConstruction}
         />
-        <div>
-          <label className="text-gray-700 text-md font-semibold mb-1">
-            Ícone do cliente
-          </label>
-          <div
-            className="mt-2 w-40 h-40 cursor-pointer"
-            onClick={handleIconContainerClick}
-          >
-            {previewIcon ? (
-              <Image
-                src={previewIcon}
-                alt="Pré-visualização do ícone"
-                width={160}
-                height={160}
-                className="rounded-full object-cover w-40 h-40"
-              />
-            ) : (
-              <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-gray-600 font-semibold text-xs">
-                  Nenhuma imagem
-                </span>
-              </div>
-            )}
-          </div>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            onChange={handleFileIcon}
-            ref={iconInputRef}
-            className="hidden"
-          />
-        </div>
-        <div>
-          <label className="text-gray-700 text-md font-semibold">
-            Logo do cliente
-          </label>
-          <div
-            className="mt-2 w-40 h-40 cursor-pointer"
-            onClick={handleLogoContainerClick}
-          >
-            {previewLogo ? (
-              <Image
-                src={previewLogo}
-                alt="Pré-visualização do logo"
-                width={160}
-                height={160}
-                className="rounded-full object-cover w-40 h-40"
-              />
-            ) : (
-              <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                <span className="text-gray-600 font-semibold text-xs">
-                  Nenhuma imagem
-                </span>
-              </div>
-            )}
-          </div>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            onChange={handleFileLogo}
-            ref={logoInputRef}
-            className="hidden"
-          />
-        </div>
+        <Input
+          placeholder="Nome do responsável"
+          name="responsavelnome"
+          formError={errors.responsavelnome?.message}
+          register={register}
+          autoFocus
+          isLoading={isLoadingConstruction}
+        />
+        <Input
+          placeholder="Email do responsável"
+          type="email"
+          name="responsavelemail"
+          formError={errors.responsavelemail?.message}
+          register={register}
+          autoFocus
+          isLoading={isLoadingConstruction}
+        />
         <div className="col-span-1 sm:col-span-2">
           <Checkbox
             label="Status"
-            description="Defina se o cliente está ativo ou não."
+            description="Defina se a construção está ativa ou não."
             checked={isActive}
             onChange={handleActiveChange}
             formError={errors.ativo?.message}
+            isLoading={isLoadingConstruction}
           />
         </div>
       </div>

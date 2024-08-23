@@ -1,13 +1,10 @@
 import { Fragment } from 'react'
 
-import { useCreateUser } from '@/hooks/user/useCreateUser'
-
-import { phoneMasks } from '@/utils/constants/masks/phoneMasks'
+import { useCreateArea } from '@/hooks/location/useCreateArea'
 
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
-import { CheckboxGroup } from '@/components/elements/CheckboxGroup'
 import { Checkbox } from '@/components/elements/Checkbox'
 
 type Props = {
@@ -15,25 +12,22 @@ type Props = {
   onClose: () => void
 }
 
-export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
+export const CreateAreaModal: React.FC<Props> = ({ isOpen, onClose }) => {
   const {
-    handleCreateUser,
-    isLoadingCreateUser,
+    handleCreateArea,
+    isLoadingCreateArea,
     register,
-    registerWithMask,
     errors,
-    userIsActive,
-    userPermissions,
-    handleUserActiveChange,
-    handlePermissionChange,
-  } = useCreateUser()
+    isActive,
+    handleActiveChange,
+  } = useCreateArea()
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar usuário"
-      onSubmit={handleCreateUser(onClose)}
+      title="Cadastrar área"
+      onSubmit={handleCreateArea(onClose)}
       size="lg"
       footer={
         <Fragment>
@@ -47,7 +41,7 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
           <Button
             title="Salvar"
             additionalClasses="w-44 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
-            isLoading={isLoadingCreateUser}
+            isLoading={isLoadingCreateArea}
             type="submit"
           />
         </Fragment>
@@ -64,35 +58,26 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
           />
         </div>
         <Input
-          placeholder="Telefone"
-          formError={errors.telefone?.message}
-          name="telefone"
+          placeholder="Nome do responsável"
+          name="responsavelnome"
+          formError={errors.responsavelnome?.message}
+          register={register}
           autoFocus
-          register={registerWithMask}
-          masks={phoneMasks}
         />
         <Input
-          placeholder="Email"
+          placeholder="Email do responsável"
           type="email"
-          formError={errors.email?.message}
-          name="email"
-          autoFocus
+          name="responsavelemail"
+          formError={errors.responsavelemail?.message}
           register={register}
+          autoFocus
         />
-        <div className="col-span-1 sm:col-span-2">
-          <CheckboxGroup
-            placeholder="Permissões"
-            options={userPermissions}
-            onSelectItem={handlePermissionChange}
-            formError={errors.permission?.message}
-          />
-        </div>
         <div className="col-span-1 sm:col-span-2">
           <Checkbox
             label="Status"
-            description="Defina se o usuário está ativo ou não."
-            checked={userIsActive}
-            onChange={handleUserActiveChange}
+            description="Defina se a área está ativa ou não."
+            checked={isActive}
+            onChange={handleActiveChange}
             formError={errors.ativo?.message}
           />
         </div>

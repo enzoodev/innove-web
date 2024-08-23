@@ -29,6 +29,8 @@ export const useCreateArea = () => {
     formState: { errors },
     register,
     reset,
+    watch,
+    setValue,
   } = useForm<TSaveAreaSchema>({
     resolver: zodResolver(saveAreaSchema),
     defaultValues: {
@@ -38,6 +40,12 @@ export const useCreateArea = () => {
       ativo: true,
     },
   })
+
+  const isActive = watch('ativo')
+
+  const handleActiveChange = useCallback(() => {
+    setValue('ativo', !isActive)
+  }, [setValue, isActive])
 
   const onSubmit = useCallback(
     async (data: TSaveAreaSchema, callback: () => void) => {
@@ -68,5 +76,7 @@ export const useCreateArea = () => {
     isLoadingCreateArea,
     register,
     errors,
+    isActive,
+    handleActiveChange,
   }
 }

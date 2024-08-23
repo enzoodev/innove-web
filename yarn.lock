@@ -3062,6 +3062,11 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
+use-mask-input@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/use-mask-input/-/use-mask-input-3.4.0.tgz#9f62780a376873d10ecaf41a083c61db92a548d1"
+  integrity sha512-FdCoqgM9/sZz9VNNuH3EjCNojTGi82nw7ACC/a5OhnoqQG6ZMMh4WuscgayNJquqsnIVfCXkkMLSw6V8kSXSBg==
+
 util-deprecate@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
