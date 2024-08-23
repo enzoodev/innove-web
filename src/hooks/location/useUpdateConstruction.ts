@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import { useHookFormMask } from 'use-mask-input'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useAuth } from '@/hooks/auth/useAuth'
@@ -67,12 +68,13 @@ export const useUpdateConstruction = ({
       ativo: true,
     },
   })
+  const registerWithMask = useHookFormMask(register)
 
-  const userIsActive = watch('ativo')
+  const isActive = watch('ativo')
 
-  const handleUserActiveChange = useCallback(() => {
-    setValue('ativo', !userIsActive)
-  }, [setValue, userIsActive])
+  const handleActiveChange = useCallback(() => {
+    setValue('ativo', !isActive)
+  }, [setValue, isActive])
 
   const fetchConstruction = useCallback(async () => {
     try {
@@ -138,8 +140,9 @@ export const useUpdateConstruction = ({
     isLoadingConstruction,
     isLoadingUpdateConstruction,
     register,
+    registerWithMask,
     errors,
-    userIsActive,
-    handleUserActiveChange,
+    isActive,
+    handleActiveChange,
   }
 }
