@@ -29,7 +29,7 @@ export const useInactiveQuestion = (
         idchecklist: checklistId,
         idquestion: questionId,
       })
-      toast.success('Questão excluida com sucesso!')
+      toast.success('Questão inativada com sucesso!')
       queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CHECKLISTS] })
       queryClient.invalidateQueries({
         queryKey: [QueryKey.GET_CHECKLIST_BY_ID, checklistId],
