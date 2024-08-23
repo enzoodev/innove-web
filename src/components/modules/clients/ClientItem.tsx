@@ -59,6 +59,7 @@ export const ClientItem: React.NamedExoticComponent<Props> = memo(
         <Menu as="div" className="relative">
           <MenuButton
             type="button"
+            onClick={(e) => e.stopPropagation()}
             className="w-12 h-12 flex items-center justify-center rounded-full bg-opacity-70 bg-gray-300 hover:bg-opacity-90 active:bg-opacity-100"
           >
             <IconDotsVertical stroke={1.5} className="text-gray-900" />

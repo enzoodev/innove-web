@@ -45,7 +45,7 @@ export const UpdateEquipmentModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar equipamento"
+      title="Editar equipamento"
       onSubmit={handleUpdateEquipment(onClose)}
       size="lg"
       footer={

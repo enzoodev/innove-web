@@ -50,7 +50,7 @@ export const UpdateConstructionModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar construção"
+      title="Editar construção"
       onSubmit={handleUpdateConstruction(onClose)}
       size="lg"
       footer={
