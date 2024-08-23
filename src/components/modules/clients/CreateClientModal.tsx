@@ -3,6 +3,9 @@ import Image from 'next/image'
 
 import { useCreateClient } from '@/hooks/client/useCreateClient'
 
+import { cnpjMasks } from '@/utils/constants/masks/cnpjMasks'
+import { cepMasks } from '@/utils/constants/masks/cepMasks'
+
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
@@ -18,6 +21,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
     handleCreateClient,
     isLoadingCreateClient,
     register,
+    registerWithMask,
     errors,
     handleFileIcon,
     handleFileLogo,
@@ -67,18 +71,19 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           />
         </div>
         <Input
-          placeholder={'CNPJ'}
-          formError={errors.cpnj?.message}
-          name="cpnj"
-          autoFocus
-          register={register}
-        />
-        <Input
           placeholder={'Razão Social'}
           formError={errors.razaosocial?.message}
           name="razaosocial"
           autoFocus
           register={register}
+        />
+        <Input
+          placeholder={'CNPJ'}
+          formError={errors.cpnj?.message}
+          name="cpnj"
+          autoFocus
+          register={registerWithMask}
+          masks={cnpjMasks}
         />
         <Input
           placeholder={'Rua'}
@@ -115,7 +120,8 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           formError={errors.cep?.message}
           name="cep"
           autoFocus
-          register={register}
+          register={registerWithMask}
+          masks={cepMasks}
         />
         <Input
           placeholder={'Estado'}
