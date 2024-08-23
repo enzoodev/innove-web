@@ -11,7 +11,7 @@ import { filterData } from '@/utils/filterData'
 export const useGetClients = () => {
   const [searchText, setSearchText] = useState('')
 
-  const { data: clients, isLoading: isLoadingGetClients } = useQuery({
+  const { data: clients, isFetching: isLoadingGetClients } = useQuery({
     queryKey: [QueryKey.GET_CLIENTS],
     queryFn: async () => {
       try {

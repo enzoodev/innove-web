@@ -14,7 +14,7 @@ export const useGetUsers = () => {
   const [searchText, setSearchText] = useState('')
   const { clientId } = useAuth()
 
-  const { data: users, isLoading: isLoadingGetUsers } = useQuery({
+  const { data: users, isFetching: isLoadingGetUsers } = useQuery({
     queryKey: [QueryKey.GET_USERS],
     queryFn: async () => {
       try {

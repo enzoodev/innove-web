@@ -14,7 +14,7 @@ export const useGetLocations = () => {
   const [searchText, setSearchText] = useState('')
   const { clientId } = useAuth()
 
-  const { data: locations, isLoading: isLoadingGetLocations } = useQuery({
+  const { data: locations, isFetching: isLoadingGetLocations } = useQuery({
     queryKey: [QueryKey.GET_LOCATIONS],
     queryFn: async () => {
       try {
