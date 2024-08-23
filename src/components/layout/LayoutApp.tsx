@@ -24,6 +24,7 @@ type Props = {
   hasCreateButton?: boolean
   onCreate?: () => void
   headerRightComponent?: React.ReactNode
+  customCreateButton?: React.ReactNode
 }
 
 export const LayoutApp: React.NamedExoticComponent<Props> = memo(
@@ -34,6 +35,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
     onCreate,
     hasCreateButton = true,
     headerRightComponent,
+    customCreateButton,
   }) {
     const [isSidebarOpen, toggleSidebar] = useToggle()
     const router = useRouter()
@@ -71,6 +73,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
               hasCreateButton={hasCreateButton}
               onCreate={onCreate}
               rightComponent={headerRightComponent}
+              customCreateButton={customCreateButton}
             />
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
@@ -198,6 +201,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
               hasCreateButton={hasCreateButton}
               onCreate={onCreate}
               rightComponent={headerRightComponent}
+              customCreateButton={customCreateButton}
             />
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
