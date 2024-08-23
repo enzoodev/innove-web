@@ -46,11 +46,11 @@ export const useCreateEquipment = () => {
     },
   })
 
-  const userIsActive = watch('ativo')
+  const isActive = watch('ativo')
 
-  const handleUserActiveChange = useCallback(() => {
-    setValue('ativo', !userIsActive)
-  }, [setValue, userIsActive])
+  const handleActiveChange = useCallback(() => {
+    setValue('ativo', !isActive)
+  }, [setValue, isActive])
 
   const onSubmit = useCallback(
     async (data: TSaveEquipmentSchema, callback: () => void) => {
@@ -81,7 +81,7 @@ export const useCreateEquipment = () => {
     isLoadingCreateEquipment,
     register,
     errors,
-    userIsActive,
-    handleUserActiveChange,
+    isActive,
+    handleActiveChange,
   }
 }
