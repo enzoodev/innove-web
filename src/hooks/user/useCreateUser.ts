@@ -2,7 +2,9 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
+import { useHookFormMask } from 'use-mask-input'
 import { zodResolver } from '@hookform/resolvers/zod'
+
 import { useAuth } from '@/hooks/auth/useAuth'
 
 import { saveUserSchema, TSaveUserSchema } from '@/schemas/user/saveUserSchema'
@@ -39,6 +41,7 @@ export const useCreateUser = () => {
       permission: permissions.map((item) => ({ ...item, isActive: false })),
     },
   })
+  const registerWithMask = useHookFormMask(register)
 
   const userPermissions = watch('permission')
   const userIsActive = watch('ativo')
@@ -85,6 +88,7 @@ export const useCreateUser = () => {
     handleCreateUser,
     isLoadingCreateUser,
     register,
+    registerWithMask,
     errors,
     userIsActive,
     userPermissions,
