@@ -3,12 +3,7 @@ import { NextPage } from 'next'
 
 const Config: NextPage = () => {
   return (
-    <LayoutApp
-      title="Configurações"
-      headTitle="Configurações - Innove"
-      searchText={''}
-      setSearchText={() => {}}
-    >
+    <LayoutApp title="Configurações" headTitle="Configurações - Innove">
       <div>
         <h1>Configurações</h1>
       </div>
