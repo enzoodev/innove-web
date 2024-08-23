@@ -10,7 +10,16 @@ export const saveConstructionSchema = z.object({
   datastart: z
     .string()
     .min(1, 'A data de início é obrigatória.')
-    .regex(/^\d{2}\/\d{2}\/\d{4}$/, 'Data inválida.'),
+    .regex(/^\d{2}\/\d{2}\/\d{4}$/, 'Data inválida.')
+    .refine((date) => {
+      const [day, month, year] = date.split('/').map(Number)
+      const dateObj = new Date(year, month - 1, day)
+      return (
+        dateObj.getFullYear() === year &&
+        dateObj.getMonth() === month - 1 &&
+        dateObj.getDate() === day
+      )
+    }, 'Data inválida no calendário.'),
   rua: z.string().min(1, 'A rua é obrigatória.'),
   numero: z.string().min(1, 'O número é obrigatório.'),
   complemento: z.string().optional(),
