@@ -29,7 +29,7 @@ export const useGetLocations = () => {
   const filteredLocations = useMemo(
     () => ({
       area: filterData(searchText, locations?.Area),
-      construction: filterData(searchText, locations?.Equipamento),
+      construction: filterData(searchText, locations?.Obra),
       equipment: filterData(searchText, locations?.Equipamento),
     }),
     [locations, searchText],
