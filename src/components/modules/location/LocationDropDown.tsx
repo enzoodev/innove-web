@@ -23,8 +23,8 @@ export const LocationDropDown: React.FC<Props> = ({
   return (
     <div>
       <div
-        className="flex flex-row items-center justify-between py-2 px-4 border-b border-gray-300
-        hover:bg-white hover:bg-opacity-20 active:bg-white active:bg-opacity-40 cursor-pointer"
+        className={`flex flex-row items-center justify-between ${isOpen ? 'py-3' : 'py-2'} px-4 border-b border-gray-300
+        hover:bg-white hover:bg-opacity-20 active:bg-white active:bg-opacity-40 cursor-pointer`}
         onClick={handleOpen}
       >
         <h3 className="text-gray-800 text-md font-semibold">{title}</h3>
