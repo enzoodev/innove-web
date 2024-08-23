@@ -11,5 +11,6 @@ export const getAuth = async () => {
   //   url: 'user',
   //   type: 'auth',
   // })
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   return getAuthMock as TAuth
 }
