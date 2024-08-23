@@ -52,3 +52,5 @@ type TLocations = {
   Area: Array<TLocationArea>
   Equipamento: Array<TLocationEquipment>
 }
+
+type TLocation = TLocationArea | TLocationConstruction | TLocationEquipment
