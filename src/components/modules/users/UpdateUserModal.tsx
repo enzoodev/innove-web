@@ -2,6 +2,8 @@ import { Fragment, useEffect } from 'react'
 
 import { useUpdateUser } from '@/hooks/user/useUpdateUser'
 
+import { phoneMasks } from '@/utils/constants/masks/phoneMasks'
+
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
@@ -25,6 +27,7 @@ export const UpdateUserModal: React.FC<Props> = ({
     isLoadingUser,
     isLoadingUpdateUser,
     register,
+    registerWithMask,
     errors,
     userIsActive,
     userPermissions,
@@ -81,7 +84,8 @@ export const UpdateUserModal: React.FC<Props> = ({
           formError={errors.telefone?.message}
           name="telefone"
           autoFocus
-          register={register}
+          register={registerWithMask}
+          masks={phoneMasks}
           isLoading={isLoadingUser}
         />
         <Input

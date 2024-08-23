@@ -2,6 +2,8 @@ import { Fragment } from 'react'
 
 import { useCreateUser } from '@/hooks/user/useCreateUser'
 
+import { phoneMasks } from '@/utils/constants/masks/phoneMasks'
+
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
@@ -18,6 +20,7 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
     handleCreateUser,
     isLoadingCreateUser,
     register,
+    registerWithMask,
     errors,
     userIsActive,
     userPermissions,
@@ -65,7 +68,8 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
           formError={errors.telefone?.message}
           name="telefone"
           autoFocus
-          register={register}
+          register={registerWithMask}
+          masks={phoneMasks}
         />
         <Input
           placeholder="Email"
