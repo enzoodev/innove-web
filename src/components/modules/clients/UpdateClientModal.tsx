@@ -3,6 +3,9 @@ import Image from 'next/image'
 
 import { useUpdateClient } from '@/hooks/client/useUpdateClient'
 
+import { cnpjMasks } from '@/utils/constants/masks/cnpjMasks'
+import { cepMasks } from '@/utils/constants/masks/cepMasks'
+
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
@@ -25,6 +28,7 @@ export const UpdateClientModal: React.FC<Props> = ({
     isLoadingClient,
     isLoadingUpdateClient,
     register,
+    registerWithMask,
     errors,
     handleFileIcon,
     handleFileLogo,
@@ -83,19 +87,20 @@ export const UpdateClientModal: React.FC<Props> = ({
           />
         </div>
         <Input
-          placeholder={'CNPJ'}
-          formError={errors.cpnj?.message}
-          name="cpnj"
-          autoFocus
-          register={register}
-          isLoading={isLoadingClient}
-        />
-        <Input
           placeholder={'Razão Social'}
           formError={errors.razaosocial?.message}
           name="razaosocial"
           autoFocus
           register={register}
+          isLoading={isLoadingClient}
+        />
+        <Input
+          placeholder={'CNPJ'}
+          formError={errors.cpnj?.message}
+          name="cpnj"
+          autoFocus
+          register={registerWithMask}
+          masks={cnpjMasks}
           isLoading={isLoadingClient}
         />
         <Input
@@ -137,7 +142,8 @@ export const UpdateClientModal: React.FC<Props> = ({
           formError={errors.cep?.message}
           name="cep"
           autoFocus
-          register={register}
+          register={registerWithMask}
+          masks={cepMasks}
           isLoading={isLoadingClient}
         />
         <Input
