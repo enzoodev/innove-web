@@ -37,7 +37,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
   }) {
     const [isSidebarOpen, toggleSidebar] = useToggle()
     const router = useRouter()
-    const { auth } = useAuth()
+    const { auth, isLoadingUser } = useAuth()
 
     const [firstName, secondName] = auth?.name.split(' ') ?? ['', '']
     const clientLogo = PhotoFormatter.formatUri(auth?.client_logo_icon)
@@ -52,13 +52,17 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
             <button onClick={toggleSidebar}>
               <IconMenu2 stroke={1.5} className="w-8 h-8 text-white" />
             </button>
-            <Image
-              src={clientLogo}
-              alt="Client_logo"
-              width="36"
-              height="36"
-              className="rounded-full"
-            />
+            {isLoadingUser ? (
+              <div className="h-9 w-9 bg-gray-300 rounded-full animate-pulse" />
+            ) : (
+              <Image
+                src={clientLogo}
+                alt="Client_logo"
+                width="36"
+                height="36"
+                className="rounded-full"
+              />
+            )}
           </div>
           <SidebarModal isOpen={isSidebarOpen} closeModal={toggleSidebar} />
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
@@ -88,13 +92,19 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                 <IconMenu2 stroke={1.75} className="w-7 h-7 text-white" />
               </button>
               <div className="flex flex-col items-center gap-4">
-                <Image
-                  src={clientLogo}
-                  alt="Client_logo"
-                  width={isSidebarOpen ? '92' : '42'}
-                  height={isSidebarOpen ? '92' : '42'}
-                  className="rounded-full"
-                />
+                {isLoadingUser ? (
+                  <div
+                    className={`bg-gray-300 rounded-full animate-pulse ${isSidebarOpen ? 'w-24 h-24' : 'w-10 h-10'}`}
+                  />
+                ) : (
+                  <Image
+                    src={clientLogo}
+                    alt="Client_logo"
+                    width={isSidebarOpen ? '96' : '40'}
+                    height={isSidebarOpen ? '96' : '40'}
+                    className="rounded-full"
+                  />
+                )}
                 <div
                   className={`flex-col items-center ${
                     isSidebarOpen ? 'flex' : 'hidden'

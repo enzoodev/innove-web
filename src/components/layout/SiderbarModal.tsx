@@ -21,7 +21,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
   closeModal,
 }) => {
   const router = useRouter()
-  const { auth } = useAuth()
+  const { auth, isLoadingUser } = useAuth()
 
   const [firstName, secondName] = auth?.name.split(' ') ?? ['', '']
   const clientLogo = PhotoFormatter.formatUri(auth?.client_logo_icon)
@@ -53,13 +53,17 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
             <IconMenu2 stroke={1.75} className="w-7 h-7 text-white" />
           </button>
           <div className="flex flex-col items-center gap-4 my-8">
-            <Image
-              src={clientLogo}
-              alt="Client_logo"
-              width="96"
-              height="96"
-              className="rounded-full"
-            />
+            {isLoadingUser ? (
+              <div className="h-24 w-24 bg-gray-300 rounded-full animate-pulse" />
+            ) : (
+              <Image
+                src={clientLogo}
+                alt="Client_logo"
+                width="96"
+                height="96"
+                className="rounded-full"
+              />
+            )}
             <div className="flex flex-col items-center">
               <span className="text-lg font-semibold text-white break-words">
                 {firstName} {secondName}
