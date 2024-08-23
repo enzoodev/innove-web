@@ -18,7 +18,6 @@ import { QueryKey } from '@/enums/QueryKey'
 import { createFile } from '@/utils/createFile'
 
 export const useUpdateClient = (clientId: number) => {
-  const [isLoadingFetchFiles, setIsLoadingFetchFiles] = useState(true)
   const [previewIcon, setPreviewIcon] = useState<string | null>(null)
   const [previewLogo, setPreviewLogo] = useState<string | null>(null)
   const iconInputRef = useRef<HTMLInputElement | null>(null)
@@ -99,36 +98,29 @@ export const useUpdateClient = (clientId: number) => {
   )
 
   const fetchClientFiles = useCallback(
-    async (files: TClientAttachments) => {
-      try {
-        setIsLoadingFetchFiles(true)
+    async ({ icon, logo }: TClientAttachments) => {
+      let fileIcon: File | undefined
+      let fileLogo: File | undefined
 
-        const promises: Array<Promise<File>> = []
-
-        Object.keys(files).forEach((key: string) => {
-          const fileKey = key as keyof TClientAttachments
-
-          if (!files[fileKey]) {
-            return
-          }
-
-          promises.push(
-            createFile({
-              base64String: files[fileKey].file,
-              fileName: files[fileKey].filename ?? `${fileKey}-${clientId}`,
-              fileType: files[fileKey].extension,
-            }),
-          )
+      if (icon) {
+        fileIcon = createFile({
+          base64String: icon.file,
+          fileName: icon.filename ?? `icon-${clientId}`,
+          fileType: icon.extension,
         })
+      }
 
-        const [icon, logo] = await Promise.all(promises)
+      if (logo) {
+        fileLogo = createFile({
+          base64String: logo.file,
+          fileName: logo.filename ?? `logo-${clientId}`,
+          fileType: logo.extension,
+        })
+      }
 
-        return {
-          icon,
-          logo,
-        }
-      } finally {
-        setIsLoadingFetchFiles(false)
+      return {
+        icon: fileIcon,
+        logo: fileLogo,
       }
     },
     [clientId],
@@ -139,10 +131,16 @@ export const useUpdateClient = (clientId: number) => {
       const client = await getClientByIdFn({ idclient: clientId })
       const { icon, logo } = await fetchClientFiles(client.anexo)
       const [address] = client.address
-      const iconURL = URL.createObjectURL(icon)
-      const logoURL = URL.createObjectURL(logo)
-      setPreviewLogo(iconURL)
-      setPreviewIcon(logoURL)
+
+      if (icon) {
+        const iconURL = URL.createObjectURL(icon)
+        setPreviewIcon(iconURL)
+      }
+
+      if (logo) {
+        const logoURL = URL.createObjectURL(logo)
+        setPreviewLogo(logoURL)
+      }
 
       reset({
         name: client.name,
@@ -208,7 +206,7 @@ export const useUpdateClient = (clientId: number) => {
   return {
     fetchClient,
     handleUpdateClient,
-    isLoadingClient: isLoadingGetClient || isLoadingFetchFiles,
+    isLoadingClient: isLoadingGetClient,
     isLoadingUpdateClient,
     register,
     errors,
