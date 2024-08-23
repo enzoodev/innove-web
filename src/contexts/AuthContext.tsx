@@ -39,7 +39,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const { data: auth, isLoading: isLoadingUser } = useQuery({
+  const { data: auth, isFetching: isLoadingUser } = useQuery({
     queryKey: [QueryKey.GET_USER],
     queryFn: async () => {
       try {
