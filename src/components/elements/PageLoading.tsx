@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 export const PageLoading: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [progress, setProgress] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout
+
     const handleStart = (url: string) => {
       if (url !== router.asPath) {
-        setIsLoading(true)
+        setProgress(30)
+        timeout = setTimeout(() => setProgress(60), 200)
       }
     }
 
     const handleComplete = () => {
-      setIsLoading(false)
+      setProgress(100)
+      timeout = setTimeout(() => setProgress(0), 300)
     }
 
     router.events.on('routeChangeStart', handleStart)
@@ -21,20 +25,17 @@ export const PageLoading: React.FC = () => {
     router.events.on('routeChangeError', handleComplete)
 
     return () => {
+      clearTimeout(timeout)
       router.events.off('routeChangeStart', handleStart)
       router.events.off('routeChangeComplete', handleComplete)
       router.events.off('routeChangeError', handleComplete)
     }
   }, [router])
 
-  if (!isLoading) return null
-
   return (
-    <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 bg-white py-3 px-5 rounded-full border border-gray-300">
-      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-1"></div>
-      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-2"></div>
-      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-3"></div>
-      <div className="w-3 h-3 bg-cyan-800 rounded-full animate-blink-4"></div>
-    </div>
+    <div
+      className="fixed top-0 left-0 h-1 bg-cyan-800 transition-all duration-200 ease-out"
+      style={{ width: `${progress}%`, opacity: progress > 0 ? 1 : 0 }}
+    />
   )
 }
