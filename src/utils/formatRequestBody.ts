@@ -1,4 +1,4 @@
-export const formatRequest = (data: any, formData = new FormData()) => {
+export const formatRequestBody = (data: any, formData = new FormData()) => {
   if (!data) {
     return null
   }
