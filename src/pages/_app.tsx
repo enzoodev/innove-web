@@ -23,7 +23,6 @@ const inter = Inter({ subsets: ['latin'] })
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter()
-  const auth = useRef(true)
 
   useEffect(() => {
     const guestRoutes: Array<string> = [Routes.LOGIN, Routes.RECOVER_ACCOUNT]
@@ -34,7 +33,6 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 
       if (!hasToken && !isInAuthRoutes) {
         router.push(Routes.LOGIN)
-        auth.current = false
       }
     }
   }, [router])
