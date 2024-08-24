@@ -23,7 +23,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
   const router = useRouter()
   const { auth, isLoadingUser } = useAuth()
 
-  const [firstName, secondName] = auth?.name.split(' ') ?? ['', '']
+  const [firstName, secondName] = auth?.name?.split(' ') ?? ['', '']
   const clientLogo = PhotoFormatter.formatUri(auth?.client_logo_icon)
 
   return (
