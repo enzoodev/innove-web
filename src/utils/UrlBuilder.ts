@@ -1,10 +1,19 @@
 export class UrlBuilder {
+  private static readonly baseUrl =
+    process.env.NEXT_PUBLIC_API_URL ??
+    'https://safety360.espertibrasil.com.br/api/'
+
   public static readonly build = (
     baseURL: string,
     url: string,
-    params?: unknown,
+    params?: Record<string, any>,
   ) => {
-    const fullUrl = new URL(url, baseURL)
+    const adjustedBaseURL = baseURL.endsWith('/')
+      ? baseURL.slice(0, -1)
+      : baseURL
+    const adjustedUrl = url.startsWith('/') ? url.slice(1) : url
+
+    const fullUrl = `${adjustedBaseURL}/${adjustedUrl}`
 
     if (params) {
       const filteredParams = Object.fromEntries(
@@ -12,13 +21,20 @@ export class UrlBuilder {
       )
 
       const searchParams = new URLSearchParams(filteredParams)
-      fullUrl.search = searchParams.toString()
+      return `${fullUrl}?${searchParams.toString()}`
     }
 
-    return fullUrl.toString()
+    return fullUrl
   }
 
   public static group(...list: Array<unknown>) {
     return list.filter((item) => !!item).join('/')
+  }
+
+  public static handleUrl(url: string) {
+    return url
+      .replace('/api', this.baseUrl)
+      .replace('app', 'web')
+      .replace('auth', '')
   }
 }

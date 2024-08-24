@@ -15,6 +15,7 @@ export const useGetChecklists = () => {
   const { clientId } = useAuth()
 
   const { data: checklists, isFetching: isLoadingGetChecklists } = useQuery({
+    enabled: !!clientId,
     queryKey: [QueryKey.GET_CHECKLISTS],
     queryFn: async () => {
       try {

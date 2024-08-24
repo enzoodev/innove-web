@@ -15,6 +15,7 @@ export const useGetLocations = () => {
   const { clientId } = useAuth()
 
   const { data: locations, isFetching: isLoadingGetLocations } = useQuery({
+    enabled: !!clientId,
     queryKey: [QueryKey.GET_LOCATIONS],
     queryFn: async () => {
       try {
