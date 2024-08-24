@@ -4,16 +4,10 @@ import { HttpMethod } from '@/enums/HttpMethod'
 
 import { UrlBuilder } from '@/utils/UrlBuilder'
 import { AppError } from '@/utils/error/AppError'
-import { formatRequest } from '@/utils/formatRequest'
+import { formatRequestBody } from '@/utils/formatRequestBody'
 import { defaultErrorMessage } from '@/utils/error/defaultErrorMessage'
 
 export class HttpServices {
-  private static readonly baseUrl =
-    process.env.NEXT_PUBLIC_API_URL ??
-    'https://safety360.espertibrasil.com.br/api/'
-
-  private static readonly appUrl = 'web'
-
   private static async request<T>({
     url,
     method = HttpMethod.GET,
@@ -23,9 +17,8 @@ export class HttpServices {
     type = 'app',
   }: TRequestConfig): Promise<T> {
     try {
-      const requestUrl = type === 'app' ? `${this.appUrl}/${url}` : url
-      const constructedUrl = UrlBuilder.build(this.baseUrl, requestUrl, params)
-      const requestBody = formatRequest(data, formData)
+      const constructedUrl = UrlBuilder.build('/api/', `${type}/${url}`, params)
+      const requestBody = formatRequestBody(data, formData)
       const token = TokenService.get()
 
       const response = await fetch(constructedUrl, {
@@ -33,8 +26,8 @@ export class HttpServices {
         body: requestBody,
         credentials: 'include',
         headers: {
-          Authorization: `Bearer ${token ?? 'no-token'}`,
-          'Content-Type':
+          authorization: `Bearer ${token ?? 'no-token'}`,
+          'content-Type':
             method === HttpMethod.POST
               ? 'multipart/form-data'
               : 'application/json',
@@ -45,8 +38,8 @@ export class HttpServices {
         await this.handleHttpError(response)
       }
 
-      const responseData: TApiResponse<T> = await response.json()
-      return responseData.data
+      const responseData: T = await response.json()
+      return responseData
     } catch (error) {
       if (error instanceof AppError) {
         throw error.message
@@ -59,6 +52,7 @@ export class HttpServices {
   private static async handleHttpError(response: Response): Promise<void> {
     if (response.status === 401) {
       TokenService.delete()
+      window.location.href = '/auth/login'
       throw new AppError('Unauthorized access. Please log in again.')
     }
 
