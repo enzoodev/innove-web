@@ -31,7 +31,6 @@ export const useUpdateConstruction = ({
 
   const { mutateAsync: getConstructionFn, isPending: isLoadingConstruction } =
     useMutation({
-      mutationKey: [QueryKey.GET_CONSTRUCTION_BY_ID, locationId],
       mutationFn: getConstruction,
     })
 
@@ -118,9 +117,6 @@ export const useUpdateConstruction = ({
         callback()
         toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
-        queryClient.invalidateQueries({
-          queryKey: [QueryKey.GET_CONSTRUCTION_BY_ID, locationId],
-        })
         reset()
       } catch (error) {
         toast.error('Não foi possível editar a inspeção.')

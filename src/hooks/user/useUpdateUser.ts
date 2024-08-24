@@ -21,7 +21,6 @@ export const useUpdateUser = (userId: number) => {
   const queryClient = useQueryClient()
 
   const { mutateAsync: getUserByIdFn, isPending: isLoadingUser } = useMutation({
-    mutationKey: [QueryKey.GET_USER_BY_ID, userId],
     mutationFn: getUserById,
   })
 
@@ -102,9 +101,6 @@ export const useUpdateUser = (userId: number) => {
         callback()
         toast.success('Usuário editado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
-        queryClient.invalidateQueries({
-          queryKey: [QueryKey.GET_USER_BY_ID, userId],
-        })
         reset()
       } catch (error) {
         toast.error('Não foi possível editar o usuário.')

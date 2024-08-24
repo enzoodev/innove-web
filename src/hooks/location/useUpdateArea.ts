@@ -28,7 +28,6 @@ export const useUpdateArea = ({
   const queryClient = useQueryClient()
 
   const { mutateAsync: getAreaFn, isPending: isLoadingArea } = useMutation({
-    mutationKey: [QueryKey.GET_AREA_BY_ID, locationId],
     mutationFn: getArea,
   })
 
@@ -91,9 +90,6 @@ export const useUpdateArea = ({
         callback()
         toast.success('Inspeção editada com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
-        queryClient.invalidateQueries({
-          queryKey: [QueryKey.GET_AREA_BY_ID, locationId],
-        })
         reset()
       } catch (error) {
         toast.error('Não foi possível editar a inspeção.')

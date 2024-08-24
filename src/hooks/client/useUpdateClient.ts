@@ -35,7 +35,6 @@ export const useUpdateClient = (clientId: number) => {
 
   const { mutateAsync: getClientByIdFn, isPending: isLoadingGetClient } =
     useMutation({
-      mutationKey: [QueryKey.GET_CLIENT_BY_ID, clientId],
       mutationFn: getClientById,
     })
 
@@ -189,9 +188,6 @@ export const useUpdateClient = (clientId: number) => {
         callback()
         toast.success('Cliente editado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CLIENTS] })
-        queryClient.invalidateQueries({
-          queryKey: [QueryKey.GET_CLIENT_BY_ID, clientId],
-        })
         reset()
       } catch (error) {
         toast.error('Não foi possível editar o cliente.')
