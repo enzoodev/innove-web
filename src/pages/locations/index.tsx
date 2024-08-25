@@ -1,7 +1,12 @@
 import { useCallback, useState } from 'react'
 import { NextPage } from 'next'
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
-import { IconPlus } from '@tabler/icons-react'
+import {
+  IconHammerOff,
+  IconMapOff,
+  IconPlus,
+  IconSettingsOff,
+} from '@tabler/icons-react'
 
 import { useToggle } from '@/hooks/shared/useToggle'
 import { useGetLocations } from '@/hooks/location/useGetLocations'
@@ -11,6 +16,7 @@ import { ListSeparators } from '@/utils/ListSeparators'
 
 import { LayoutApp } from '@/components/layout/LayoutApp'
 import { Input } from '@/components/elements/Input'
+import { ListEmpty } from '@/components/elements/ListEmpty'
 import { LocationDropDown } from '@/components/modules/location/LocationDropDown'
 import { CreateLocationPopoverPanelOption } from '@/components/modules/location/CreateLocationPopoverPanelOption'
 import { CreateAreaModal } from '@/components/modules/location/CreateAreaModal'
@@ -23,6 +29,7 @@ import { DeleteLocationModal } from '@/components/modules/location/DeleteLocatio
 import { AreaItem } from '@/components/modules/location/AreaItem'
 import { ConstructionItem } from '@/components/modules/location/ConstructionItem'
 import { EquipmentItem } from '@/components/modules/location/EquipmentItem'
+import { LocationSkeletonItem } from '@/components/modules/location/LocationSkeletonItem'
 
 const Location: NextPage = () => {
   const { locations, isLoadingGetLocations, searchText, setSearchText } =
@@ -92,13 +99,34 @@ const Location: NextPage = () => {
     [handleSelectLocation, toggleOpenDeleteLocationModal],
   )
 
+  const renderLoadingItems = useCallback(
+    () =>
+      Array.from({ length: 4 }).map((_, index, array) => {
+        const hasSeparator = ListSeparators.getHasSeparator(index, array)
+        return (
+          <div key={index}>
+            <LocationSkeletonItem />
+            {hasSeparator && <hr className="border-t border-gray-300" />}
+          </div>
+        )
+      }),
+    [],
+  )
+
   const renderAreas = useCallback(() => {
     if (isLoadingGetLocations) {
-      return <div>Carregando...</div>
+      return renderLoadingItems()
     }
 
     if (locations.area.length === 0) {
-      return <div>Nenhuma área encontrada</div>
+      return (
+        <ListEmpty
+          renderIcon={() => (
+            <IconMapOff stroke={1.5} className="w-7 h-7 text-gray-700" />
+          )}
+          title="Nenhuma área encontrada."
+        />
+      )
     }
 
     return locations.area.map((item, index, array) => {
@@ -119,15 +147,23 @@ const Location: NextPage = () => {
     handleUpdateLocation,
     isLoadingGetLocations,
     locations.area,
+    renderLoadingItems,
   ])
 
   const renderConstructions = useCallback(() => {
     if (isLoadingGetLocations) {
-      return <div>Carregando...</div>
+      return renderLoadingItems()
     }
 
     if (locations.construction.length === 0) {
-      return <div>Nenhuma construção encontrada</div>
+      return (
+        <ListEmpty
+          renderIcon={() => (
+            <IconHammerOff stroke={1.5} className="w-7 h-7 text-gray-700" />
+          )}
+          title="Nenhuma obra encontrada."
+        />
+      )
     }
 
     return locations.construction.map((item, index, array) => {
@@ -148,15 +184,23 @@ const Location: NextPage = () => {
     handleUpdateLocation,
     isLoadingGetLocations,
     locations.construction,
+    renderLoadingItems,
   ])
 
   const renderEquipments = useCallback(() => {
     if (isLoadingGetLocations) {
-      return <div>Carregando...</div>
+      return renderLoadingItems()
     }
 
     if (locations.equipment.length === 0) {
-      return <div>Nenhuma equipamento encontrada</div>
+      return (
+        <ListEmpty
+          renderIcon={() => (
+            <IconSettingsOff stroke={1.5} className="w-7 h-7 text-gray-700" />
+          )}
+          title="Nenhum equipamento encontrado."
+        />
+      )
     }
 
     return locations.equipment.map((item, index, array) => {
@@ -177,6 +221,7 @@ const Location: NextPage = () => {
     handleUpdateLocation,
     isLoadingGetLocations,
     locations.equipment,
+    renderLoadingItems,
   ])
 
   return (
