@@ -22,7 +22,7 @@ export const useDeleteClient = (clientId: number) => {
         toast.success('Cliente excluido com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CLIENTS] })
       } catch (error) {
-        toast.error('Não foi possível excluir o cliente.')
+        toast.error('Não foi possível inativar o cliente.')
       }
     },
     [clientId, deleteClientFn, queryClient],

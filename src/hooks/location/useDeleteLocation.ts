@@ -40,7 +40,7 @@ export const useDeleteLocation = ({
         toast.success('Inspeção excluida com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_LOCATIONS] })
       } catch (error) {
-        toast.error('Não foi possível excluir a inspeção.')
+        toast.error('Não foi possível inativar a inspeção.')
       }
     },
     [deleteLocationFn, locationId, locationType.id, clientId, queryClient],

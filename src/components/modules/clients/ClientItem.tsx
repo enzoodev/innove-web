@@ -97,7 +97,7 @@ export const ClientItem: React.NamedExoticComponent<Props> = memo(
                   }}
                 >
                   <IconTrash stroke={1.5} className="w-5 h-5 text-gray-700" />
-                  <span className="text-sm text-gray-700">Excluir</span>
+                  <span className="text-sm text-gray-700">Inativar</span>
                 </button>
               </MenuItem>
             </MenuItems>

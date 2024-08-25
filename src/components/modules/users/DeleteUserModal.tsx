@@ -21,7 +21,7 @@ export const DeleteUserModal: React.FC<Props> = ({ isOpen, item, onClose }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Excluir usuário"
+      title="Inativar usuário"
       footer={
         <Fragment>
           <Button
@@ -41,7 +41,7 @@ export const DeleteUserModal: React.FC<Props> = ({ isOpen, item, onClose }) => {
       }
     >
       <p className="text-sm text-gray-600">
-        Você tem certeza que deseja excluir o usuário <b>{item.name}</b> ?
+        Você tem certeza que deseja inativar o usuário <b>{item.name}</b> ?
       </p>
     </Modal>
   )

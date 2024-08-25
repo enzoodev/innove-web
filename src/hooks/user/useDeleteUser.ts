@@ -25,7 +25,7 @@ export const useDeleteUser = (userId: number) => {
         toast.success('Usuário excluido com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
       } catch (error) {
-        toast.error('Não foi possível excluir o usuário.')
+        toast.error('Não foi possível inativar o usuário.')
       }
     },
     [deleteUserFn, userId, clientId, queryClient],
