@@ -11,7 +11,7 @@ import { useToggle } from '@/hooks/shared/useToggle'
 import { Routes } from '@/enums/Routes'
 
 import { appRoutes } from '@/utils/constants/appRoutes'
-import { PhotoFormatter } from '@/utils/PhotoFormatter'
+import { FileConverter } from '@/utils/FileConverter'
 
 import { Header } from './Header'
 import { Footer } from './Footer'
@@ -38,11 +38,11 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
     customCreateButton,
   }) {
     const [isSidebarOpen, toggleSidebar] = useToggle()
-    const router = useRouter()
     const { auth, isLoadingUser } = useAuth()
+    const router = useRouter()
 
     const [firstName, secondName] = auth?.name?.split(' ') ?? ['', '']
-    const clientLogo = PhotoFormatter.formatUri(auth?.client_logo_icon)
+    const clientLogo = FileConverter.formatUri(auth?.client_logo_icon)
 
     return (
       <Fragment>
@@ -162,7 +162,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                 </ul>
               </nav>
             </div>
-            <Link href={Routes.CONFIG} key={Routes.CONFIG}>
+            <Link href={Routes.CONFIG}>
               <li
                 className={`h-12 w-full flex items-center gap-2 ${
                   isSidebarOpen ? 'pl-4 pr-2 rounded' : 'p-3 rounded-xl'
