@@ -18,8 +18,8 @@ export const saveClientSchema = z.object({
   cidade: z.string().min(1, 'A cidade é obrigatória.'),
   estado: z.string().min(1, 'O estado é obrigatório.'),
   ativo: z.boolean(),
-  file_icon: z.instanceof(File).optional(),
-  file_logo: z.instanceof(File).optional(),
+  file_icon: z.string().optional(),
+  file_logo: z.string().optional(),
 })
 
 export type TSaveClientSchema = TypeOf<typeof saveClientSchema>
