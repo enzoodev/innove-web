@@ -10,12 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Garante que todo o histórico seja obtido
 
-    - name: Push to GitLab
-      env:
-        GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-      run: |
-        git remote add gitlab https://oauth2:${GITLAB_TOKEN}@gitlab.com/innove-sst/innove_web.git
-        git push gitlab main
+      - name: Set up Git configuration
+        run: |
+          git config user.name "enzoodev"
+          git config user.email "enzodm.devl@gmail.com"
+
+      - name: Add GitLab remote
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          git remote add gitlab https://oauth2:${GITLAB_TOKEN}@gitlab.com/innove-sst/innove_web.git
+
+      - name: Fetch from GitLab
+        run: |
+          git fetch gitlab
+
+      - name: Merge changes from GitLab into main
+        run: |
+          git merge gitlab/main --allow-unrelated-histories
+
+      - name: Push to GitLab
+        run: |
+          git push gitlab main
