@@ -78,7 +78,10 @@ export const ClientItem: React.NamedExoticComponent<Props> = memo(
                 <button
                   type="button"
                   className={`hover:bg-gray-300 hover:bg-opacity-30 active:bg-gray-300 active:bg-opacity-60 flex flex-row gap-2 items-center w-full px-4 py-2.5`}
-                  onClick={onUpdate}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onUpdate()
+                  }}
                 >
                   <IconEdit stroke={1.5} className="w-5 h-5 text-gray-700" />
                   <span className="text-sm text-gray-700">Editar</span>
@@ -88,7 +91,10 @@ export const ClientItem: React.NamedExoticComponent<Props> = memo(
                 <button
                   type="button"
                   className={`hover:bg-gray-300 hover:bg-opacity-30 active:bg-gray-300 active:bg-opacity-60 flex flex-row gap-2 items-center w-full px-4 py-2`}
-                  onClick={onDelete}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete()
+                  }}
                 >
                   <IconTrash stroke={1.5} className="w-5 h-5 text-gray-700" />
                   <span className="text-sm text-gray-700">Excluir</span>
