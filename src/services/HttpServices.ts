@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { TokenService } from '@/services/TokenService'
 
 import { HttpMethod } from '@/enums/HttpMethod'
@@ -12,13 +14,12 @@ export class HttpServices {
     url,
     method = HttpMethod.GET,
     data,
-    formData,
     params,
     type = 'app',
   }: TRequestConfig): Promise<T> {
     try {
       const constructedUrl = UrlBuilder.build('/api/', `${type}/${url}`, params)
-      const requestBody = formatRequestBody(data, formData)
+      const requestBody = formatRequestBody(data)
       const token = TokenService.get()
 
       const response = await fetch(constructedUrl, {
@@ -27,10 +28,6 @@ export class HttpServices {
         credentials: 'include',
         headers: {
           authorization: `Bearer ${token ?? 'no-token'}`,
-          'content-Type':
-            method === HttpMethod.POST
-              ? 'multipart/form-data'
-              : 'application/json',
         },
       })
 
@@ -53,6 +50,7 @@ export class HttpServices {
     if (response.status === 401) {
       TokenService.delete()
       window.location.href = '/auth/login'
+      toast.error('Falha na autenticação, realize o login novamente.')
       throw new AppError('Unauthorized access. Please log in again.')
     }
 
