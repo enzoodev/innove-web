@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
+import { TokenService } from '@/services/TokenService'
+
 import { getAuth } from '@/query/auth/getAuth'
 import { login } from '@/query/auth/login'
 import { logout } from '@/query/auth/logout'
@@ -74,19 +76,19 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       try {
         await loginFn(params)
         toast.success('Login realizado com sucesso!')
-        router.push(Routes.CLIENTS)
+        queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USER] })
       } catch (error) {
         toast.error('Não foi possível entrar na sua conta.')
       }
     },
-    [loginFn, router],
+    [loginFn, queryClient],
   )
 
   const handleLogout = useCallback(async () => {
     try {
       await logoutFn()
-      queryClient.invalidateQueries()
       router.push(Routes.LOGIN)
+      queryClient.invalidateQueries()
     } catch (error) {
       toast.error('Não foi possível sair da sua conta.')
     }
@@ -110,7 +112,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       try {
         await updatePasswordFn(params)
         toast.success('Senha alterada com sucesso!')
-        router.push(Routes.CLIENTS)
+        router.push(Routes.CONFIG)
       } catch (error) {
         toast.error('Não foi possível alterar sua senha.')
       }
@@ -123,11 +125,17 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   }, [])
 
   useEffect(() => {
-    const isLogged = auth?.iduser ?? false
+    const hasToken = TokenService.has()
     const isInAuthRoutes = authRoutes.includes(router.pathname)
 
-    if (isLogged && isInAuthRoutes) {
-      router.push(Routes.CLIENTS)
+    if (hasToken) {
+      if (isInAuthRoutes) {
+        router.push(Routes.CLIENTS)
+      }
+    } else {
+      if (!isInAuthRoutes) {
+        router.push(Routes.LOGIN)
+      }
     }
   }, [auth, authRoutes, router])
 
