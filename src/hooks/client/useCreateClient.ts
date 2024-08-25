@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ChangeEventHandler, useCallback, useRef, useState } from 'react'
+import { ChangeEventHandler, useCallback, useRef } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -15,9 +15,9 @@ import { createClient } from '@/query/client/createClient'
 
 import { QueryKey } from '@/enums/QueryKey'
 
+import { FileConverter } from '@/utils/FileConverter'
+
 export const useCreateClient = () => {
-  const [previewIcon, setPreviewIcon] = useState<string | null>(null)
-  const [previewLogo, setPreviewLogo] = useState<string | null>(null)
   const iconInputRef = useRef<HTMLInputElement | null>(null)
   const logoInputRef = useRef<HTMLInputElement | null>(null)
   const queryClient = useQueryClient()
@@ -63,29 +63,29 @@ export const useCreateClient = () => {
   const registerWithMask = useHookFormMask(register)
 
   const isActive = watch('ativo')
+  const previewIcon = watch('file_icon')
+  const previewLogo = watch('file_logo')
 
   const handleActiveChange = useCallback(() => {
     setValue('ativo', !isActive)
   }, [setValue, isActive])
 
   const handleFileIcon: ChangeEventHandler<HTMLInputElement> = useCallback(
-    ({ target }) => {
+    async ({ target }) => {
       if (!target.files) return
       const file = target.files[0]
-      const iconURL = URL.createObjectURL(file)
-      setPreviewIcon(iconURL)
-      setValue('file_icon', file)
+      const icon = await FileConverter.fileToBase64(file)
+      setValue('file_icon', icon)
     },
     [setValue],
   )
 
   const handleFileLogo: ChangeEventHandler<HTMLInputElement> = useCallback(
-    ({ target }) => {
+    async ({ target }) => {
       if (!target.files) return
       const file = target.files[0]
-      const iconURL = URL.createObjectURL(file)
-      setPreviewLogo(iconURL)
-      setValue('file_logo', file)
+      const logo = await FileConverter.fileToBase64(file)
+      setValue('file_logo', logo)
     },
     [setValue],
   )
@@ -94,22 +94,14 @@ export const useCreateClient = () => {
     async (data: TSaveClientSchema, callback: () => void) => {
       try {
         const { file_icon, file_logo, ...dataToRequest } = data
-        const formData = new FormData()
-
-        if (file_icon) {
-          formData.append('file_icon', file_icon)
-        }
-
-        if (file_logo) {
-          formData.append('file_logo', file_logo)
-        }
 
         await createClientFn({
-          data: {
-            ...dataToRequest,
-            ativo: dataToRequest.ativo ? '1' : '0',
+          ...dataToRequest,
+          ativo: dataToRequest.ativo ? '1' : '0',
+          files: {
+            file_icon,
+            file_logo,
           },
-          formData,
         })
         callback()
         toast.success('Cliente cadastrado com sucesso!')

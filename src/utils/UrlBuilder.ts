@@ -35,6 +35,6 @@ export class UrlBuilder {
     return url
       .replace('/api', this.baseUrl)
       .replace('app', 'web')
-      .replace('auth', '')
+      .replace('/auth', '')
   }
 }

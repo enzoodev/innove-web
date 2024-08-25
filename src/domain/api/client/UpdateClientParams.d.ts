@@ -1,6 +1,3 @@
-type TUpdateClientParams = {
-  data: TSaveClient & {
-    idclient: string
-  }
-  formData: FormData
+type TUpdateClientParams = TCreateClientParams & {
+  idclient: string
 }

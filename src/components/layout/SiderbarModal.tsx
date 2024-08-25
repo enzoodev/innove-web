@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/auth/useAuth'
 import { Routes } from '@/enums/Routes'
 
 import { appRoutes } from '@/utils/constants/appRoutes'
-import { PhotoFormatter } from '@/utils/PhotoFormatter'
+import { FileConverter } from '@/utils/FileConverter'
 
 type SidebarModalProps = {
   isOpen: boolean
@@ -23,8 +23,8 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
   const router = useRouter()
   const { auth, isLoadingUser } = useAuth()
 
-  const [firstName, secondName] = auth?.name.split(' ') ?? ['', '']
-  const clientLogo = PhotoFormatter.formatUri(auth?.client_logo_icon)
+  const [firstName, secondName] = auth?.name?.split(' ') ?? ['', '']
+  const clientLogo = FileConverter.formatUri(auth?.client_logo_icon)
 
   return (
     <div

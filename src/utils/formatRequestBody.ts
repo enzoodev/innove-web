@@ -1,9 +1,7 @@
-export const formatRequestBody = (data: any, formData = new FormData()) => {
+export const formatRequestBody = (data: any) => {
   if (!data) {
     return null
   }
 
-  formData.append('json', JSON.stringify(data))
-
-  return formData
+  return JSON.stringify(data)
 }

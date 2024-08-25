@@ -15,7 +15,6 @@ export const useUpdateChecklist = (checklistId: number) => {
 
   const { mutateAsync: getChecklistByIdFn, isPending: isLoadingChecklist } =
     useMutation({
-      mutationKey: [QueryKey.GET_CHECKLIST_BY_ID, checklistId],
       mutationFn: getChecklistById,
     })
 
@@ -43,14 +42,11 @@ export const useUpdateChecklist = (checklistId: number) => {
         await updateChecklistFn(data)
         toast.success('Checklist editado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CHECKLISTS] })
-        queryClient.invalidateQueries({
-          queryKey: [QueryKey.GET_CHECKLIST_BY_ID, checklistId],
-        })
       } catch (error) {
         toast.error('Não foi possível editar o checklist.')
       }
     },
-    [updateChecklistFn, queryClient, checklistId],
+    [updateChecklistFn, queryClient],
   )
 
   return {

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ChangeEventHandler, useCallback, useRef, useState } from 'react'
+import { ChangeEventHandler, useCallback, useRef } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
@@ -16,11 +16,9 @@ import { updateClient } from '@/query/client/updateClient'
 
 import { QueryKey } from '@/enums/QueryKey'
 
-import { createFile } from '@/utils/createFile'
+import { FileConverter } from '@/utils/FileConverter'
 
 export const useUpdateClient = (clientId: number) => {
-  const [previewIcon, setPreviewIcon] = useState<string | null>(null)
-  const [previewLogo, setPreviewLogo] = useState<string | null>(null)
   const iconInputRef = useRef<HTMLInputElement | null>(null)
   const logoInputRef = useRef<HTMLInputElement | null>(null)
   const queryClient = useQueryClient()
@@ -35,7 +33,6 @@ export const useUpdateClient = (clientId: number) => {
 
   const { mutateAsync: getClientByIdFn, isPending: isLoadingGetClient } =
     useMutation({
-      mutationKey: [QueryKey.GET_CLIENT_BY_ID, clientId],
       mutationFn: getClientById,
     })
 
@@ -72,77 +69,40 @@ export const useUpdateClient = (clientId: number) => {
   const registerWithMask = useHookFormMask(register)
 
   const isActive = watch('ativo')
+  const previewIcon = watch('file_icon')
+  const previewLogo = watch('file_logo')
 
   const handleActiveChange = useCallback(() => {
     setValue('ativo', !isActive)
   }, [setValue, isActive])
 
   const handleFileIcon: ChangeEventHandler<HTMLInputElement> = useCallback(
-    ({ target }) => {
+    async ({ target }) => {
       if (!target.files) return
       const file = target.files[0]
-      const iconURL = URL.createObjectURL(file)
-      setPreviewIcon(iconURL)
-      setValue('file_icon', file)
+      const icon = await FileConverter.fileToBase64(file)
+      setValue('file_icon', icon)
     },
     [setValue],
   )
 
   const handleFileLogo: ChangeEventHandler<HTMLInputElement> = useCallback(
-    ({ target }) => {
+    async ({ target }) => {
       if (!target.files) return
       const file = target.files[0]
-      const iconURL = URL.createObjectURL(file)
-      setPreviewLogo(iconURL)
-      setValue('file_logo', file)
+      const logo = await FileConverter.fileToBase64(file)
+      setValue('file_logo', logo)
     },
     [setValue],
-  )
-
-  const fetchClientFiles = useCallback(
-    async ({ icon, logo }: TClientAttachments) => {
-      let fileIcon: File | undefined
-      let fileLogo: File | undefined
-
-      if (icon) {
-        fileIcon = createFile({
-          base64String: icon.file,
-          fileName: icon.filename ?? `icon-${clientId}`,
-          fileType: icon.extension,
-        })
-      }
-
-      if (logo) {
-        fileLogo = createFile({
-          base64String: logo.file,
-          fileName: logo.filename ?? `logo-${clientId}`,
-          fileType: logo.extension,
-        })
-      }
-
-      return {
-        icon: fileIcon,
-        logo: fileLogo,
-      }
-    },
-    [clientId],
   )
 
   const fetchClient = useCallback(async () => {
     try {
       const client = await getClientByIdFn({ idclient: clientId })
-      const { icon, logo } = await fetchClientFiles(client.anexo)
       const [address] = client.address
-
-      if (icon) {
-        const iconURL = URL.createObjectURL(icon)
-        setPreviewIcon(iconURL)
-      }
-
-      if (logo) {
-        const logoURL = URL.createObjectURL(logo)
-        setPreviewLogo(logoURL)
-      }
+      const { icon, incon } = client.anexo
+      const formattedIcon = icon ? FileConverter.formatUri(icon) : undefined
+      const formattedLogo = incon ? FileConverter.formatUri(incon) : undefined
 
       reset({
         name: client.name,
@@ -156,42 +116,31 @@ export const useUpdateClient = (clientId: number) => {
         cidade: address.cidade,
         estado: address.estado,
         ativo: client.status === '1',
-        file_icon: icon,
-        file_logo: logo,
+        file_icon: formattedIcon,
+        file_logo: formattedLogo,
       })
     } catch (error) {
       toast.error('Não foi possível buscar os dados do cliente.')
     }
-  }, [clientId, fetchClientFiles, getClientByIdFn, reset])
+  }, [clientId, getClientByIdFn, reset])
 
   const onSubmit = useCallback(
     async (data: TSaveClientSchema, callback: () => void) => {
       try {
         const { file_icon, file_logo, ...dataToRequest } = data
-        const formData = new FormData()
-
-        if (file_icon) {
-          formData.append('file_icon', file_icon)
-        }
-
-        if (file_logo) {
-          formData.append('file_logo', file_logo)
-        }
 
         await updateClientFn({
-          data: {
-            ...dataToRequest,
-            ativo: dataToRequest.ativo ? '1' : '0',
-            idclient: clientId.toString(),
+          ...dataToRequest,
+          idclient: clientId.toString(),
+          ativo: dataToRequest.ativo ? '1' : '0',
+          files: {
+            file_icon,
+            file_logo,
           },
-          formData,
         })
         callback()
         toast.success('Cliente editado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CLIENTS] })
-        queryClient.invalidateQueries({
-          queryKey: [QueryKey.GET_CLIENT_BY_ID, clientId],
-        })
         reset()
       } catch (error) {
         toast.error('Não foi possível editar o cliente.')

@@ -1,18 +1,14 @@
-import { Fragment, useEffect, useRef } from 'react'
+import { Fragment } from 'react'
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { Inter } from 'next/font/google'
 import type { AppProps } from 'next/app'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Slide, ToastContainer } from 'react-toastify'
 
-import { TokenService } from '@/services/TokenService'
 import { queryClient } from '@/services/queryClient'
 
 import { AuthContextProvider } from '@/contexts/AuthContext'
-
-import { Routes } from '@/enums/Routes'
 
 import { PageLoading } from '@/components/elements/PageLoading'
 
@@ -22,23 +18,6 @@ import '@/styles/globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
-  const router = useRouter()
-  const auth = useRef(true)
-
-  // useEffect(() => {
-  //   const guestRoutes: Array<string> = [Routes.LOGIN, Routes.RECOVER_ACCOUNT]
-
-  //   if (!guestRoutes.includes(router.pathname)) {
-  //     const token = TokenService.get()
-  //     const isLogged = !router.pathname.includes('auth')
-
-  //     if (!token && isLogged) {
-  //       router.push(Routes.LOGIN)
-  //       auth.current = false
-  //     }
-  //   }
-  // }, [router])
-
   return (
     <Fragment>
       <ToastContainer
