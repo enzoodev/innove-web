@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import {
   IconDotsVertical,
   IconEdit,
-  IconTrash,
+  IconTagOff,
   IconUser,
 } from '@tabler/icons-react'
 import {
@@ -104,7 +104,7 @@ export const UserItem: React.NamedExoticComponent<Props> = memo(
                     onDelete()
                   }}
                 >
-                  <IconTrash stroke={1.5} className="w-5 h-5 text-gray-700" />
+                  <IconTagOff stroke={1.5} className="w-5 h-5 text-gray-700" />
                   <span className="text-sm text-gray-700">Inativar</span>
                 </button>
               </MenuItem>
