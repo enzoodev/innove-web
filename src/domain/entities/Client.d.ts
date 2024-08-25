@@ -1,6 +1,6 @@
 type TClientAttachments = {
   icon: TFile | null
-  logo: TFile | null
+  incon: TFile | null
 }
 
 type TClient = {
