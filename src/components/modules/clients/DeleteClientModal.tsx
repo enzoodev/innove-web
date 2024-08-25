@@ -25,7 +25,7 @@ export const DeleteClientModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Excluir cliente"
+      title="Inativar cliente"
       footer={
         <Fragment>
           <Button
@@ -45,7 +45,7 @@ export const DeleteClientModal: React.FC<Props> = ({
       }
     >
       <p className="text-sm text-gray-600">
-        Você tem certeza que deseja excluir o cliente <b>{item.name}</b> ?
+        Você tem certeza que deseja inativar o cliente <b>{item.name}</b> ?
       </p>
     </Modal>
   )

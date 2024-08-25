@@ -32,7 +32,7 @@ export const useInactiveQuestion = (
       toast.success('Questão inativada com sucesso!')
       queryClient.invalidateQueries({ queryKey: [QueryKey.GET_CHECKLISTS] })
     } catch (error) {
-      toast.error('Não foi possível excluir a questão.')
+      toast.error('Não foi possível inativar a questão.')
     }
   }, [checklistId, clientId, inactiveQuestionFn, queryClient, questionId])
 

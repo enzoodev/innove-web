@@ -35,7 +35,7 @@ export const DeleteLocationModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Excluir inspeção"
+      title="Inativar inspeção"
       footer={
         <Fragment>
           <Button
@@ -55,7 +55,7 @@ export const DeleteLocationModal: React.FC<Props> = ({
       }
     >
       <p className="text-sm text-gray-600">
-        Você tem certeza que deseja excluir a inspeção de {item.type.key}:{' '}
+        Você tem certeza que deseja inativar a inspeção de {item.type.key}:{' '}
         <b>{item.name}</b> ?
       </p>
     </Modal>
