@@ -22,7 +22,7 @@ export const useDeleteUser = (userId: number) => {
       try {
         await deleteUserFn({ iduser: userId, idclient: clientId })
         callback()
-        toast.success('Usuário excluido com sucesso!')
+        toast.success('Usuário inativado com sucesso!')
         queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USERS] })
       } catch (error) {
         toast.error('Não foi possível inativar o usuário.')
