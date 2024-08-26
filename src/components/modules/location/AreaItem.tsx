@@ -98,6 +98,7 @@ export const AreaItem: React.NamedExoticComponent<Props> = memo(
               <MenuItem>
                 <button
                   type="button"
+                  disabled={item.status === '0'}
                   className={`hover:bg-gray-300 hover:bg-opacity-30 active:bg-gray-300 active:bg-opacity-60 flex flex-row gap-2 items-center w-full px-4 py-2`}
                   onClick={(e) => {
                     e.stopPropagation()
