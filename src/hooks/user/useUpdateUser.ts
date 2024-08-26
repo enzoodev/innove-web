@@ -73,7 +73,7 @@ export const useUpdateUser = (userId: number) => {
         nome: user.name,
         telefone: user.phone,
         email: user.email,
-        ativo: user.statususer === '1',
+        ativo: user.status === '1',
         permission: permissions.map((item) => ({
           ...item,
           isActive: user.permissions.some(
