@@ -41,6 +41,6 @@ export const handleRequest = async (req: NextApiRequest) => {
     headers,
   })
 
-  const data = await response.json()
-  return data.data
+  const responseData = await response.json()
+  return responseData.data
 }
