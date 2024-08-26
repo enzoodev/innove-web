@@ -90,7 +90,9 @@ export const ClientItem: React.NamedExoticComponent<Props> = memo(
               <MenuItem>
                 <button
                   type="button"
-                  className={`hover:bg-gray-300 hover:bg-opacity-30 active:bg-gray-300 active:bg-opacity-60 flex flex-row gap-2 items-center w-full px-4 py-2`}
+                  disabled={item.status === '0'}
+                  className={`flex flex-row gap-2 items-center w-full px-4 py-2 
+                    ${item.status === '0' ? 'opacity-60' : 'hover:bg-gray-300 hover:bg-opacity-30 active:bg-gray-300 active:bg-opacity-60'}`}
                   onClick={(e) => {
                     e.stopPropagation()
                     onDelete()
