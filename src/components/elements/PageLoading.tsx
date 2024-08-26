@@ -17,6 +17,7 @@ export const PageLoading: React.FC = () => {
 
     const handleComplete = () => {
       setProgress(100)
+      clearTimeout(timeout)
       timeout = setTimeout(() => setProgress(0), 300)
     }
 
@@ -24,13 +25,16 @@ export const PageLoading: React.FC = () => {
     router.events.on('routeChangeComplete', handleComplete)
     router.events.on('routeChangeError', handleComplete)
 
+    handleComplete()
+
     return () => {
       clearTimeout(timeout)
       router.events.off('routeChangeStart', handleStart)
       router.events.off('routeChangeComplete', handleComplete)
       router.events.off('routeChangeError', handleComplete)
     }
-  }, [router])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath]) // Alterei para escutar router.asPath
 
   return (
     <div
