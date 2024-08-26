@@ -22,6 +22,7 @@ type Props = {
   headTitle: string
   children: React.ReactNode
   hasCreateButton?: boolean
+  hasHeader?: boolean
   onCreate?: () => void
   headerRightComponent?: React.ReactNode
   customCreateButton?: React.ReactNode
@@ -34,6 +35,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
     children,
     onCreate,
     hasCreateButton = true,
+    hasHeader = true,
     headerRightComponent,
     customCreateButton,
   }) {
@@ -68,13 +70,15 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
           </div>
           <SidebarModal isOpen={isSidebarOpen} closeModal={toggleSidebar} />
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
-            <Header
-              title={title}
-              hasCreateButton={hasCreateButton}
-              onCreate={onCreate}
-              rightComponent={headerRightComponent}
-              customCreateButton={customCreateButton}
-            />
+            {hasHeader && (
+              <Header
+                title={title}
+                hasCreateButton={hasCreateButton}
+                onCreate={onCreate}
+                rightComponent={headerRightComponent}
+                customCreateButton={customCreateButton}
+              />
+            )}
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
           </div>
@@ -196,13 +200,15 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
             </Link>
           </div>
           <div className="flex flex-col min-h-screen h-screen w-full p-4 bg-gray-200 overflow-auto">
-            <Header
-              title={title}
-              hasCreateButton={hasCreateButton}
-              onCreate={onCreate}
-              rightComponent={headerRightComponent}
-              customCreateButton={customCreateButton}
-            />
+            {hasHeader && (
+              <Header
+                title={title}
+                hasCreateButton={hasCreateButton}
+                onCreate={onCreate}
+                rightComponent={headerRightComponent}
+                customCreateButton={customCreateButton}
+              />
+            )}
             <main className="w-full flex-1">{children}</main>
             <Footer type="app" />
           </div>
