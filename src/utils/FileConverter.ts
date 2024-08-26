@@ -5,7 +5,7 @@ type CreateFileParams = {
 }
 
 export class FileConverter {
-  public static base64ToFile = ({
+  public static readonly base64ToFile = ({
     base64String,
     fileName,
     fileType,
@@ -34,7 +34,7 @@ export class FileConverter {
     return new File([u8arr], fileName, { type: mime })
   }
 
-  public static fileToBase64 = (file: File): Promise<string> => {
+  public static readonly fileToBase64 = (file: File): Promise<string> => {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsDataURL(file)
@@ -49,14 +49,14 @@ export class FileConverter {
     })
   }
 
-  public static formatUri = (photo?: TFile) => {
+  public static readonly formatUri = (photo?: TFile) => {
     if (!photo) return ''
 
     const fileType = photo.extension.toLowerCase()
     return `data:${fileType};filename=${photo.filename};base64,${photo.file}`
   }
 
-  public static extractFileDataFromUri = (uri: string) => {
+  public static readonly extractFileDataFromUri = (uri: string) => {
     const match = uri.match(/^data:(.*?);filename=(.*?);base64,(.*)$/)
 
     if (!match) {

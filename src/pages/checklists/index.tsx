@@ -1,8 +1,11 @@
 import { useCallback } from 'react'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import { IconEditOff } from '@tabler/icons-react'
 
 import { useGetChecklists } from '@/hooks/checklist/useGetChecklists'
+
+import { Routes } from '@/enums/Routes'
 
 import { ListSeparators } from '@/utils/ListSeparators'
 
@@ -15,6 +18,11 @@ import { ChecklistSkeletonItem } from '@/components/modules/checklists/Checklist
 const Checklists: NextPage = () => {
   const { checklists, isLoadingGetChecklists, searchText, setSearchText } =
     useGetChecklists()
+  const router = useRouter()
+
+  const handleCreateChecklist = useCallback(() => {
+    router.push(Routes.CREATE_CHECKLIST)
+  }, [router])
 
   const renderItems = useCallback(() => {
     if (isLoadingGetChecklists) {
@@ -63,6 +71,7 @@ const Checklists: NextPage = () => {
     <LayoutApp
       title="Checklists"
       headTitle="Checklists - Innove"
+      onCreate={handleCreateChecklist}
       headerRightComponent={
         <div className="w-full sm:w-72 lg:w-96">
           <Input
