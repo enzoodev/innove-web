@@ -87,7 +87,7 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const handleLogout = useCallback(async () => {
     try {
       await logoutFn()
-      router.push(Routes.LOGIN)
+      await router.push(Routes.LOGIN)
       queryClient.invalidateQueries()
     } catch (error) {
       toast.error('Não foi possível sair da sua conta.')
