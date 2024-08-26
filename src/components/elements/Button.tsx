@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import React, { Fragment, memo } from 'react'
 
 type Props = {
   title: string
@@ -8,6 +8,7 @@ type Props = {
   isLoading?: boolean
   isDisabled?: boolean
   additionalClasses?: string
+  icon?: React.ReactNode
   onClick?: () => void
 }
 
@@ -20,6 +21,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
     isDisabled = false,
     isLoading = false,
     additionalClasses = '',
+    icon,
     onClick,
   }) {
     return (
@@ -32,6 +34,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
           flex-row
           justify-center
           items-center
+          gap-2
           py-3.5
           px-6
           rounded-lg
@@ -60,11 +63,14 @@ export const Button: React.NamedExoticComponent<Props> = memo(
             </span>
           </output>
         ) : (
-          <span
-            className={`text-center text-md ${color} ${itsCancelButton ? 'font-medium' : 'font-bold'}`}
-          >
-            {title}
-          </span>
+          <Fragment>
+            <span
+              className={`text-center text-md ${color} ${itsCancelButton ? 'font-medium' : 'font-bold'}`}
+            >
+              {title}
+            </span>
+            {icon && icon}
+          </Fragment>
         )}
       </button>
     )
