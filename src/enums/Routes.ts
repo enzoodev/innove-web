@@ -6,5 +6,7 @@ export enum Routes {
   USERS = '/users',
   LOCATIONS = '/locations',
   CHECKLISTS = '/checklists',
+  CREATE_CHECKLIST = '/checklists/create',
+  UPDATE_CHECKLIST = '/checklists/update',
   CONFIG = '/config',
 }
