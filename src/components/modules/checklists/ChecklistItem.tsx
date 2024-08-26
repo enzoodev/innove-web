@@ -47,7 +47,7 @@ export const ChecklistItem: React.NamedExoticComponent<Props> = memo(
           </div>
         </div>
         <Link
-          href={`${Routes.CHECKLISTS}/${item.idchecklist}`}
+          href={`${Routes.UPDATE_CHECKLIST}/${item.idchecklist}`}
           className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 bg-opacity-70 hover:bg-opacity-90 active:bg-opacity-100"
         >
           <IconSettings stroke={1.5} className="text-gray-700 w-7 h-7" />
