@@ -27,6 +27,79 @@ type Props = InputProps & {
   masks?: Array<string>
 }
 
+type FieldProps = InputProps & {
+  name?: Path<any>
+  placeholder: string
+  formError?: string
+  isLoading: boolean
+  additionalClasses?: string
+  register: any
+  type: HTMLInputTypeAttribute
+  masks?: Array<string>
+  button: React.ReactNode
+}
+
+function Field({
+  name,
+  placeholder,
+  isLoading,
+  formError,
+  additionalClasses,
+  register,
+  type,
+  button,
+  masks,
+  ...rest
+}: FieldProps) {
+  const getRegister = useCallback(() => {
+    if (!register || !name) {
+      return {}
+    }
+
+    if (masks) {
+      return register(name, masks)
+    }
+
+    return register(name)
+  }, [masks, name, register])
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-2 w-full animate-pulse">
+        <div className="h-12 bg-gray-300 rounded-lg" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-row gap-3 w-full">
+        <input
+          type={type}
+          placeholder={placeholder}
+          className={`border
+          border-gray-300
+          ${formError ? 'border-l-4 border-red-600' : 'hover:border-gray-400 focus:border-gray-400'}
+          bg-gray-200
+          py-3
+          px-4
+        rounded-lg
+        text-gray-700
+        text-base
+        w-full
+        placeholder-gray-400
+        selection:bg-gray-400
+        ${additionalClasses ?? ''}`}
+          {...rest}
+          {...getRegister()}
+        />
+        {button && button}
+      </div>
+      {formError && <FormError message={formError} />}
+    </div>
+  )
+}
+
 export const Input: React.NamedExoticComponent<Props> = memo(
   function Component({
     placeholder,
@@ -41,58 +114,21 @@ export const Input: React.NamedExoticComponent<Props> = memo(
     masks,
     ...rest
   }) {
-    const getRegister = useCallback(() => {
-      if (!register || !name) {
-        return {}
-      }
-
-      if (masks) {
-        return register(name, masks)
-      }
-
-      return register(name)
-    }, [masks, name, register])
-
-    function Field() {
-      if (isLoading) {
-        return (
-          <div className="flex flex-col gap-2 w-full animate-pulse">
-            <div className="h-12 bg-gray-300 rounded-lg" />
-          </div>
-        )
-      }
-
-      return (
-        <div className="flex flex-col gap-2 w-full">
-          <div className="flex flex-row gap-3 w-full">
-            <input
-              type={type}
-              placeholder={placeholder}
-              className={`border
-              border-gray-300
-              ${formError ? 'border-l-4 border-red-600' : 'hover:border-gray-400 focus:border-gray-400'}
-              bg-gray-200
-              py-3
-              px-4
-            rounded-lg
-            text-gray-700
-            text-base
-            w-full
-            placeholder-gray-400
-            selection:bg-gray-400
-            ${additionalClasses ?? ''}`}
-              {...rest}
-              {...getRegister()}
-            />
-            {button && button}
-          </div>
-          {formError && <FormError message={formError} />}
-        </div>
-      )
-    }
-
     if (!hasLabel) {
-      return <Field />
+      return (
+        <Field
+          name={name}
+          placeholder={placeholder}
+          isLoading={isLoading}
+          formError={formError}
+          additionalClasses={additionalClasses}
+          register={register}
+          type={type}
+          button={button}
+          masks={masks}
+          {...rest}
+        />
+      )
     }
 
     return (
@@ -100,7 +136,18 @@ export const Input: React.NamedExoticComponent<Props> = memo(
         <label className="text-gray-700 text-base font-semibold">
           {placeholder}
         </label>
-        <Field />
+        <Field
+          name={name}
+          placeholder={placeholder}
+          isLoading={isLoading}
+          formError={formError}
+          additionalClasses={additionalClasses}
+          register={register}
+          type={type}
+          button={button}
+          masks={masks}
+          {...rest}
+        />
       </div>
     )
   },
