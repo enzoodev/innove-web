@@ -22,7 +22,9 @@ export const Checkbox: React.NamedExoticComponent<Props> = memo(
     if (isLoading) {
       return (
         <div className="flex flex-col gap-2 w-full">
-          <label className="text-gray-700 text-md font-semibold">{label}</label>
+          <label className="text-gray-700 text-base font-semibold">
+            {label}
+          </label>
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 bg-gray-300 rounded animate-pulse" />
             <div className="h-4 bg-gray-300 rounded w-48 animate-pulse" />
@@ -33,7 +35,7 @@ export const Checkbox: React.NamedExoticComponent<Props> = memo(
 
     return (
       <div className="flex flex-col gap-1 w-full">
-        <label className="text-gray-700 text-md font-semibold">{label}</label>
+        <label className="text-gray-700 text-base font-semibold">{label}</label>
         <div className="flex flex-col gap-2 w-full">
           <button type="button" className="flex items-center gap-2">
             <HeadlessCheckbox
@@ -55,7 +57,7 @@ export const Checkbox: React.NamedExoticComponent<Props> = memo(
               </svg>
             </HeadlessCheckbox>
             <label
-              className="text-gray-700 text-md active:opacity-70"
+              className="text-gray-700 text-base active:opacity-70"
               onClick={() => onChange(!checked)}
             >
               {description}

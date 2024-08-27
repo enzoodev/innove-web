@@ -38,7 +38,7 @@ export const PasswordInput: React.NamedExoticComponent<Props> = memo(
             <input
               type={isShowPassword ? 'text' : 'password'}
               placeholder={placeholder}
-              className="w-full py-3 px-4 bg-transparent text-gray-700 text-md placeholder-gray-400"
+              className="w-full py-3 px-4 bg-transparent text-gray-700 text-base placeholder-gray-400"
               {...rest}
               {...registerData}
             />
@@ -61,7 +61,7 @@ export const PasswordInput: React.NamedExoticComponent<Props> = memo(
 
     return (
       <div className="flex flex-col gap-2 w-full">
-        <label className="text-gray-700 text-md font-semibold">
+        <label className="text-gray-700 text-base font-semibold">
           {placeholder}
         </label>
         <Field />

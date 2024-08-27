@@ -117,7 +117,7 @@ export const LayoutApp: React.NamedExoticComponent<Props> = memo(
                     isSidebarOpen ? 'flex' : 'hidden'
                   }`}
                 >
-                  <span className="text-md font-semibold text-white break-words">
+                  <span className="text-base font-semibold text-white break-words">
                     {firstName} {secondName}
                   </span>
                   <span className="text-xs font-semibold text-gray-400 break-words">

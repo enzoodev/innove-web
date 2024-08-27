@@ -163,7 +163,7 @@ export const UpdateClientModal: React.FC<Props> = ({
           isLoading={isLoadingClient}
         />
         <div>
-          <label className="text-gray-700 text-md font-semibold mb-1">
+          <label className="text-gray-700 text-base font-semibold mb-1">
             Ícone do cliente
           </label>
           <div
@@ -197,7 +197,7 @@ export const UpdateClientModal: React.FC<Props> = ({
           />
         </div>
         <div>
-          <label className="text-gray-700 text-md font-semibold">
+          <label className="text-gray-700 text-base font-semibold">
             Logo do cliente
           </label>
           <div
