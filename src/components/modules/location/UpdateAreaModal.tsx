@@ -73,7 +73,6 @@ export const UpdateAreaModal: React.FC<Props> = ({
             placeholder="Nome"
             formError={errors.nome?.message}
             name="nome"
-            autoFocus
             register={register}
             isLoading={isLoadingArea}
           />
@@ -83,7 +82,6 @@ export const UpdateAreaModal: React.FC<Props> = ({
           name="responsavelnome"
           formError={errors.responsavelnome?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingArea}
         />
         <Input
@@ -92,7 +90,6 @@ export const UpdateAreaModal: React.FC<Props> = ({
           name="responsavelemail"
           formError={errors.responsavelemail?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingArea}
         />
         <div className="col-span-1 sm:col-span-2">

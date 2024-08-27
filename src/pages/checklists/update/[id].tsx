@@ -82,7 +82,6 @@ const UpdateChecklist: NextPage = () => {
                             />
                           </button>
                         }
-                        autoFocus
                       />
                     )}
                   />
@@ -184,7 +183,6 @@ const UpdateChecklist: NextPage = () => {
                             />
                           </button>
                         }
-                        autoFocus
                       />
                     )}
                   />
@@ -226,7 +224,6 @@ const UpdateChecklist: NextPage = () => {
                   onChange={onChange}
                   value={value}
                   formError={errors.name?.message}
-                  autoFocus
                 />
               )}
             />

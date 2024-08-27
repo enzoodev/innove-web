@@ -74,7 +74,6 @@ export const UpdateUserModal: React.FC<Props> = ({
             placeholder="Nome"
             formError={errors.nome?.message}
             name="nome"
-            autoFocus
             register={register}
             isLoading={isLoadingUser}
           />
@@ -83,7 +82,6 @@ export const UpdateUserModal: React.FC<Props> = ({
           placeholder="Telefone"
           formError={errors.telefone?.message}
           name="telefone"
-          autoFocus
           register={registerWithMask}
           masks={phoneMasks}
           isLoading={isLoadingUser}
@@ -93,7 +91,6 @@ export const UpdateUserModal: React.FC<Props> = ({
           type="email"
           formError={errors.email?.message}
           name="email"
-          autoFocus
           register={register}
           isLoading={isLoadingUser}
         />

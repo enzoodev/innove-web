@@ -59,7 +59,6 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
             placeholder="Nome"
             formError={errors.nome?.message}
             name="nome"
-            autoFocus
             register={register}
           />
         </div>
@@ -67,7 +66,6 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
           placeholder="Telefone"
           formError={errors.telefone?.message}
           name="telefone"
-          autoFocus
           register={registerWithMask}
           masks={phoneMasks}
         />
@@ -76,7 +74,6 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
           type="email"
           formError={errors.email?.message}
           name="email"
-          autoFocus
           register={register}
         />
         <div className="col-span-1 sm:col-span-2">

@@ -61,7 +61,6 @@ export const CreateConstructionModal: React.FC<Props> = ({
             placeholder="Nome"
             formError={errors.nome?.message}
             name="nome"
-            autoFocus
             register={register}
           />
         </div>
@@ -70,7 +69,6 @@ export const CreateConstructionModal: React.FC<Props> = ({
             placeholder={'Razão Social'}
             formError={errors.razaosocial?.message}
             name="razaosocial"
-            autoFocus
             register={register}
           />
         </div>
@@ -78,7 +76,6 @@ export const CreateConstructionModal: React.FC<Props> = ({
           placeholder={'CNPJ'}
           formError={errors.cnpj?.message}
           name="cpnj"
-          autoFocus
           register={registerWithMask}
           masks={cnpjMasks}
         />
@@ -86,7 +83,6 @@ export const CreateConstructionModal: React.FC<Props> = ({
           placeholder="Data de início"
           formError={errors.datastart?.message}
           name="datastart"
-          autoFocus
           register={registerWithMask}
           masks={dateMasks}
         />
@@ -94,14 +90,12 @@ export const CreateConstructionModal: React.FC<Props> = ({
           placeholder={'Rua'}
           formError={errors.rua?.message}
           name="rua"
-          autoFocus
           register={register}
         />
         <Input
           placeholder={'Número'}
           formError={errors.numero?.message}
           name="numero"
-          autoFocus
           register={register}
         />
         <div className="col-span-1 sm:col-span-2">
@@ -109,7 +103,6 @@ export const CreateConstructionModal: React.FC<Props> = ({
             placeholder={'Complemento'}
             formError={errors.complemento?.message}
             name="complemento"
-            autoFocus
             register={register}
           />
         </div>
@@ -117,14 +110,12 @@ export const CreateConstructionModal: React.FC<Props> = ({
           placeholder={'Bairro'}
           formError={errors.bairro?.message}
           name="bairro"
-          autoFocus
           register={register}
         />
         <Input
           placeholder={'CEP'}
           formError={errors.cep?.message}
           name="cep"
-          autoFocus
           register={registerWithMask}
           masks={cepMasks}
         />
@@ -132,14 +123,12 @@ export const CreateConstructionModal: React.FC<Props> = ({
           placeholder={'Estado'}
           formError={errors.estado?.message}
           name="estado"
-          autoFocus
           register={register}
         />
         <Input
           placeholder={'Cidade'}
           formError={errors.cidade?.message}
           name="cidade"
-          autoFocus
           register={register}
         />
         <Input
@@ -147,7 +136,6 @@ export const CreateConstructionModal: React.FC<Props> = ({
           name="responsavelnome"
           formError={errors.responsavelnome?.message}
           register={register}
-          autoFocus
         />
         <Input
           placeholder="Email do responsável"
@@ -155,7 +143,6 @@ export const CreateConstructionModal: React.FC<Props> = ({
           name="responsavelemail"
           formError={errors.responsavelemail?.message}
           register={register}
-          autoFocus
         />
         <div className="col-span-1 sm:col-span-2">
           <Checkbox

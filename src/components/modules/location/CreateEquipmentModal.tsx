@@ -53,7 +53,6 @@ export const CreateEquipmentModal: React.FC<Props> = ({ isOpen, onClose }) => {
             placeholder="Nome"
             formError={errors.tipoequipamento?.message}
             name="tipoequipamento"
-            autoFocus
             register={register}
           />
         </div>
@@ -62,14 +61,12 @@ export const CreateEquipmentModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="modelo"
           formError={errors.modelo?.message}
           register={register}
-          autoFocus
         />
         <Input
           placeholder="Placa"
           name="placa"
           formError={errors.placa?.message}
           register={register}
-          autoFocus
         />
         <div className="col-span-1 sm:col-span-2">
           <Input
@@ -77,7 +74,6 @@ export const CreateEquipmentModal: React.FC<Props> = ({ isOpen, onClose }) => {
             name="tag"
             formError={errors.tag?.message}
             register={register}
-            autoFocus
           />
         </div>
         <Input
@@ -85,7 +81,6 @@ export const CreateEquipmentModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="responsavelnome"
           formError={errors.responsavelnome?.message}
           register={register}
-          autoFocus
         />
         <Input
           placeholder="Email do responsável"
@@ -93,7 +88,6 @@ export const CreateEquipmentModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="responsavelemail"
           formError={errors.responsavelemail?.message}
           register={register}
-          autoFocus
         />
         <div className="col-span-1 sm:col-span-2">
           <Checkbox

@@ -110,7 +110,6 @@ const Clients: NextPage = () => {
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             aria-label="Search"
-            autoFocus
             spellCheck={false}
             additionalClasses="bg-gray-300 placeholder-gray-500"
           />
