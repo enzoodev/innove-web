@@ -72,7 +72,6 @@ export const UpdateEquipmentModal: React.FC<Props> = ({
             placeholder="Nome"
             formError={errors.tipoequipamento?.message}
             name="tipoequipamento"
-            autoFocus
             register={register}
             isLoading={isLoadingEquipment}
           />
@@ -82,7 +81,6 @@ export const UpdateEquipmentModal: React.FC<Props> = ({
           name="modelo"
           formError={errors.modelo?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingEquipment}
         />
         <Input
@@ -90,7 +88,6 @@ export const UpdateEquipmentModal: React.FC<Props> = ({
           name="placa"
           formError={errors.placa?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingEquipment}
         />
         <div className="col-span-1 sm:col-span-2">
@@ -99,7 +96,6 @@ export const UpdateEquipmentModal: React.FC<Props> = ({
             name="tag"
             formError={errors.tag?.message}
             register={register}
-            autoFocus
             isLoading={isLoadingEquipment}
           />
         </div>
@@ -108,7 +104,6 @@ export const UpdateEquipmentModal: React.FC<Props> = ({
           name="responsavelnome"
           formError={errors.responsavelnome?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingEquipment}
         />
         <Input
@@ -117,7 +112,6 @@ export const UpdateEquipmentModal: React.FC<Props> = ({
           name="responsavelemail"
           formError={errors.responsavelemail?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingEquipment}
         />
         <div className="col-span-1 sm:col-span-2">

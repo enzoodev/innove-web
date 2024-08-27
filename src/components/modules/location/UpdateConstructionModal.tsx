@@ -77,7 +77,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
             placeholder="Nome"
             formError={errors.nome?.message}
             name="nome"
-            autoFocus
             register={register}
             isLoading={isLoadingConstruction}
           />
@@ -87,7 +86,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
             placeholder={'Razão Social'}
             formError={errors.razaosocial?.message}
             name="razaosocial"
-            autoFocus
             register={register}
             isLoading={isLoadingConstruction}
           />
@@ -96,7 +94,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder={'CNPJ'}
           formError={errors.cnpj?.message}
           name="cpnj"
-          autoFocus
           register={registerWithMask}
           masks={cnpjMasks}
           isLoading={isLoadingConstruction}
@@ -105,7 +102,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder="Data de início"
           formError={errors.datastart?.message}
           name="datastart"
-          autoFocus
           register={registerWithMask}
           masks={dateMasks}
           isLoading={isLoadingConstruction}
@@ -114,7 +110,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder={'Rua'}
           formError={errors.rua?.message}
           name="rua"
-          autoFocus
           register={register}
           isLoading={isLoadingConstruction}
         />
@@ -122,7 +117,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder={'Número'}
           formError={errors.numero?.message}
           name="numero"
-          autoFocus
           register={register}
           isLoading={isLoadingConstruction}
         />
@@ -131,7 +125,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
             placeholder={'Complemento'}
             formError={errors.complemento?.message}
             name="complemento"
-            autoFocus
             register={register}
             isLoading={isLoadingConstruction}
           />
@@ -140,7 +133,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder={'Bairro'}
           formError={errors.bairro?.message}
           name="bairro"
-          autoFocus
           register={register}
           isLoading={isLoadingConstruction}
         />
@@ -148,7 +140,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder={'CEP'}
           formError={errors.cep?.message}
           name="cep"
-          autoFocus
           register={registerWithMask}
           masks={cepMasks}
           isLoading={isLoadingConstruction}
@@ -157,7 +148,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder={'Estado'}
           formError={errors.estado?.message}
           name="estado"
-          autoFocus
           register={register}
           isLoading={isLoadingConstruction}
         />
@@ -165,7 +155,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           placeholder={'Cidade'}
           formError={errors.cidade?.message}
           name="cidade"
-          autoFocus
           register={register}
           isLoading={isLoadingConstruction}
         />
@@ -174,7 +163,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           name="responsavelnome"
           formError={errors.responsavelnome?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingConstruction}
         />
         <Input
@@ -183,7 +171,6 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           name="responsavelemail"
           formError={errors.responsavelemail?.message}
           register={register}
-          autoFocus
           isLoading={isLoadingConstruction}
         />
         <div className="col-span-1 sm:col-span-2">

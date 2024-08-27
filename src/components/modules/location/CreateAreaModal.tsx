@@ -53,7 +53,6 @@ export const CreateAreaModal: React.FC<Props> = ({ isOpen, onClose }) => {
             placeholder="Nome"
             formError={errors.nome?.message}
             name="nome"
-            autoFocus
             register={register}
           />
         </div>
@@ -62,7 +61,6 @@ export const CreateAreaModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="responsavelnome"
           formError={errors.responsavelnome?.message}
           register={register}
-          autoFocus
         />
         <Input
           placeholder="Email do responsável"
@@ -70,7 +68,6 @@ export const CreateAreaModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="responsavelemail"
           formError={errors.responsavelemail?.message}
           register={register}
-          autoFocus
         />
         <div className="col-span-1 sm:col-span-2">
           <Checkbox
