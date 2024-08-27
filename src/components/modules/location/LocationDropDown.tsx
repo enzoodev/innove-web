@@ -27,7 +27,7 @@ export const LocationDropDown: React.FC<Props> = ({
         hover:bg-white hover:bg-opacity-20 active:bg-white active:bg-opacity-40 cursor-pointer`}
         onClick={handleOpen}
       >
-        <h3 className="text-gray-800 text-md font-semibold">{title}</h3>
+        <h3 className="text-gray-800 text-base font-semibold">{title}</h3>
         {!isOpen && (
           <button
             type="button"

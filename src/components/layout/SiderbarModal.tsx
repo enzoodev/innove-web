@@ -73,7 +73,7 @@ export const SidebarModal: React.FC<SidebarModalProps> = ({
               </span>
             </div>
           </div>
-          <span className="mt-10 mb-3 ml-2 text-md font-semibold text-gray-100">
+          <span className="mt-10 mb-3 ml-2 text-base font-semibold text-gray-100">
             Navegação
           </span>
           <nav>

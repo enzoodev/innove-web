@@ -138,7 +138,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           register={register}
         />
         <div>
-          <label className="text-gray-700 text-md font-semibold mb-1">
+          <label className="text-gray-700 text-base font-semibold mb-1">
             Ícone do cliente
           </label>
           <div
@@ -170,7 +170,7 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           />
         </div>
         <div>
-          <label className="text-gray-700 text-md font-semibold">
+          <label className="text-gray-700 text-base font-semibold">
             Logo do cliente
           </label>
           <div

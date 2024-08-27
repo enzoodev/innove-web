@@ -65,7 +65,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
         ) : (
           <Fragment>
             <span
-              className={`text-center text-md ${color} ${itsCancelButton ? 'font-medium' : 'font-bold'}`}
+              className={`text-center text-base ${color} ${itsCancelButton ? 'font-medium' : 'font-bold'}`}
             >
               {title}
             </span>

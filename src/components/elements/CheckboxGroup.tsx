@@ -29,7 +29,7 @@ export const CheckboxGroup: React.FC<Props> = function Component({
     return (
       <div className="flex flex-col gap-2 w-full">
         {hasLabel && (
-          <label className="text-gray-700 text-md font-semibold">
+          <label className="text-gray-700 text-base font-semibold">
             {placeholder}
           </label>
         )}
@@ -46,7 +46,7 @@ export const CheckboxGroup: React.FC<Props> = function Component({
   return (
     <div className="flex flex-col gap-2 w-full">
       {hasLabel && (
-        <label className="text-gray-700 text-md font-semibold">
+        <label className="text-gray-700 text-base font-semibold">
           {placeholder}
         </label>
       )}
@@ -72,7 +72,7 @@ export const CheckboxGroup: React.FC<Props> = function Component({
           </HeadlessCheckbox>
           <label
             htmlFor={value}
-            className="text-gray-700 text-md active:opacity-70"
+            className="text-gray-700 text-base active:opacity-70"
             onClick={() => onSelectItem(index)}
           >
             {label}
