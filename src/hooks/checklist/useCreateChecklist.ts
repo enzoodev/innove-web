@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useAuth } from '@/hooks/auth/useAuth'
@@ -10,7 +10,7 @@ import { useAuth } from '@/hooks/auth/useAuth'
 import {
   saveChecklistSchema,
   TSaveChecklistSchema,
-} from '@/schemas/checklist/saveChecklist'
+} from '@/schemas/checklist/saveChecklistSchema'
 
 import { createChecklist } from '@/query/checklist/createChecklist'
 
@@ -33,11 +33,11 @@ export const useCreateChecklist = () => {
   const {
     handleSubmit,
     formState: { errors },
-    register,
-    control,
     watch,
     setValue,
     reset,
+    trigger,
+    control,
   } = useForm<TSaveChecklistSchema>({
     resolver: zodResolver(saveChecklistSchema),
     defaultValues: {
@@ -48,17 +48,21 @@ export const useCreateChecklist = () => {
     },
   })
 
-  const {
-    fields: sections,
-    append,
-    remove,
-  } = useFieldArray({
-    control,
-    name: 'sections',
-  })
-
   const isActive = watch('status')
-  const type = watch('type')
+  const sections = watch('sections')
+
+  const handleValidadeSections = useCallback(async () => {
+    const isValid = await trigger(`sections`)
+
+    if (!isValid) {
+      toast.error(
+        'Preencha os títulos de todos os tópicos e adicione pelo menos uma questão em cada tópico.',
+        { autoClose: 6000 },
+      )
+    }
+
+    return isValid
+  }, [trigger])
 
   const handleActiveChange = useCallback(() => {
     setValue('status', !isActive)
@@ -71,28 +75,73 @@ export const useCreateChecklist = () => {
     [sections, setValue],
   )
 
-  const handleOpenSection = useCallback(
+  const handleDoneEditingSectionTitle = useCallback(
+    async (index: number) => {
+      try {
+        const isValid = await trigger(`sections.${index}.title`)
+        if (isValid) {
+          setValue(`sections.${index}.isEditing`, false)
+        }
+      } catch (error) {
+        toast.error('Não foi possível salvar o título do tópico.')
+      }
+    },
+    [setValue, trigger],
+  )
+
+  const openSection = useCallback(
     (index: number) => {
       sections.forEach((_, sectionIndex) => {
         setValue(`sections.${sectionIndex}.isOpen`, sectionIndex === index)
-        setValue(`sections.${sectionIndex}.isEditing`, sectionIndex === index)
+        setValue(`sections.${sectionIndex}.isEditing`, false)
       })
     },
     [sections, setValue],
   )
 
-  const handleAddSection = useCallback(() => {
-    append({ title: '', isEditing: true, isOpen: true, items: [] })
-    handleOpenSection(sections.length)
-  }, [append, handleOpenSection, sections.length])
+  const handleOpenSection = useCallback(
+    async (index: number) => {
+      const isValid = await handleValidadeSections()
+      if (isValid) {
+        openSection(index)
+      }
+    },
+    [handleValidadeSections, openSection],
+  )
+
+  const handleAddSection = useCallback(async () => {
+    try {
+      if (sections.length > 0) {
+        const isValid = await handleValidadeSections()
+        if (!isValid) return
+      }
+
+      setValue(`sections`, [
+        ...sections,
+        {
+          id: generateId(),
+          title: '',
+          isEditing: true,
+          isOpen: true,
+          items: [],
+        },
+      ])
+      openSection(sections.length)
+    } catch (error) {
+      toast.error('Não foi possível adicionar um tópico.')
+    }
+  }, [handleValidadeSections, openSection, sections, setValue])
 
   const handleDeleteSection = useCallback(
     (index: number) => {
       const nextIndex = index === 0 ? 0 : index - 1
-      remove(index)
+      setValue(
+        `sections`,
+        sections.filter((_, i) => i !== index),
+      )
       handleOpenSection(nextIndex)
     },
-    [remove, handleOpenSection],
+    [setValue, sections, handleOpenSection],
   )
 
   const handleAddQuestion = useCallback(
@@ -150,13 +199,13 @@ export const useCreateChecklist = () => {
   return {
     handleCreateChecklist,
     isLoadingCreateChecklist,
-    register,
     errors,
+    control,
     sections,
-    type,
     isActive,
     handleActiveChange,
     handleToggleEditSectionTitle,
+    handleDoneEditingSectionTitle,
     handleOpenSection,
     handleAddSection,
     handleDeleteSection,
