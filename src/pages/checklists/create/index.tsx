@@ -98,7 +98,7 @@ const CreateChecklist: NextPage = () => {
                 <div className="flex flex-row gap-3">
                   <Button
                     title="Adicionar questão"
-                    itsCancelButton
+                    normalText
                     additionalClasses="w-60 bg-zinc-700 hover:bg-zinc-800 active:bg-zinc-900"
                     color="text-white"
                     onClick={() => handleAddQuestion(sectionIndex)}
@@ -108,7 +108,7 @@ const CreateChecklist: NextPage = () => {
                   />
                   <Button
                     title="Deletar tópico"
-                    itsCancelButton
+                    normalText
                     additionalClasses="w-56 bg-red-700 hover:bg-red-800 active:bg-red-900"
                     color="text-white"
                     onClick={() => handleDeleteSection(sectionIndex)}
@@ -233,7 +233,7 @@ const CreateChecklist: NextPage = () => {
             </div>
             <Button
               title="Adicionar tópico"
-              itsCancelButton
+              normalText
               additionalClasses="h-12 w-56 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
               onClick={handleAddSection}
               icon={<IconPlus stroke={1.75} className="w-6 h-6 text-white" />}

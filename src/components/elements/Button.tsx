@@ -4,7 +4,7 @@ type Props = {
   title: string
   color?: string
   type?: 'button' | 'submit'
-  itsCancelButton?: boolean
+  normalText?: boolean
   isLoading?: boolean
   isDisabled?: boolean
   additionalClasses?: string
@@ -17,7 +17,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
     title,
     color = 'text-white',
     type = 'button',
-    itsCancelButton = false,
+    normalText = false,
     isDisabled = false,
     isLoading = false,
     additionalClasses = '',
@@ -39,7 +39,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
           px-6
           rounded-lg
           ${isDisabled ? 'opacity-50' : ''}
-        ${itsCancelButton ? '' : 'shadow-[0_3px_10px_rgb(0,0,0,0.2)]'}
+        ${normalText ? '' : 'shadow-[0_3px_10px_rgb(0,0,0,0.2)]'}
           ${additionalClasses}
           `}
       >
@@ -65,7 +65,7 @@ export const Button: React.NamedExoticComponent<Props> = memo(
         ) : (
           <Fragment>
             <span
-              className={`text-center text-base ${color} ${itsCancelButton ? 'font-medium' : 'font-bold'}`}
+              className={`text-center text-base ${color} ${normalText ? 'font-medium' : 'font-bold'}`}
             >
               {title}
             </span>

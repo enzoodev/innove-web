@@ -31,7 +31,7 @@ export const DeleteClientModal: React.FC<Props> = ({
           <Button
             onClick={onClose}
             title="Cancelar"
-            itsCancelButton
+            normalText
             additionalClasses="bg-gray-200 hover:bg-gray-300 active:bg-gray-400"
             color="text-gray-700"
           />
