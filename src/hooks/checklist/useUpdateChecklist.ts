@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -50,30 +50,10 @@ export const useUpdateChecklist = (checklistId: number) => {
     queryKey: [QueryKey.GET_CHECKLIST_BY_ID, { checklistId }],
     queryFn: async () => {
       try {
-        const response = await getChecklistById({
+        return await getChecklistById({
           idchecklist: checklistId,
           idclient: clientId,
         })
-
-        reset({
-          name: response.name,
-          // type: response.tipochecklist,
-          // status: response.ativo === '1',
-          sections: response.topics.map((section) => ({
-            id: generateId(),
-            title: section.subtitle,
-            isEditing: false,
-            isOpen: false,
-            items: section.questions.map((question) => ({
-              id: generateId(),
-              questionId: question.idquestion,
-              name: question.name,
-              status: question.ativo === '1',
-            })),
-          })),
-        })
-
-        return response
       } catch (error) {
         toast.error('Não foi possível buscar os dados do checklist.')
         throw error
@@ -258,6 +238,29 @@ export const useUpdateChecklist = (checklistId: number) => {
   )
 
   const handleUpdateChecklist = handleSubmit(onSubmit)
+
+  useEffect(() => {
+    if (!checklist) return
+
+    reset({
+      name: checklist.name,
+      // type: checklist.tipochecklist,
+      // status: checklist.ativo === '1',
+      sections: checklist.topics.map((section) => ({
+        id: generateId(),
+        title: section.subtitle,
+        isEditing: false,
+        isOpen: false,
+        items: section.questions.map((question) => ({
+          id: generateId(),
+          questionId: question.idquestion,
+          name: question.name,
+          status: question.ativo === '1',
+        })),
+      })),
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checklist])
 
   return {
     handleUpdateChecklist,
