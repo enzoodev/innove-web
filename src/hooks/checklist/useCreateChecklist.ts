@@ -58,6 +58,7 @@ export const useCreateChecklist = () => {
   })
 
   const isActive = watch('status')
+  const type = watch('type')
 
   const handleActiveChange = useCallback(() => {
     setValue('status', !isActive)
@@ -152,6 +153,7 @@ export const useCreateChecklist = () => {
     register,
     errors,
     sections,
+    type,
     isActive,
     handleActiveChange,
     handleToggleEditSectionTitle,
