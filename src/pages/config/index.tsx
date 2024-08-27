@@ -69,14 +69,14 @@ const Config: NextPage = () => {
         <div className="flex flex-col items-center gap-4">
           <Button
             title="Alterar senha"
-            itsCancelButton
+            normalText
             additionalClasses="w-80 bg-red-700 hover:bg-red-800 active:bg-red-900"
             color="text-white"
             onClick={handleUpdatePassword}
           />
           <Button
             title="Sair da conta"
-            itsCancelButton
+            normalText
             additionalClasses="w-80 bg-zinc-700 hover:bg-zinc-800 active:bg-zinc-900"
             color="text-white"
             isLoading={isLoadingLogout}

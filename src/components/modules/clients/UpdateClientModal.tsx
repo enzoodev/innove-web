@@ -60,7 +60,7 @@ export const UpdateClientModal: React.FC<Props> = ({
         <Fragment>
           <Button
             title="Voltar"
-            itsCancelButton
+            normalText
             additionalClasses="w-36 bg-gray-200 hover:bg-gray-300 active:bg-gray-400"
             color="text-gray-700"
             onClick={onClose}
