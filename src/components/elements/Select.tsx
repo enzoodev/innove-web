@@ -1,10 +1,10 @@
-import { DetailedHTMLProps, HTMLAttributes, memo, useCallback } from 'react'
+import { DetailedHTMLProps, memo, SelectHTMLAttributes } from 'react'
 import { type Path } from 'react-hook-form'
 
 import { FormError } from './FormError'
 
 type SelectProps = DetailedHTMLProps<
-  HTMLAttributes<HTMLSelectElement>,
+  SelectHTMLAttributes<HTMLSelectElement>,
   HTMLSelectElement
 >
 
@@ -13,10 +13,8 @@ type Props = SelectProps & {
   formError?: string
   hasLabel?: boolean
   name?: Path<any>
-  register?: any
   additionalClasses?: string
   isLoading?: boolean
-  value?: string
   options: Array<{ value: string; label: string }>
 }
 
@@ -26,21 +24,11 @@ export const Select: React.NamedExoticComponent<Props> = memo(
     formError,
     hasLabel = true,
     name,
-    register,
     additionalClasses,
     isLoading = false,
-    value,
     options,
     ...rest
   }) {
-    const getRegister = useCallback(() => {
-      if (!register || !name) {
-        return {}
-      }
-
-      return register(name)
-    }, [name, register])
-
     function Field() {
       if (isLoading) {
         return (
@@ -62,13 +50,12 @@ export const Select: React.NamedExoticComponent<Props> = memo(
               pr-10
               rounded-lg
               text-gray-700
-              text-md
+              text-base
               appearance-none
               ${additionalClasses ?? ''}
-              ${!value ? 'opacity-50' : ''}
+              ${!rest.value ? 'opacity-50' : ''}
             `}
             {...rest}
-            {...getRegister()}
           >
             <option value="" disabled className="text-gray-400">
               {placeholder}
@@ -106,7 +93,7 @@ export const Select: React.NamedExoticComponent<Props> = memo(
 
     return (
       <div className="flex flex-col gap-1 w-full">
-        <label className="text-gray-700 text-md font-semibold">
+        <label className="text-gray-700 text-base font-semibold">
           {placeholder}
         </label>
         <Field />
