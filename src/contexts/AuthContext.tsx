@@ -1,13 +1,11 @@
 import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 import { TokenService } from '@/services/TokenService'
 
 import { getAuth } from '@/query/auth/getAuth'
-import { login } from '@/query/auth/login'
-import { logout } from '@/query/auth/logout'
 import { recoverAccount } from '@/query/auth/recoverAccount'
 import { updatePassword } from '@/query/auth/updatePassword'
 
@@ -18,11 +16,9 @@ export type TAuthContextDataProps = {
   auth: TAuth | null
   userId: number
   clientId: number
-  isLoadingLogout: boolean
   isLoadingRecoverAccount: boolean
   isLoadingUpdatePassword: boolean
   isLoadingUser: boolean
-  handleLogout: () => Promise<void>
   handleRecoverAccount: (params: TRecoverAccountParams) => Promise<void>
   handleUpdatePassword: (params: TUpdatePasswordParams) => Promise<void>
 }
@@ -37,7 +33,6 @@ export const AuthContext = React.createContext<TAuthContextDataProps>(
 
 export function AuthContextProvider({ children }: TAuthContextProviderProps) {
   const router = useRouter()
-  const queryClient = useQueryClient()
 
   const { data: auth, isFetching: isLoadingUser } = useQuery({
     queryKey: [QueryKey.GET_USER],
@@ -51,10 +46,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     },
   })
 
-  const { mutateAsync: logoutFn, isPending: isLoadingLogout } = useMutation({
-    mutationFn: logout,
-  })
-
   const { mutateAsync: recoverAccountFn, isPending: isLoadingRecoverAccount } =
     useMutation({
       mutationFn: recoverAccount,
@@ -64,16 +55,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     useMutation({
       mutationFn: updatePassword,
     })
-
-  const handleLogout = useCallback(async () => {
-    try {
-      await logoutFn()
-      await router.push(Routes.LOGIN)
-      queryClient.invalidateQueries()
-    } catch (error) {
-      toast.error('Não foi possível sair da sua conta.')
-    }
-  }, [logoutFn, queryClient, router])
 
   const handleRecoverAccount = useCallback(
     async (params: TRecoverAccountParams) => {
@@ -127,21 +108,17 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       auth: auth ?? null,
       clientId: auth?.idclient ?? 0,
       userId: auth?.iduser ?? 0,
-      isLoadingLogout,
       isLoadingRecoverAccount,
       isLoadingUpdatePassword,
       isLoadingUser,
-      handleLogout,
       handleRecoverAccount,
       handleUpdatePassword,
     }),
     [
       auth,
-      isLoadingLogout,
       isLoadingRecoverAccount,
       isLoadingUpdatePassword,
       isLoadingUser,
-      handleLogout,
       handleRecoverAccount,
       handleUpdatePassword,
     ],
