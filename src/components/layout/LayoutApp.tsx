@@ -18,7 +18,7 @@ import { Footer } from './Footer'
 import { SidebarModal } from './SiderbarModal'
 
 type Props = {
-  title: string
+  title?: string
   headTitle: string
   children: React.ReactNode
   hasCreateButton?: boolean
@@ -30,7 +30,7 @@ type Props = {
 
 export const LayoutApp: React.NamedExoticComponent<Props> = memo(
   function Component({
-    title,
+    title = '',
     headTitle,
     children,
     onCreate,
