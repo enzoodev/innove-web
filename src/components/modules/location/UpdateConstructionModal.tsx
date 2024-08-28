@@ -52,7 +52,7 @@ export const UpdateConstructionModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Editar construção"
+      title="Editar obra"
       onSubmit={handleUpdateConstruction(onClose)}
       size="lg"
       footer={
@@ -196,7 +196,7 @@ export const UpdateConstructionModal: React.FC<Props> = ({
         <div className="col-span-1 sm:col-span-2">
           <Checkbox
             label="Status"
-            description="Defina se a construção está ativa ou não."
+            description="Defina se a obra está ativa ou não."
             checked={isActive}
             onChange={handleActiveChange}
             formError={errors.ativo?.message}

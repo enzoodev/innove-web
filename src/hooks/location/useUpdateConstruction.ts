@@ -91,7 +91,7 @@ export const useUpdateConstruction = ({
         rua: address.rua,
         numero: address.numero,
         complemento: address.complemento ?? '',
-        cep: address.cep,
+        cep: address.cep.slice(0, 5) + '-' + address.cep.slice(5),
         bairro: address.bairro,
         cidade: address.cidade,
         estado: address.estado,
