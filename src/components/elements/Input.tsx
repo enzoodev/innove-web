@@ -35,7 +35,6 @@ type FieldProps = InputProps & {
   additionalClasses?: string
   register: any
   type: HTMLInputTypeAttribute
-  masks?: Array<string>
   button: React.ReactNode
 }
 
@@ -48,7 +47,6 @@ function Field({
   register,
   type,
   button,
-  masks,
   ...rest
 }: FieldProps) {
   const getRegister = useCallback(() => {
@@ -56,12 +54,8 @@ function Field({
       return {}
     }
 
-    if (masks) {
-      return register(name, masks)
-    }
-
     return register(name)
-  }, [masks, name, register])
+  }, [name, register])
 
   if (isLoading) {
     return (
@@ -111,7 +105,6 @@ export const Input: React.NamedExoticComponent<Props> = memo(
     additionalClasses,
     isLoading = false,
     button,
-    masks,
     ...rest
   }) {
     if (!hasLabel) {
@@ -125,7 +118,6 @@ export const Input: React.NamedExoticComponent<Props> = memo(
           register={register}
           type={type}
           button={button}
-          masks={masks}
           {...rest}
         />
       )
@@ -145,7 +137,6 @@ export const Input: React.NamedExoticComponent<Props> = memo(
           register={register}
           type={type}
           button={button}
-          masks={masks}
           {...rest}
         />
       </div>
