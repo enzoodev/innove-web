@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from 'react'
+import { Controller } from 'react-hook-form'
 
 import { useUpdateConstruction } from '@/hooks/location/useUpdateConstruction'
 
@@ -10,7 +11,6 @@ import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
 import { Checkbox } from '@/components/elements/Checkbox'
-import { Controller } from 'react-hook-form'
 import { MaskInput } from '@/components/elements/MaskInput'
 
 type Props = {
@@ -52,7 +52,7 @@ export const UpdateConstructionModal: React.FC<Props> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Editar construção"
+      title="Editar obra"
       onSubmit={handleUpdateConstruction(onClose)}
       size="lg"
       footer={
@@ -196,7 +196,7 @@ export const UpdateConstructionModal: React.FC<Props> = ({
         <div className="col-span-1 sm:col-span-2">
           <Checkbox
             label="Status"
-            description="Defina se a construção está ativa ou não."
+            description="Defina se a obra está ativa ou não."
             checked={isActive}
             onChange={handleActiveChange}
             formError={errors.ativo?.message}

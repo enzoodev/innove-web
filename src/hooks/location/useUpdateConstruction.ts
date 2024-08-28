@@ -16,6 +16,8 @@ import { updateConstruction } from '@/query/location/updateConstruction'
 
 import { QueryKey } from '@/enums/QueryKey'
 
+import { formatZipCode } from '@/utils/formatZipCode'
+
 type TUseUpdateConstructionParams = {
   locationId: number
   locationTypeId: number
@@ -91,7 +93,7 @@ export const useUpdateConstruction = ({
         rua: address.rua,
         numero: address.numero,
         complemento: address.complemento ?? '',
-        cep: address.cep,
+        cep: formatZipCode(address.cep),
         bairro: address.bairro,
         cidade: address.cidade,
         estado: address.estado,
