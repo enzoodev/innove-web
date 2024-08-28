@@ -50,7 +50,10 @@ const UpdatePassword: NextPage = () => {
           </div>
           <div className="flex flex-col gap-2 mb-3 w-full">
             {rules.map((item) => (
-              <div key={generateId()} className="flex flex-row gap-1">
+              <div
+                key={generateId()}
+                className="flex flex-row items-center gap-1"
+              >
                 <IconCheck
                   stroke={2}
                   className={`w-5 h-5 ${
