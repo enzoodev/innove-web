@@ -84,7 +84,7 @@ const UpdatePassword: NextPage = () => {
               register={register}
             />
             <Button
-              title="Enviar"
+              title="Salvar"
               type="submit"
               additionalClasses="w-full mt-2 bg-cyan-800 hover:bg-cyan-900 active:bg-cyan-950"
               isLoading={isLoadingUpdatePassword}
