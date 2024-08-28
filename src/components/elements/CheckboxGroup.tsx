@@ -1,5 +1,7 @@
 import { Checkbox as HeadlessCheckbox } from '@headlessui/react'
 
+import { generateId } from '@/utils/generateId'
+
 import { FormError } from './FormError'
 
 type CheckboxOption = {
@@ -33,8 +35,11 @@ export const CheckboxGroup: React.FC<Props> = function Component({
             {placeholder}
           </label>
         )}
-        {[...Array(3)].map((_, index) => (
-          <div key={index} className="flex items-center gap-2 animate-pulse">
+        {[...Array(3)].map(() => (
+          <div
+            key={generateId()}
+            className="flex items-center gap-2 animate-pulse"
+          >
             <div className="h-6 w-6 bg-gray-300 rounded" />
             <div className="h-4 bg-gray-300 rounded w-48" />
           </div>
