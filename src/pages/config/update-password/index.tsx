@@ -33,7 +33,7 @@ const UpdatePassword: NextPage = () => {
   return (
     <LayoutApp headTitle="Alterar senha - Innove" hasHeader={false}>
       <div className="flex flex-col h-full items-center justify-center">
-        <div className="flex flex-col items-center gap-4 p-4 rounded w-96 border border-gray-300 bg-gray-100 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
+        <div className="flex flex-col items-center gap-4 p-4 rounded w-11/12 max-w-96 border border-gray-300 bg-gray-100 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
           <div className="flex flex-col gap-2 items-center mb-4">
             <IconLockPassword
               stroke={1.25}
