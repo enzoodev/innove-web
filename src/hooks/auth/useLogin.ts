@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -28,8 +28,8 @@ export const useLogin = () => {
     },
   })
 
-  const onSubmit: SubmitHandler<TLoginSchema> = useCallback(
-    async (data) => {
+  const onSubmit = useCallback(
+    async (data: TLoginSchema) => {
       try {
         await loginFn({
           login: data.login,
