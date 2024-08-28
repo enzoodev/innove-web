@@ -1,6 +1,5 @@
-import { useCallback } from 'react'
+import Link from 'next/link'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { IconUserCircle } from '@tabler/icons-react'
 
 import { useLogin } from '@/hooks/auth/useLogin'
@@ -13,12 +12,7 @@ import { PasswordInput } from '@/components/elements/PasswordInput'
 import { Button } from '@/components/elements/Button'
 
 const Login: NextPage = () => {
-  const router = useRouter()
   const { handleLogin, isLoadingLogin, errors, register } = useLogin()
-
-  const handleRecoverAccount = useCallback(() => {
-    router.push(Routes.RECOVER_ACCOUNT)
-  }, [router])
 
   return (
     <LayoutAuth headTitle="Acessar o sistema Innove">
@@ -54,6 +48,11 @@ const Login: NextPage = () => {
             isLoading={isLoadingLogin}
           />
         </form>
+        <Link href={Routes.RECOVER_ACCOUNT}>
+          <span className="text-sm text-center underline text-gray-500 hover:text-gray-600 cursor-pointer">
+            Esqueci minha senha
+          </span>
+        </Link>
       </div>
     </LayoutAuth>
   )
