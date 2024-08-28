@@ -1,12 +1,11 @@
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react'
+import React, { ReactNode, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 import { TokenService } from '@/services/TokenService'
 
 import { getAuth } from '@/query/auth/getAuth'
-import { updatePassword } from '@/query/auth/updatePassword'
 
 import { Routes } from '@/enums/Routes'
 import { QueryKey } from '@/enums/QueryKey'
@@ -15,9 +14,7 @@ export type TAuthContextDataProps = {
   auth: TAuth | null
   userId: number
   clientId: number
-  isLoadingUpdatePassword: boolean
   isLoadingUser: boolean
-  handleUpdatePassword: (params: TUpdatePasswordParams) => Promise<void>
 }
 
 type TAuthContextProviderProps = {
@@ -42,24 +39,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       }
     },
   })
-
-  const { mutateAsync: updatePasswordFn, isPending: isLoadingUpdatePassword } =
-    useMutation({
-      mutationFn: updatePassword,
-    })
-
-  const handleUpdatePassword = useCallback(
-    async (params: TUpdatePasswordParams) => {
-      try {
-        await updatePasswordFn(params)
-        toast.success('Senha alterada com sucesso!')
-        router.push(Routes.CONFIG)
-      } catch (error) {
-        toast.error('Não foi possível alterar sua senha.')
-      }
-    },
-    [updatePasswordFn, router],
-  )
 
   const authRoutes: Array<string> = useMemo(() => {
     return [Routes.LOGIN, Routes.RECOVER_ACCOUNT]
@@ -87,11 +66,9 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       auth: auth ?? null,
       clientId: auth?.idclient ?? 0,
       userId: auth?.iduser ?? 0,
-      isLoadingUpdatePassword,
       isLoadingUser,
-      handleUpdatePassword,
     }),
-    [auth, isLoadingUpdatePassword, isLoadingUser, handleUpdatePassword],
+    [auth, isLoadingUser],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

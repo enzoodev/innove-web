@@ -1,5 +1,6 @@
-import { useRecoverAccount } from '@/hooks/auth/useRecoverAccount'
 import { NextPage } from 'next'
+
+import { useRecoverAccount } from '@/hooks/auth/useRecoverAccount'
 
 const RecoverAccount: NextPage = () => {
   const { register, errors, handleRecoverAccount, isLoadingRecoverAccount } =

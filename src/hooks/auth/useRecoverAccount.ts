@@ -26,6 +26,7 @@ export const useRecoverAccount = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<TRecoverAccountSchema>({
     resolver: zodResolver(recoverAccountSchema),
     defaultValues: {
@@ -37,13 +38,14 @@ export const useRecoverAccount = () => {
     async (data: TRecoverAccountSchema) => {
       try {
         await recoverAccountFn(data)
+        await router.push(Routes.LOGIN)
         toast.success('Email enviado com sucesso!')
-        router.push(Routes.LOGIN)
+        reset()
       } catch (error) {
         toast.error('Não foi possível recuperar sua conta.')
       }
     },
-    [recoverAccountFn, router],
+    [recoverAccountFn, reset, router],
   )
 
   const handleRecoverAccount = handleSubmit(onSubmit)
