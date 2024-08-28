@@ -1,15 +1,17 @@
 import { Fragment } from 'react'
+import { Controller } from 'react-hook-form'
 
 import { useCreateConstruction } from '@/hooks/location/useCreateConstruction'
 
-import { cnpjMasks } from '@/utils/constants/masks/cnpjMasks'
-import { dateMasks } from '@/utils/constants/masks/dateMasks'
-import { cepMasks } from '@/utils/constants/masks/cepMasks'
+import { cnpjMask } from '@/utils/constants/masks/cnpjMask'
+import { dateMask } from '@/utils/constants/masks/dateMask'
+import { cepMask } from '@/utils/constants/masks/cepMask'
 
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
 import { Checkbox } from '@/components/elements/Checkbox'
+import { MaskInput } from '@/components/elements/MaskInput'
 
 type Props = {
   isOpen: boolean
@@ -24,8 +26,8 @@ export const CreateConstructionModal: React.FC<Props> = ({
     handleCreateConstruction,
     isLoadingCreateConstruction,
     register,
-    registerWithMask,
     errors,
+    control,
     isActive,
     handleActiveChange,
   } = useCreateConstruction()
@@ -72,19 +74,31 @@ export const CreateConstructionModal: React.FC<Props> = ({
             register={register}
           />
         </div>
-        <Input
-          placeholder={'CNPJ'}
-          formError={errors.cnpj?.message}
-          name="cpnj"
-          register={registerWithMask}
-          masks={cnpjMasks}
+        <Controller
+          control={control}
+          name="cnpj"
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'CNPJ'}
+              formError={errors.cnpj?.message}
+              onChange={onChange}
+              value={value}
+              mask={cnpjMask}
+            />
+          )}
         />
-        <Input
-          placeholder="Data de início"
-          formError={errors.datastart?.message}
+        <Controller
+          control={control}
           name="datastart"
-          register={registerWithMask}
-          masks={dateMasks}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'Data de início'}
+              formError={errors.datastart?.message}
+              onChange={onChange}
+              value={value}
+              mask={dateMask}
+            />
+          )}
         />
         <Input
           placeholder={'Rua'}
@@ -112,12 +126,18 @@ export const CreateConstructionModal: React.FC<Props> = ({
           name="bairro"
           register={register}
         />
-        <Input
-          placeholder={'CEP'}
-          formError={errors.cep?.message}
+        <Controller
+          control={control}
           name="cep"
-          register={registerWithMask}
-          masks={cepMasks}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'CEP'}
+              formError={errors.cep?.message}
+              onChange={onChange}
+              value={value}
+              mask={cepMask}
+            />
+          )}
         />
         <Input
           placeholder={'Estado'}

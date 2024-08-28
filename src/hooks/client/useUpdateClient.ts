@@ -3,7 +3,6 @@ import { ChangeEventHandler, useCallback, useRef } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { useHookFormMask } from 'use-mask-input'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import {
@@ -48,6 +47,7 @@ export const useUpdateClient = (clientId: number) => {
     setValue,
     reset,
     watch,
+    control,
   } = useForm<TSaveClientSchema>({
     resolver: zodResolver(saveClientSchema),
     defaultValues: {
@@ -66,7 +66,6 @@ export const useUpdateClient = (clientId: number) => {
       file_logo: undefined,
     },
   })
-  const registerWithMask = useHookFormMask(register)
 
   const isActive = watch('ativo')
   const previewIcon = watch('file_icon')
@@ -160,7 +159,7 @@ export const useUpdateClient = (clientId: number) => {
     isLoadingClient: isLoadingGetClient,
     isLoadingUpdateClient,
     register,
-    registerWithMask,
+    control,
     errors,
     handleFileIcon,
     handleFileLogo,

@@ -2,7 +2,6 @@ import { useCallback } from 'react'
 import { toast } from 'react-toastify'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { useHookFormMask } from 'use-mask-input'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useAuth } from '@/hooks/auth/useAuth'
@@ -48,6 +47,7 @@ export const useUpdateConstruction = ({
     watch,
     setValue,
     reset,
+    control,
   } = useForm<TSaveConstructionSchema>({
     resolver: zodResolver(saveConstructionSchema),
     defaultValues: {
@@ -67,7 +67,6 @@ export const useUpdateConstruction = ({
       ativo: true,
     },
   })
-  const registerWithMask = useHookFormMask(register)
 
   const isActive = watch('ativo')
 
@@ -136,7 +135,7 @@ export const useUpdateConstruction = ({
     isLoadingConstruction,
     isLoadingUpdateConstruction,
     register,
-    registerWithMask,
+    control,
     errors,
     isActive,
     handleActiveChange,

@@ -2,14 +2,16 @@ import { Fragment, useEffect } from 'react'
 
 import { useUpdateConstruction } from '@/hooks/location/useUpdateConstruction'
 
-import { cnpjMasks } from '@/utils/constants/masks/cnpjMasks'
-import { dateMasks } from '@/utils/constants/masks/dateMasks'
-import { cepMasks } from '@/utils/constants/masks/cepMasks'
+import { cnpjMask } from '@/utils/constants/masks/cnpjMask'
+import { dateMask } from '@/utils/constants/masks/dateMask'
+import { cepMask } from '@/utils/constants/masks/cepMask'
 
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
 import { Checkbox } from '@/components/elements/Checkbox'
+import { Controller } from 'react-hook-form'
+import { MaskInput } from '@/components/elements/MaskInput'
 
 type Props = {
   locationId: number
@@ -30,7 +32,7 @@ export const UpdateConstructionModal: React.FC<Props> = ({
     isLoadingConstruction,
     isLoadingUpdateConstruction,
     register,
-    registerWithMask,
+    control,
     errors,
     isActive,
     handleActiveChange,
@@ -90,21 +92,33 @@ export const UpdateConstructionModal: React.FC<Props> = ({
             isLoading={isLoadingConstruction}
           />
         </div>
-        <Input
-          placeholder={'CNPJ'}
-          formError={errors.cnpj?.message}
-          name="cpnj"
-          register={registerWithMask}
-          masks={cnpjMasks}
-          isLoading={isLoadingConstruction}
+        <Controller
+          control={control}
+          name="cnpj"
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'CNPJ'}
+              formError={errors.cnpj?.message}
+              onChange={onChange}
+              value={value}
+              mask={cnpjMask}
+              isLoading={isLoadingConstruction}
+            />
+          )}
         />
-        <Input
-          placeholder="Data de início"
-          formError={errors.datastart?.message}
+        <Controller
+          control={control}
           name="datastart"
-          register={registerWithMask}
-          masks={dateMasks}
-          isLoading={isLoadingConstruction}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'Data de início'}
+              formError={errors.datastart?.message}
+              onChange={onChange}
+              value={value}
+              mask={dateMask}
+              isLoading={isLoadingConstruction}
+            />
+          )}
         />
         <Input
           placeholder={'Rua'}
@@ -136,13 +150,19 @@ export const UpdateConstructionModal: React.FC<Props> = ({
           register={register}
           isLoading={isLoadingConstruction}
         />
-        <Input
-          placeholder={'CEP'}
-          formError={errors.cep?.message}
+        <Controller
+          control={control}
           name="cep"
-          register={registerWithMask}
-          masks={cepMasks}
-          isLoading={isLoadingConstruction}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'CEP'}
+              formError={errors.cep?.message}
+              onChange={onChange}
+              value={value}
+              mask={cepMask}
+              isLoading={isLoadingConstruction}
+            />
+          )}
         />
         <Input
           placeholder={'Estado'}

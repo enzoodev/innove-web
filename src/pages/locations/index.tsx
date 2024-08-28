@@ -12,6 +12,7 @@ import { useToggle } from '@/hooks/shared/useToggle'
 import { useGetLocations } from '@/hooks/location/useGetLocations'
 import { useDropdownLocations } from '@/hooks/location/useDropdownLocations'
 
+import { generateId } from '@/utils/generateId'
 import { ListSeparators } from '@/utils/ListSeparators'
 
 import { LayoutApp } from '@/components/layout/LayoutApp'
@@ -104,7 +105,7 @@ const Location: NextPage = () => {
       Array.from({ length: 4 }).map((_, index, array) => {
         const hasSeparator = ListSeparators.getHasSeparator(index, array)
         return (
-          <div key={index}>
+          <div key={generateId()}>
             <LocationSkeletonItem />
             {hasSeparator && <hr className="border-t border-gray-300" />}
           </div>
@@ -132,7 +133,7 @@ const Location: NextPage = () => {
     return locations.area.map((item, index, array) => {
       const hasSeparator = ListSeparators.getHasSeparator(index, array)
       return (
-        <div key={item.idclient}>
+        <div key={generateId()}>
           <AreaItem
             item={item}
             onUpdate={() => handleUpdateLocation(item)}
@@ -169,7 +170,7 @@ const Location: NextPage = () => {
     return locations.construction.map((item, index, array) => {
       const hasSeparator = ListSeparators.getHasSeparator(index, array)
       return (
-        <div key={item.idclient}>
+        <div key={generateId()}>
           <ConstructionItem
             item={item}
             onUpdate={() => handleUpdateLocation(item)}
@@ -206,7 +207,7 @@ const Location: NextPage = () => {
     return locations.equipment.map((item, index, array) => {
       const hasSeparator = ListSeparators.getHasSeparator(index, array)
       return (
-        <div key={item.idclient}>
+        <div key={generateId()}>
           <EquipmentItem
             item={item}
             onUpdate={() => handleUpdateLocation(item)}

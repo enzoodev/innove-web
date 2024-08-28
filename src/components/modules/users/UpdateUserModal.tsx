@@ -1,14 +1,16 @@
 import { Fragment, useEffect } from 'react'
+import { Controller } from 'react-hook-form'
 
 import { useUpdateUser } from '@/hooks/user/useUpdateUser'
 
-import { phoneMasks } from '@/utils/constants/masks/phoneMasks'
+import { phoneMask } from '@/utils/constants/masks/phoneMask'
 
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
 import { CheckboxGroup } from '@/components/elements/CheckboxGroup'
 import { Checkbox } from '@/components/elements/Checkbox'
+import { MaskInput } from '@/components/elements/MaskInput'
 
 type Props = {
   userId: number
@@ -27,7 +29,7 @@ export const UpdateUserModal: React.FC<Props> = ({
     isLoadingUser,
     isLoadingUpdateUser,
     register,
-    registerWithMask,
+    control,
     errors,
     userIsActive,
     userPermissions,
@@ -78,13 +80,19 @@ export const UpdateUserModal: React.FC<Props> = ({
             isLoading={isLoadingUser}
           />
         </div>
-        <Input
-          placeholder="Telefone"
-          formError={errors.telefone?.message}
+        <Controller
+          control={control}
           name="telefone"
-          register={registerWithMask}
-          masks={phoneMasks}
-          isLoading={isLoadingUser}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'Telefone'}
+              formError={errors.telefone?.message}
+              onChange={onChange}
+              value={value}
+              mask={phoneMask}
+              isLoading={isLoadingUser}
+            />
+          )}
         />
         <Input
           placeholder="Email"

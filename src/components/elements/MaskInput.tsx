@@ -1,62 +1,44 @@
-import {
-  DetailedHTMLProps,
-  HTMLInputTypeAttribute,
-  InputHTMLAttributes,
-  memo,
-  useCallback,
-} from 'react'
-import { type Path } from 'react-hook-form'
+import { HTMLInputTypeAttribute, memo } from 'react'
+import ReactInputMask from 'react-input-mask'
 
 import { FormError } from './FormError'
 
-type InputProps = DetailedHTMLProps<
-  InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
->
-
-type Props = InputProps & {
+type MaskInputProps = {
   placeholder: string
   formError?: string
   hasLabel?: boolean
   type?: HTMLInputTypeAttribute
-  name?: Path<any>
-  register?: any
+  value: string
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   additionalClasses?: string
   isLoading?: boolean
   button?: React.ReactNode
-  masks?: Array<string>
+  mask: string
 }
 
-type FieldProps = InputProps & {
-  name?: Path<any>
+type MaskFieldProps = {
   placeholder: string
   formError?: string
   isLoading: boolean
   additionalClasses?: string
-  register: any
+  value: string
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   type: HTMLInputTypeAttribute
   button: React.ReactNode
+  mask: string
 }
 
-function Field({
-  name,
+function MaskField({
   placeholder,
   isLoading,
   formError,
   additionalClasses,
-  register,
+  value,
+  onChange,
   type,
   button,
-  ...rest
-}: FieldProps) {
-  const getRegister = useCallback(() => {
-    if (!register || !name) {
-      return {}
-    }
-
-    return register(name)
-  }, [name, register])
-
+  mask,
+}: Readonly<MaskFieldProps>) {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2 w-full animate-pulse">
@@ -68,24 +50,25 @@ function Field({
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="flex flex-row gap-3 w-full">
-        <input
+        <ReactInputMask
+          mask={mask}
+          value={value}
+          onChange={onChange}
           type={type}
           placeholder={placeholder}
           className={`border
-          border-gray-300
-          ${formError ? 'border-l-4 border-red-600' : 'hover:border-gray-400 focus:border-gray-400'}
-          bg-gray-200
-          py-3
-          px-4
-        rounded-lg
-        text-gray-700
-        text-base
-        w-full
-        placeholder-gray-400
-        selection:bg-gray-400
-        ${additionalClasses ?? ''}`}
-          {...rest}
-          {...getRegister()}
+              border-gray-300
+              ${formError ? 'border-l-4 border-red-600' : 'hover:border-gray-400 focus:border-gray-400'}
+              bg-gray-200
+              py-3
+              px-4
+              rounded-lg
+              text-gray-700
+              text-base
+              w-full
+              placeholder-gray-400
+              selection:bg-gray-400
+              ${additionalClasses ?? ''}`}
         />
         {button && button}
       </div>
@@ -94,30 +77,32 @@ function Field({
   )
 }
 
-export const Input: React.NamedExoticComponent<Props> = memo(
+export const MaskInput: React.NamedExoticComponent<MaskInputProps> = memo(
   function Component({
     placeholder,
     formError,
     hasLabel = true,
     type = 'text',
-    name,
-    register,
+    value,
+    onChange,
     additionalClasses,
     isLoading = false,
     button,
+    mask,
     ...rest
   }) {
     if (!hasLabel) {
       return (
-        <Field
-          name={name}
+        <MaskField
           placeholder={placeholder}
           isLoading={isLoading}
           formError={formError}
           additionalClasses={additionalClasses}
-          register={register}
+          value={value}
+          onChange={onChange}
           type={type}
           button={button}
+          mask={mask}
           {...rest}
         />
       )
@@ -128,15 +113,16 @@ export const Input: React.NamedExoticComponent<Props> = memo(
         <label className="text-gray-700 text-base font-semibold">
           {placeholder}
         </label>
-        <Field
-          name={name}
+        <MaskField
           placeholder={placeholder}
           isLoading={isLoading}
           formError={formError}
           additionalClasses={additionalClasses}
-          register={register}
+          value={value}
+          onChange={onChange}
           type={type}
           button={button}
+          mask={mask}
           {...rest}
         />
       </div>
