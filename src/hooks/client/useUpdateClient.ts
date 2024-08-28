@@ -16,6 +16,7 @@ import { updateClient } from '@/query/client/updateClient'
 import { QueryKey } from '@/enums/QueryKey'
 
 import { FileConverter } from '@/utils/FileConverter'
+import { formatZipCode } from '@/utils/formatZipCode'
 
 export const useUpdateClient = (clientId: number) => {
   const iconInputRef = useRef<HTMLInputElement | null>(null)
@@ -110,7 +111,7 @@ export const useUpdateClient = (clientId: number) => {
         rua: address.rua,
         numero: address.numero,
         complemento: address.complemento ?? '',
-        cep: address.cep,
+        cep: formatZipCode(address.cep),
         bairro: address.bairro,
         cidade: address.cidade,
         estado: address.estado,
