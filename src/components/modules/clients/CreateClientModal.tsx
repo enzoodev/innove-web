@@ -1,15 +1,17 @@
 import { Fragment } from 'react'
 import Image from 'next/image'
+import { Controller } from 'react-hook-form'
 
 import { useCreateClient } from '@/hooks/client/useCreateClient'
 
-import { cnpjMasks } from '@/utils/constants/masks/cnpjMasks'
-import { cepMasks } from '@/utils/constants/masks/cepMasks'
+import { cnpjMask } from '@/utils/constants/masks/cnpjMask'
+import { cepMask } from '@/utils/constants/masks/cepMask'
 
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
 import { Checkbox } from '@/components/elements/Checkbox'
+import { MaskInput } from '@/components/elements/MaskInput'
 
 type Props = {
   isOpen: boolean
@@ -21,8 +23,8 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
     handleCreateClient,
     isLoadingCreateClient,
     register,
-    registerWithMask,
     errors,
+    control,
     handleFileIcon,
     handleFileLogo,
     isActive,
@@ -75,12 +77,18 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="razaosocial"
           register={register}
         />
-        <Input
-          placeholder={'CNPJ'}
-          formError={errors.cpnj?.message}
+        <Controller
+          control={control}
           name="cpnj"
-          register={registerWithMask}
-          masks={cnpjMasks}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'CNPJ'}
+              formError={errors.cpnj?.message}
+              onChange={onChange}
+              value={value}
+              mask={cnpjMask}
+            />
+          )}
         />
         <Input
           placeholder={'Rua'}
@@ -108,12 +116,18 @@ export const CreateClientModal: React.FC<Props> = ({ isOpen, onClose }) => {
           name="bairro"
           register={register}
         />
-        <Input
-          placeholder={'CEP'}
-          formError={errors.cep?.message}
+        <Controller
+          control={control}
           name="cep"
-          register={registerWithMask}
-          masks={cepMasks}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'CEP'}
+              formError={errors.cep?.message}
+              onChange={onChange}
+              value={value}
+              mask={cepMask}
+            />
+          )}
         />
         <Input
           placeholder={'Estado'}

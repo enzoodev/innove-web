@@ -1,14 +1,16 @@
 import { Fragment } from 'react'
+import { Controller } from 'react-hook-form'
 
 import { useCreateUser } from '@/hooks/user/useCreateUser'
 
-import { phoneMasks } from '@/utils/constants/masks/phoneMasks'
+import { phoneMask } from '@/utils/constants/masks/phoneMask'
 
 import { Modal } from '@/components/layout/Modal'
 import { Button } from '@/components/elements/Button'
 import { Input } from '@/components/elements/Input'
 import { CheckboxGroup } from '@/components/elements/CheckboxGroup'
 import { Checkbox } from '@/components/elements/Checkbox'
+import { MaskInput } from '@/components/elements/MaskInput'
 
 type Props = {
   isOpen: boolean
@@ -20,7 +22,7 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
     handleCreateUser,
     isLoadingCreateUser,
     register,
-    registerWithMask,
+    control,
     errors,
     userIsActive,
     userPermissions,
@@ -62,12 +64,18 @@ export const CreateUserModal: React.FC<Props> = ({ isOpen, onClose }) => {
             register={register}
           />
         </div>
-        <Input
-          placeholder="Telefone"
-          formError={errors.telefone?.message}
+        <Controller
+          control={control}
           name="telefone"
-          register={registerWithMask}
-          masks={phoneMasks}
+          render={({ field: { onChange, value } }) => (
+            <MaskInput
+              placeholder={'Telefone'}
+              formError={errors.telefone?.message}
+              onChange={onChange}
+              value={value}
+              mask={phoneMask}
+            />
+          )}
         />
         <Input
           placeholder="Email"
