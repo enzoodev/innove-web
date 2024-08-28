@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 import { useAuth } from '@/hooks/auth/useAuth'
+import { useLogout } from '@/hooks/auth/useLogout'
 
 import { Routes } from '@/enums/Routes'
 
@@ -13,7 +14,8 @@ import { LayoutApp } from '@/components/layout/LayoutApp'
 import { Button } from '@/components/elements/Button'
 
 const Config: NextPage = () => {
-  const { auth, isLoadingUser, handleLogout, isLoadingLogout } = useAuth()
+  const { auth, isLoadingUser } = useAuth()
+  const { handleLogout, isLoadingLogout } = useLogout()
   const router = useRouter()
 
   const [firstName, secondName] = auth?.name?.split(' ') ?? ['', '']
