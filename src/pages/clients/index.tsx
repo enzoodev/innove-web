@@ -6,6 +6,7 @@ import { useToggle } from '@/hooks/shared/useToggle'
 import { useGetClients } from '@/hooks/client/useGetClients'
 
 import { ListSeparators } from '@/utils/ListSeparators'
+import { generateId } from '@/utils/generateId'
 
 import { LayoutApp } from '@/components/layout/LayoutApp'
 import { Input } from '@/components/elements/Input'
@@ -57,7 +58,7 @@ const Clients: NextPage = () => {
           {Array.from({ length: 6 }).map((_, index, array) => {
             const hasSeparator = ListSeparators.getHasSeparator(index, array)
             return (
-              <div key={index}>
+              <div key={generateId()}>
                 <ClientSkeletonItem />
                 {hasSeparator && <hr className="border-t border-gray-300" />}
               </div>
