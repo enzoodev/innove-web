@@ -12,8 +12,6 @@ import {
 
 import { updatePassword } from '@/query/auth/updatePassword'
 
-import { Routes } from '@/enums/Routes'
-
 export const useUpdatePassword = () => {
   const router = useRouter()
 
@@ -41,7 +39,7 @@ export const useUpdatePassword = () => {
         await updatePasswordFn({
           newpass: data.password,
         })
-        await router.push(Routes.CONFIG)
+        router.back()
         toast.success('Senha alterada com sucesso!')
         reset()
       } catch (error) {
