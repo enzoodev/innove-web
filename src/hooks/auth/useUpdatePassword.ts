@@ -25,6 +25,7 @@ export const useUpdatePassword = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<TUpdatePasswordSchema>({
     resolver: zodResolver(updatePasswordSchema),
     defaultValues: {
@@ -32,6 +33,8 @@ export const useUpdatePassword = () => {
       passwordConfirmation: '',
     },
   })
+
+  const password = watch('password')
 
   const onSubmit = useCallback(
     async (data: TUpdatePasswordSchema) => {
@@ -54,6 +57,7 @@ export const useUpdatePassword = () => {
   return {
     register,
     errors,
+    password,
     handleUpdatePassword,
     isLoadingUpdatePassword,
   }
