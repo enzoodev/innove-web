@@ -26,12 +26,8 @@ const Config: NextPage = () => {
   }, [router])
 
   return (
-    <LayoutApp
-      title="Configurações"
-      headTitle="Configurações - Innove"
-      hasHeader={false}
-    >
-      <div className="flex flex-col items-center gap-4 py-16">
+    <LayoutApp headTitle="Configurações - Innove" hasHeader={false}>
+      <div className="flex flex-col items-center gap-4 pt-24 pb-4">
         <div className="flex flex-col items-center gap-4">
           {isLoadingUser ? (
             <div className="bg-gray-300 rounded-full animate-pulse w-44 h-44" />
