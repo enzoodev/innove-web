@@ -6,7 +6,6 @@ import { toast } from 'react-toastify'
 import { TokenService } from '@/services/TokenService'
 
 import { getAuth } from '@/query/auth/getAuth'
-import { recoverAccount } from '@/query/auth/recoverAccount'
 import { updatePassword } from '@/query/auth/updatePassword'
 
 import { Routes } from '@/enums/Routes'
@@ -16,10 +15,8 @@ export type TAuthContextDataProps = {
   auth: TAuth | null
   userId: number
   clientId: number
-  isLoadingRecoverAccount: boolean
   isLoadingUpdatePassword: boolean
   isLoadingUser: boolean
-  handleRecoverAccount: (params: TRecoverAccountParams) => Promise<void>
   handleUpdatePassword: (params: TUpdatePasswordParams) => Promise<void>
 }
 
@@ -46,28 +43,10 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     },
   })
 
-  const { mutateAsync: recoverAccountFn, isPending: isLoadingRecoverAccount } =
-    useMutation({
-      mutationFn: recoverAccount,
-    })
-
   const { mutateAsync: updatePasswordFn, isPending: isLoadingUpdatePassword } =
     useMutation({
       mutationFn: updatePassword,
     })
-
-  const handleRecoverAccount = useCallback(
-    async (params: TRecoverAccountParams) => {
-      try {
-        await recoverAccountFn(params)
-        toast.success('Email enviado com sucesso!')
-        router.push(Routes.LOGIN)
-      } catch (error) {
-        toast.error('Não foi possível recuperar sua conta.')
-      }
-    },
-    [recoverAccountFn, router],
-  )
 
   const handleUpdatePassword = useCallback(
     async (params: TUpdatePasswordParams) => {
@@ -108,20 +87,11 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       auth: auth ?? null,
       clientId: auth?.idclient ?? 0,
       userId: auth?.iduser ?? 0,
-      isLoadingRecoverAccount,
       isLoadingUpdatePassword,
       isLoadingUser,
-      handleRecoverAccount,
       handleUpdatePassword,
     }),
-    [
-      auth,
-      isLoadingRecoverAccount,
-      isLoadingUpdatePassword,
-      isLoadingUser,
-      handleRecoverAccount,
-      handleUpdatePassword,
-    ],
+    [auth, isLoadingUpdatePassword, isLoadingUser, handleUpdatePassword],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
