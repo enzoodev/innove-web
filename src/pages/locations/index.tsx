@@ -73,16 +73,17 @@ const Location: NextPage = () => {
     (location: TLocation) => {
       handleSelectLocation(location)
 
-      if (location.tipo.name === 'Area') {
-        toggleOpenUpdateAreaModal()
-        return
-      }
-      if (location.tipo.name === 'Obra') {
+      if (location.tipo.id === 1) {
         toggleOpenUpdateConstructionModal()
         return
       }
 
-      toggleOpenUpdateEquipmentModal()
+      if (location.tipo.id === 2) {
+        toggleOpenUpdateEquipmentModal()
+        return
+      }
+
+      toggleOpenUpdateAreaModal()
     },
     [
       handleSelectLocation,
