@@ -81,7 +81,7 @@ export const AreaItem: React.NamedExoticComponent<Props> = memo(
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <MenuItems className="absolute right-0 w-40 mt-2 origin-top-right bg-gray-200 border border-gray-300 divide-y divide-gray-300 rounded-md shadow-lg outline-none z-50">
+            <MenuItems className="fixed right-8 w-40 mt-2 origin-top-right bg-gray-200 border border-gray-300 divide-y divide-gray-300 rounded-md shadow-lg outline-none z-50">
               <MenuItem>
                 <button
                   type="button"
