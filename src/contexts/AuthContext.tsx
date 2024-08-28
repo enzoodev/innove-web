@@ -18,12 +18,10 @@ export type TAuthContextDataProps = {
   auth: TAuth | null
   userId: number
   clientId: number
-  isLoadingLogin: boolean
   isLoadingLogout: boolean
   isLoadingRecoverAccount: boolean
   isLoadingUpdatePassword: boolean
   isLoadingUser: boolean
-  handleLogin: (params: TLoginParams) => Promise<void>
   handleLogout: () => Promise<void>
   handleRecoverAccount: (params: TRecoverAccountParams) => Promise<void>
   handleUpdatePassword: (params: TUpdatePasswordParams) => Promise<void>
@@ -53,10 +51,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     },
   })
 
-  const { mutateAsync: loginFn, isPending: isLoadingLogin } = useMutation({
-    mutationFn: login,
-  })
-
   const { mutateAsync: logoutFn, isPending: isLoadingLogout } = useMutation({
     mutationFn: logout,
   })
@@ -70,19 +64,6 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
     useMutation({
       mutationFn: updatePassword,
     })
-
-  const handleLogin = useCallback(
-    async (params: TLoginParams) => {
-      try {
-        await loginFn(params)
-        toast.success('Login realizado com sucesso!')
-        queryClient.invalidateQueries({ queryKey: [QueryKey.GET_USER] })
-      } catch (error) {
-        toast.error('Não foi possível entrar na sua conta.')
-      }
-    },
-    [loginFn, queryClient],
-  )
 
   const handleLogout = useCallback(async () => {
     try {
@@ -132,10 +113,12 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       if (isInAuthRoutes) {
         router.push(Routes.CLIENTS)
       }
-    } else {
-      if (!isInAuthRoutes) {
-        router.push(Routes.LOGIN)
-      }
+
+      return
+    }
+
+    if (!isInAuthRoutes) {
+      router.push(Routes.LOGIN)
     }
   }, [auth, authRoutes, router])
 
@@ -144,24 +127,20 @@ export function AuthContextProvider({ children }: TAuthContextProviderProps) {
       auth: auth ?? null,
       clientId: auth?.idclient ?? 0,
       userId: auth?.iduser ?? 0,
-      isLoadingLogin,
       isLoadingLogout,
       isLoadingRecoverAccount,
       isLoadingUpdatePassword,
       isLoadingUser,
-      handleLogin,
       handleLogout,
       handleRecoverAccount,
       handleUpdatePassword,
     }),
     [
       auth,
-      isLoadingLogin,
       isLoadingLogout,
       isLoadingRecoverAccount,
       isLoadingUpdatePassword,
       isLoadingUser,
-      handleLogin,
       handleLogout,
       handleRecoverAccount,
       handleUpdatePassword,
