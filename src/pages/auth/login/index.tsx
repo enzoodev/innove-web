@@ -1,14 +1,11 @@
 import { useCallback } from 'react'
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { IconUserCircle } from '@tabler/icons-react'
 
-import { Routes } from '@/enums/Routes'
-import { useAuth } from '@/hooks/auth/useAuth'
+import { useLogin } from '@/hooks/auth/useLogin'
 
-import { loginSchema, TLoginSchema } from '@/schemas/auth/loginSchema'
+import { Routes } from '@/enums/Routes'
 
 import { LayoutAuth } from '@/components/layout/LayoutAuth'
 import { Input } from '@/components/elements/Input'
@@ -17,34 +14,11 @@ import { Button } from '@/components/elements/Button'
 
 const Login: NextPage = () => {
   const router = useRouter()
-  const { handleLogin, isLoadingLogin } = useAuth()
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TLoginSchema>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      login: '',
-      password: '',
-    },
-  })
+  const { handleLogin, isLoadingLogin, errors, register } = useLogin()
 
   const handleRecoverAccount = useCallback(() => {
     router.push(Routes.RECOVER_ACCOUNT)
   }, [router])
-
-  const onSubmit: SubmitHandler<TLoginSchema> = useCallback(
-    async (data) => {
-      await handleLogin({
-        login: data.login,
-        pass: data.password,
-        devicetype: '1',
-      })
-    },
-    [handleLogin],
-  )
 
   return (
     <LayoutAuth headTitle="Acessar o sistema Innove">
@@ -56,7 +30,7 @@ const Login: NextPage = () => {
           </h1>
         </div>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleLogin}
           className="flex flex-col gap-4 items-center w-full"
         >
           <Input
