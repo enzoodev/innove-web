@@ -35,6 +35,14 @@ export class HttpServices {
         await this.handleHttpError(response)
       }
 
+      const isTextResponse =
+        response.headers.get('content-type')?.includes('text/plain') ?? false
+
+      if (isTextResponse) {
+        const error = await response.text()
+        throw new AppError(error)
+      }
+
       const responseData: T = await response.json()
       return responseData
     } catch (error) {
