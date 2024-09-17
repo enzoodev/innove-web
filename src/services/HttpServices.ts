@@ -56,6 +56,7 @@ export class HttpServices {
     }
 
     const error: TApiResponse = await response.json()
+    console.log('line 59', error)
     const message = error.message ?? defaultErrorMessage
     throw new AppError(message)
   }

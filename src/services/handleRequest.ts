@@ -41,6 +41,13 @@ export const handleRequest = async (req: NextApiRequest) => {
     headers,
   })
 
+  const isTextResponse =
+    response.headers.get('content-type')?.includes('text/plain') ?? false
+
+  if (isTextResponse) {
+    return await response.text()
+  }
+
   const responseData = await response.json()
   return responseData.data
 }
