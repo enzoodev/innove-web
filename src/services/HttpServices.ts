@@ -38,6 +38,7 @@ export class HttpServices {
       const responseData: T = await response.json()
       return responseData
     } catch (error) {
+      console.log('line 41', error)
       if (error instanceof AppError) {
         throw error.message
       }
