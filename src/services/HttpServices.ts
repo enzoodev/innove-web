@@ -36,7 +36,7 @@ export class HttpServices {
       }
 
       const isTextResponse =
-        response.headers.get('content-type')?.includes('text/plain') ?? false
+        response.headers.get('Content-Type')?.includes('text/plain') ?? false
 
       if (isTextResponse) {
         const error = await response.text()
@@ -46,7 +46,7 @@ export class HttpServices {
       const responseData: T = await response.json()
       return responseData
     } catch (error) {
-      console.log('line 41', error)
+      console.log('line 41 new', error)
       if (error instanceof AppError) {
         throw error.message
       }
