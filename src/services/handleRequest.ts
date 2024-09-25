@@ -1,5 +1,4 @@
 import { NextApiRequest } from 'next'
-
 import { UrlBuilder } from '@/utils/UrlBuilder'
 import { getHeaders } from '@/utils/getHeaders'
 import { FileConverter } from '@/utils/FileConverter'
@@ -23,13 +22,9 @@ export const handleRequest = async (req: NextApiRequest) => {
         const { base64String, fileType, fileName } =
           FileConverter.extractFileDataFromUri(fileUri)
 
-        const file = FileConverter.base64ToFile({
-          base64String,
-          fileName,
-          fileType,
-        })
-
-        formData.append(key, file)
+        const buffer = Buffer.from(base64String, 'base64')
+        const file = new Blob([buffer], { type: fileType })
+        formData.append(key, file, fileName)
       })
     }
   }
@@ -40,10 +35,6 @@ export const handleRequest = async (req: NextApiRequest) => {
     credentials: 'include',
     headers,
   })
-
-  if (!response.ok) {
-    throw new Error(`${response.statusText} meu erro que merda`)
-  }
 
   const isTextResponse =
     response.headers.get('Content-Type')?.includes('text/plain') ?? false
