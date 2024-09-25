@@ -41,6 +41,10 @@ export const handleRequest = async (req: NextApiRequest) => {
     headers,
   })
 
+  if (!response.ok) {
+    throw new Error(`${response.statusText} meu erro que merda`)
+  }
+
   const isTextResponse =
     response.headers.get('Content-Type')?.includes('text/plain') ?? false
 
