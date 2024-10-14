@@ -6,8 +6,8 @@ import { HttpMethod } from '@/enums/HttpMethod'
 
 import { UrlBuilder } from '@/utils/UrlBuilder'
 import { AppError } from '@/utils/error/AppError'
-import { formatRequestBody } from '@/utils/formatRequestBody'
 import { defaultErrorMessage } from '@/utils/error/defaultErrorMessage'
+import { formatRequestBody } from '@/utils/formatRequestBody'
 
 export class HttpServices {
   private static async request<T>({
@@ -35,18 +35,9 @@ export class HttpServices {
         await this.handleHttpError(response)
       }
 
-      const isTextResponse =
-        response.headers.get('Content-Type')?.includes('text/plain') ?? false
-
-      if (isTextResponse) {
-        const error = await response.text()
-        throw new AppError(error)
-      }
-
       const responseData: T = await response.json()
       return responseData
     } catch (error) {
-      console.log('line 41 new', error)
       if (error instanceof AppError) {
         throw error.message
       }
@@ -64,7 +55,6 @@ export class HttpServices {
     }
 
     const error: TApiResponse = await response.json()
-    console.log('line 59', error)
     const message = error.message ?? defaultErrorMessage
     throw new AppError(message)
   }

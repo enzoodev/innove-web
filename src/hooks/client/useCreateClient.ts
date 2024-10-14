@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
-import { ChangeEventHandler, useCallback, useRef } from 'react'
-import { toast } from 'react-toastify'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { ChangeEventHandler, useCallback, useRef } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import {
   saveClientSchema,
@@ -13,7 +13,6 @@ import {
 import { createClient } from '@/query/client/createClient'
 
 import { QueryKey } from '@/enums/QueryKey'
-
 import { FileConverter } from '@/utils/FileConverter'
 
 export const useCreateClient = () => {
@@ -98,7 +97,8 @@ export const useCreateClient = () => {
           ...dataToRequest,
           ativo: dataToRequest.ativo ? '1' : '0',
           files: {
-            file_icon,
+            file_icon:
+              FileConverter.extractFileDataFromUri(file_icon)?.base64String,
             file_logo,
           },
         })

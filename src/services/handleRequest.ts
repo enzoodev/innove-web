@@ -1,7 +1,6 @@
-import { NextApiRequest } from 'next'
 import { UrlBuilder } from '@/utils/UrlBuilder'
 import { getHeaders } from '@/utils/getHeaders'
-import { FileConverter } from '@/utils/FileConverter'
+import { NextApiRequest } from 'next'
 
 export const handleRequest = async (req: NextApiRequest) => {
   const url = UrlBuilder.handleUrl(req.url ?? '')
@@ -17,14 +16,7 @@ export const handleRequest = async (req: NextApiRequest) => {
 
     if (files) {
       Object.keys(files).forEach((key) => {
-        const fileUri = files[key]
-
-        const { base64String, fileType, fileName } =
-          FileConverter.extractFileDataFromUri(fileUri)
-
-        const buffer = Buffer.from(base64String, 'base64')
-        const file = new Blob([buffer], { type: fileType })
-        formData.append(key, file, fileName)
+        formData.append(key, files[key])
       })
     }
   }
@@ -35,13 +27,6 @@ export const handleRequest = async (req: NextApiRequest) => {
     credentials: 'include',
     headers,
   })
-
-  const isTextResponse =
-    response.headers.get('Content-Type')?.includes('text/plain') ?? false
-
-  if (isTextResponse) {
-    return await response.text()
-  }
 
   const responseData = await response.json()
 

@@ -56,7 +56,11 @@ export class FileConverter {
     return `data:${fileType};filename=${photo.filename};base64,${photo.file}`
   }
 
-  public static readonly extractFileDataFromUri = (uri: string) => {
+  public static readonly extractFileDataFromUri = (uri?: string) => {
+    if (!uri) {
+      return undefined
+    }
+
     const match = uri.match(/^data:(.*?);filename=(.*?);base64,(.*)$/)
 
     if (!match) {
